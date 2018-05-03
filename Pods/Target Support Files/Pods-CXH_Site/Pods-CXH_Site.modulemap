@@ -1,0 +1,6 @@
+framework module Pods_CXH_Site {
+  umbrella header "Pods-CXH_Site-umbrella.h"
+
+  export *
+  module * { export * }
+}
