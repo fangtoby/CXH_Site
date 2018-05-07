@@ -47,11 +47,17 @@ class PersonalCenterViewController:BaseViewController{
     fileprivate var nameArr=[String]()
     fileprivate var imgArr=[String]()
     let identity=userDefaults.object(forKey: "identity") as! Int
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isTranslucent=true
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isTranslucent=false
         if identity == 2{
             queryStoreCapitalSumMoney()
         }
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,7 +146,19 @@ extension PersonalCenterViewController{
         rightPositionView.addSubview(lblPosition)
         
         lblPositionValue=buildLabel(UIColor.RGBFromHexColor("#999999"), font: 15, textAlignment: NSTextAlignment.left)
-        lblPositionValue.text=userDefaults.object(forKey: "userName") as? String
+        var name:String?
+        switch  identity{
+        case 1:
+            name="后台管理员"
+        case 2:
+            name="站点管理员"
+        case 3:
+            name="司机"
+        case 4:
+            name="体验店管理员"
+        default:break
+        }
+        lblPositionValue.text=name
         rightPositionView.addSubview(lblPositionValue)
         
         table=UITableView()
@@ -155,8 +173,8 @@ extension PersonalCenterViewController{
         
         scrollView.snp.makeConstraints { (make) -> Void in
             make.width.equalTo(boundsWidth)
-            make.top.equalTo(navHeight)
-            make.height.equalTo(boundsHeight-navHeight)
+            make.top.equalTo(0)
+            make.height.equalTo(boundsHeight-navHeight-bottomSafetyDistanceHeight)
             
         }
         viewContainer.snp.makeConstraints { (make) in

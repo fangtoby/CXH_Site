@@ -27,13 +27,19 @@ class ConnectThePrinterViewController:BaseViewController{
         table.dataSource=self
         table.tableFooterView=UIView(frame:CGRect.zero)
         self.view.addSubview(table)
-        self.navigationItem.rightBarButtonItem=UIBarButtonItem(title:"打印", style: UIBarButtonItemStyle.done, target:self, action:#selector(connectThePrinter))
+        self.showSVProgressHUD("正在搜索附件蓝牙设备...", type: HUD.text)
         SEPrinterManager.sharedInstance().startScanPerpheralTimeout(10, success: { (perpherals,isTimeout) -> Void in
             self.arr=perpherals!
-                self.table.reloadData()
+            self.table.reloadData()
+            self.navigationItem.rightBarButtonItem=UIBarButtonItem(title:"打印", style: UIBarButtonItemStyle.done, target:self, action:#selector(self.connectThePrinter))
+            self.dismissHUD()
             }) { (SEScanError) -> Void in
                 self.showSVProgressHUD("没有搜索到蓝牙打印设备", type: HUD.error)
         }
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.dismissHUD()
     }
     /**
      打印

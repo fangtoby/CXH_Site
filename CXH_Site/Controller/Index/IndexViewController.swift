@@ -19,10 +19,19 @@ class IndexViewController:BaseViewController{
     fileprivate let identity=userDefaults.object(forKey: "identity") as! Int
     fileprivate var imgArr=["classify_1","sdsj","classify_3","classify_5","classify_6","classify_7","classify_8","classify_9"]
     fileprivate var nameArr=["扫码收件","手动收件","手动揽件","收件历史","揽件清单","我的信息","商品管理","我的订单"]
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isTranslucent=false
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isTranslucent=true
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title="我的信息"
+        self.title="首页"
         self.view.backgroundColor=UIColor.viewBackgroundColor()
+
         if identity == 3{
             imgArr=["classify_1","sdsj","classify_5","classify_6","classify_7"]
             nameArr=["扫码收件","手动揽件","收件历史","揽件清单","我的信息"]
@@ -64,7 +73,7 @@ extension IndexViewController{
         informationView.snp.makeConstraints { (make) in
             make.width.equalTo(boundsWidth)
             make.left.equalTo(0)
-            make.top.equalTo(navHeight)
+            make.top.equalTo(0)
             make.height.equalTo(130)
         }
         collectionView.snp.makeConstraints { (make) in
@@ -107,8 +116,17 @@ extension IndexViewController:UICollectionViewDelegate,UICollectionViewDataSourc
         if identity == 2{//站点
             switch indexPath.row {
             case 0:
-                let vc=SweepCodeReceiptViewController()
-                self.navigationController?.pushViewController(vc, animated:true)
+                let camera: PrivateResource = .camera
+                let propose: Propose = {
+                    proposeToAccess(camera, agreed: {
+                        let vc=SweepCodeReceiptViewController()
+                        self.navigationController?.pushViewController(vc, animated:true)
+                    }, rejected: {
+                        self.alertNoPermissionToAccess(camera)
+                    })
+                }
+                showProposeMessageIfNeedFor(camera, andTryPropose: propose)
+
                 break
             case 1:
                 let vc=ManualReceiptViewController()

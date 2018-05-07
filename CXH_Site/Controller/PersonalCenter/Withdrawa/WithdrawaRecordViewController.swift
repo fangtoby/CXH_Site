@@ -37,10 +37,10 @@ class WithdrawaRecordViewController:BaseViewController{
         self.table.mj_header.beginRefreshing()
 
     }
-    override func navigationShouldPopOnBackButton() -> Bool {
-        self.navigationController?.popToRootViewController(animated: true)
-        return true
-    }
+//    override func navigationShouldPopOnBackButton() -> Bool {
+//        self.navigationController?.popToRootViewController(animated: true)
+//        return true
+//    }
 }
 // MARK: - table协议
 extension WithdrawaRecordViewController:UITableViewDelegate,UITableViewDataSource{

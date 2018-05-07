@@ -88,17 +88,34 @@ func storyboardPushView(_ storyboardId:String) -> UIViewController{
     let vc=storyboard.instantiateViewController(withIdentifier: storyboardId) as UIViewController;
     return vc
 }
+
 extension UIImage{
     /**
      *  重设图片大小
      */
     func reSizeImage(reSize:CGSize)->UIImage {
-        
+
         UIGraphicsBeginImageContextWithOptions(reSize,false,UIScreen.main.scale);
-        self.draw(in: CGRect(x: 0, y: 0, width: reSize.width, height: reSize.height))
+        self.draw(in:  CGRect(x: 0, y: 0, width: reSize.width, height: reSize.height))
+        
         let reSizeImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!;
         UIGraphicsEndImageContext();
         return reSizeImage;
+    }
+    // 通过"UIColor"返回一张“UIImage”
+    class func imageFromColor(_ color: UIColor) -> UIImage {
+        //创建1像素区域并开始图片绘图
+        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
+        UIGraphicsBeginImageContext(rect.size)
+
+        //创建画板并填充颜色和区域
+        let context = UIGraphicsGetCurrentContext()
+        context?.setFillColor(color.cgColor)
+        context?.fill(rect)
+        //从画板上获取图片并关闭图片绘图
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image!
     }
 }
 //设置文字红色

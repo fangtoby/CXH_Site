@@ -141,6 +141,8 @@ extension AppDelegate{
         UINavigationBar.appearance().tintColor=UIColor.white
 //        //将返回按钮的文字position设置不在屏幕上显示
 //        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(CGFloat(NSInteger.min),CGFloat(NSInteger.min)), for:UIBarMetrics.default)
+        //去掉导航栏黑线
+        UINavigationBar.appearance().shadowImage=UIImage.imageFromColor(UIColor.applicationMainColor())
         //改变状态栏的颜色
         UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent;
     }

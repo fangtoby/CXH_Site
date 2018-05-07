@@ -173,6 +173,7 @@ extension StayCouierViewController{
     @objc func connectThePrinter(){
         closeQrcodeView()
         let vc=ConnectThePrinterViewController()
+        vc.flag=1
         let entity=PrinterEntity()
         entity.code=self.entity!.qrcodeContent
         entity.weight="\(self.entity!.weight!)"

@@ -4,6 +4,7 @@ PODS:
   - JCore (1.1.7)
   - JPush (3.0.8):
     - JCore (~> 1.1.7)
+  - KMNavigationBarTransition (1.1.5)
   - MJRefresh (3.1.15.3)
   - Moya (10.0.1):
     - Moya/Core (= 10.0.1)
@@ -33,6 +34,7 @@ DEPENDENCIES:
   - Alamofire
   - IQKeyboardManagerSwift
   - JPush
+  - KMNavigationBarTransition
   - MJRefresh
   - Moya
   - ObjectMapper
@@ -51,6 +53,7 @@ SPEC REPOS:
     - IQKeyboardManagerSwift
     - JCore
     - JPush
+    - KMNavigationBarTransition
     - MJRefresh
     - Moya
     - ObjcExceptionBridging
@@ -69,6 +72,7 @@ SPEC CHECKSUMS:
   IQKeyboardManagerSwift: 30fb3a61de1af53a95e02b80fb54ed0a19d5ede5
   JCore: f7459c81c135281a874a6beafdd321666adcc834
   JPush: 9574d072cc37e93fa293ba69b43ce763c440943a
+  KMNavigationBarTransition: 7a52c9bc25b39b6e3343e980b453facee1591b82
   MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
   Moya: 9e621707ff754eeb51ff3ec51a3d54e517c0733a
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
@@ -82,6 +86,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   XCGLogger: c9601cae9a8912de34a58666ba931ed3d624dd31
 
-PODFILE CHECKSUM: 98b6ebb7f7cb4e7156398a67bc15ee9ff1f5e6d4
+PODFILE CHECKSUM: eea62463a5b60db3b76f95f40c58169e6ff0dd51
 
 COCOAPODS: 1.5.0

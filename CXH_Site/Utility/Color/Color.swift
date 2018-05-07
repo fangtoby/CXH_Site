@@ -11,7 +11,7 @@ import UIKit
 extension UIColor{
     ///主题色
     class func applicationMainColor() -> UIColor {
-        return UIColor.RGBFromHexColor("0099ff")
+        return UIColor.RGBFromHexColor("00a1e9")
     }
     //商品详情边框颜色
     class func goodDetailBorderColor() ->UIColor {

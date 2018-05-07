@@ -69,6 +69,10 @@ class WithdrawaManagementViewController:BaseViewController{
             self.showSVProgressHUD("提现金额不能为空", type: HUD.info)
             return
         }
+        if arr.count == 0{
+            self.showSVProgressHUD("请添加提现银行卡信息", type: HUD.info)
+            return
+        }
         let withdrawaId=arr[0].withdrawaId!
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.withdrawaTure(withdrawaId:withdrawaId, withdrawaMoney:Int(withdrawaMoney!)!, storeId: storeId), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
@@ -76,6 +80,7 @@ class WithdrawaManagementViewController:BaseViewController{
             if success == "success"{
                 self.dismissHUD()
                 UIAlertController.showAlertYesNo(self, title:"城乡惠", message:"申请提现成功", cancelButtonTitle:"返回", okButtonTitle:"查看提现信息", okHandler: {  Void in
+                    self.money=(Double(self.money!)!-Double(withdrawaMoney!)!).description
                     let vc=WithdrawaRecordViewController()
                     self.navigationController?.pushViewController(vc,animated:true)
                     }, cancelHandler: {

@@ -38,6 +38,10 @@ class TouchBalanceViewController:BaseViewController{
     fileprivate var lblK5:UILabel!
     fileprivate var lblK6:UILabel!
     fileprivate let storeId=userDefaults.object(forKey: "storeId") as! Int
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isTranslucent=false
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title="账单明细"

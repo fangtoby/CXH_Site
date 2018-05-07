@@ -12,14 +12,15 @@ import SVProgressHUD
 import SwiftyJSON
 import ObjectMapper
 import SnapKit
-
-
 /// 基类
 class BaseViewController:UIViewController{
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        ///去掉返回按钮文字
+        let bark=UIBarButtonItem()
+        bark.title=""
+        self.navigationItem.backBarButtonItem=bark
     }
     //页面将要消失的时候判断SVProgressHUD是否已经关闭 如果没有 关闭
     override func viewWillDisappear(_ animated: Bool) {
@@ -34,7 +35,25 @@ class BaseViewController:UIViewController{
         NotificationCenter.default.removeObserver(self)
     }
 }
-
+// MARK: - 设置导航栏颜色
+extension BaseViewController{
+    //设置导航栏颜色
+    func setUpNavColor(){
+        //改掉导航栏黑线颜色
+        self.navigationController?.navigationBar.shadowImage=UIImage.imageFromColor(UIColor.applicationMainColor())
+        self.navigationController?.navigationBar.barTintColor=UIColor.applicationMainColor()
+        self.navigationController?.navigationBar.titleTextAttributes=NSDictionary(object:UIColor.white, forKey:NSAttributedStringKey.foregroundColor as NSCopying) as? [NSAttributedStringKey : Any]
+        self.navigationController?.navigationBar.tintColor=UIColor.white
+    }
+    //恢复导航栏颜色
+    func reinstateNavColor(){
+        //恢复导航栏黑线颜色
+        self.navigationController?.navigationBar.shadowImage=nil
+        self.navigationController?.navigationBar.tintColor=UIColor.applicationMainColor()
+        self.navigationController?.navigationBar.barTintColor=UIColor.white
+        self.navigationController?.navigationBar.titleTextAttributes=NSDictionary(object:UIColor.applicationMainColor(), forKey:NSAttributedStringKey.foregroundColor as NSCopying) as? [NSAttributedStringKey : Any]
+    }
+}
 // MARK: - SwiftyJSON
 extension BaseViewController{
     /**
