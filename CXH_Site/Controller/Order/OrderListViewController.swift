@@ -81,6 +81,7 @@ class OrderListViewController:BaseViewController{
             self.pageNumber+=1
             self.queryOrderInfoAndGoods(self.pageNumber, pageSize:10,orderStatu:self.orderStatu,isRefresh:false)
         })
+        table.mj_footer.isHidden=true
         table.mj_header.beginRefreshing()
     }
 }

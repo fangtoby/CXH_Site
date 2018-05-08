@@ -51,6 +51,7 @@ class StoreInboxViewController:BaseViewController{
             }
             
         })
+        table.mj_footer.isHidden=true
         table.mj_header.beginRefreshing()
     }
 }

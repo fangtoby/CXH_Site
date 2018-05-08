@@ -31,6 +31,11 @@ class LoginViewController:BaseViewController{
     
     /// 登录按钮
     fileprivate var btnLogin:UIButton!
+
+    //是否同意用户协议
+    fileprivate var isImg:UIButton!
+    //用户协议文字按
+    fileprivate var btnUserAgreement:UIButton!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -124,10 +129,32 @@ extension LoginViewController{
         btnLogin.disable()
         btnLogin.addTarget(self, action:#selector(loginSubmit), for: UIControlEvents.touchUpInside)
         self.view.addSubview(btnLogin)
+
+        isImg=UIButton()
+        isImg.setBackgroundImage(UIImage(named:"register_selected"), for: UIControlState.selected)
+        isImg.isSelected=true
+        isImg.setBackgroundImage(UIImage(named:"register_select"), for: UIControlState.normal)
+        isImg.addTarget(self, action:#selector(isSelectedUserAgreement), for: UIControlEvents.touchUpInside)
+        self.view.addSubview(isImg)
+
+        btnUserAgreement=UIButton()
+        btnUserAgreement.setTitleColor(UIColor.color999(), for: UIControlState.normal)
+        btnUserAgreement.setTitle("登录即代表您已经同意", for: UIControlState.normal)
+        btnUserAgreement.titleLabel!.font=UIFont.systemFont(ofSize: 14)
+        btnUserAgreement.addTarget(self, action:#selector(isSelectedUserAgreement), for: UIControlEvents.touchUpInside)
+        self.view.addSubview(btnUserAgreement)
+
+        let btnQualityAssuranceAgreement=UIButton()
+        btnQualityAssuranceAgreement.setTitle("《质量保证协议》", for: UIControlState.normal)
+        btnQualityAssuranceAgreement.titleLabel!.font=UIFont.systemFont(ofSize: 14)
+        btnQualityAssuranceAgreement.setTitleColor(UIColor.applicationMainColor(), for: UIControlState.normal)
+        self.view.addSubview(btnQualityAssuranceAgreement)
         
         lblCopyright=buildLabel(UIColor.applicationMainColor(), font:13, textAlignment: NSTextAlignment.center)
         lblCopyright.text=""
         self.view.addSubview(lblCopyright)
+
+
         logImg.snp.makeConstraints { (make) in
             make.width.height.equalTo(100)
             make.top.equalTo(100)
@@ -162,10 +189,27 @@ extension LoginViewController{
             make.left.equalTo(0)
             make.top.equalTo(40)
         }
+        isImg.snp.makeConstraints { (make) -> Void in
+            make.width.height.equalTo(25)
+            make.left.equalTo(loginView.snp.left)
+            make.top.equalTo(loginView.snp.bottom).offset(15)
+        }
+        btnUserAgreement.snp.makeConstraints { (make) -> Void in
+            make.width.equalTo(143)
+            make.left.equalTo(isImg.snp.right).offset(5)
+            make.top.equalTo(isImg.snp.top)
+            make.height.equalTo(25)
+        }
+        btnQualityAssuranceAgreement.snp.makeConstraints { (make) in
+            make.width.equalTo(115)
+            make.left.equalTo(btnUserAgreement.snp.right)
+            make.top.equalTo(isImg.snp.top)
+            make.height.equalTo(25)
+        }
         btnLogin.snp.makeConstraints { (make) in
             make.width.equalTo(loginView.snp.width)
             make.height.equalTo(40)
-            make.top.equalTo(loginView.snp.bottom).offset(20)
+            make.top.equalTo(isImg.snp.bottom).offset(10)
             make.left.equalTo(loginView.snp.left)
         }
         lblCopyright.snp.makeConstraints { (make) in
@@ -177,8 +221,16 @@ extension LoginViewController{
     }
 }
 
-// MARK: - 请求登录
+
 extension LoginViewController{
+    ///选择用户协议
+    @objc private func isSelectedUserAgreement(sender:UIButton){
+        if isImg.isSelected{
+            isImg.isSelected=false
+        }else{
+            isImg.isSelected=true
+        }
+    }
     
     /// 登录
     ///
@@ -192,6 +244,10 @@ extension LoginViewController{
         }
         if password == nil || password?.count == 0{
             showSVProgressHUD("密码不能为空", type: HUD.info)
+            return
+        }
+        if isImg.isSelected == false{
+            showSVProgressHUD("请同意质量保证协议", type: HUD.info)
             return
         }
         self.showSVProgressHUD("正在加载...", type: HUD.textClear)

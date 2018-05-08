@@ -34,6 +34,7 @@ class ReturnHistoryViewController:BaseViewController{
             self.pageNumber+=1
             self.queryReturnHistory(self.pageNumber, pageSize: 10, isRefresh:false)
         })
+        table.mj_footer.isHidden=true
         table.mj_header.beginRefreshing()
     }
 }

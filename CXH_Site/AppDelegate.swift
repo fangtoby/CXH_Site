@@ -144,7 +144,7 @@ extension AppDelegate{
         //去掉导航栏黑线
         UINavigationBar.appearance().shadowImage=UIImage.imageFromColor(UIColor.applicationMainColor())
         //改变状态栏的颜色
-        UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent;
+        //UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent;
     }
     /**
      版本更新

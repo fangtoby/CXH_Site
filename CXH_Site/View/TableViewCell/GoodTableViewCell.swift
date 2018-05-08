@@ -2,6 +2,14 @@
 //  GoodTableViewCell.swift
 //  CXH_Site
 //
+//  Created by hao peng on 2018/5/8.
+//  Copyright © 2018年 zltx. All rights reserved.
+//
+
+//
+//  GoodTableViewCell.swift
+//  CXH_Site
+//
 //  Created by hao peng on 2017/6/4.
 //  Copyright © 2017年 zltx. All rights reserved.
 //
@@ -19,33 +27,33 @@ protocol GoodTableViewCellDelegate:NSObjectProtocol{
 }
 /// 商品cell
 class GoodTableViewCell: UITableViewCell {
-    
+
     weak var delegate:GoodTableViewCellDelegate?
     var goodEntity:GoodEntity?
     var foodEntity:FoodEntity?
     @IBOutlet weak var border1View: UIView!
-    
+
     @IBOutlet weak var borderView: UIView!
-    
+
     @IBOutlet weak var goodImg: UIImageView!
-    
+
     @IBOutlet weak var lblGoodName: UILabel!
-    
+
     @IBOutlet weak var lblPrice: UILabel!
-    
+
     @IBOutlet weak var lblStock: UILabel!
-    
+
     @IBOutlet weak var lblSold: UILabel!
-    
+
     @IBOutlet weak var lblTitle: UILabel!
-    
+
     @IBOutlet weak var btnDetails: UIButton!
-    
+
     @IBOutlet weak var btn: UIButton!
-    
+
     //二维码
     @IBOutlet weak var btnCode: UIButton!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         borderView.backgroundColor=UIColor.viewBackgroundColor()
@@ -68,7 +76,7 @@ class GoodTableViewCell: UITableViewCell {
     }
     /**
      更新cell
-     
+
      - parameter entity:
      - parameter goodsbasicinfoFlag: 1，上架； 2，下架 3审核中
      */
@@ -97,21 +105,21 @@ class GoodTableViewCell: UITableViewCell {
         }
         if goodsbasicinfoFlag == 1{
             lblTitle.text="上架中"
-            btn.setTitle("下架", for: UIControlState())
+            btn.setTitle("下架", for:UIControlState())
             btnCode.isHidden=false
         }else if goodsbasicinfoFlag == 2{
             lblTitle.text="下架中"
-            btn.isHidden=true
+            btn.setTitle("上架", for:UIControlState())
         }else if goodsbasicinfoFlag == 3{
             lblTitle.text="审核中"
             btn.isHidden=true
         }
-        
-        
+
+
     }
     /**
      更新cell
-     
+
      - parameter entity:             菜品
      - parameter goodsbasicinfoFlag: 1上架 2下架
      */
@@ -154,7 +162,7 @@ class GoodTableViewCell: UITableViewCell {
             delegate?.pushFoodDetailsVC(foodEntity!)
         }
     }
-    
+
     @IBAction func pushUpdateGood(_ sender: AnyObject) {
         if goodEntity != nil{
             delegate?.theShelvesOperate(goodEntity!)
@@ -162,16 +170,18 @@ class GoodTableViewCell: UITableViewCell {
             delegate?.theShelvesOperateFood(foodEntity!)
         }
     }
-    
+
     @objc func pushCode(){
         delegate?.pushPrintCodeVC(goodEntity!)
     }
-    
-    
+
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
     }
-    
+
 }
+
+

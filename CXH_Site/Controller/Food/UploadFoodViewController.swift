@@ -405,7 +405,7 @@ extension UploadFoodViewController:UIImagePickerControllerDelegate,UINavigationC
         let filePath = docPath.appendingPathComponent("currentImage.png")
         //        let imageData = UIImagePNGRepresentation(savedImage);
         self.showSVProgressHUD("正在上传中...", type: HUD.textClear)
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(.testStoreUpload(Img:"Img", filePath: filePath), successClosure: { (value) in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.testStoreUpload(Img:"Img", filePath: filePath), successClosure: { (value) in
             let json=self.swiftJSON(value)
             let pic=json["success"].stringValue
             if pic == "fail"{

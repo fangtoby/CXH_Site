@@ -41,6 +41,7 @@ class CourierUpdateListViewController:BaseViewController{
             self.pageNumber+=1
             self.storeQueryExpressmailUpdateInfo(self.pageNumber, pageSize:10,isRefresh:false)
         })
+        table.mj_footer.isHidden=true
         self.table.mj_header.beginRefreshing()
         
     }

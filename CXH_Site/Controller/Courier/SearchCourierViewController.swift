@@ -48,6 +48,7 @@ class SearchCourierViewController:BaseViewController{
                 self.searchGiveHistoryForDriverUserCtime(self.time, endTime: self.time, pageNumber: self.pageNumber, pageSize:10, isRefresh:false, userId: userId)
             }
         })
+        table.mj_footer.isHidden=true
         self.navigationItem.rightBarButtonItem=UIBarButtonItem(title:"选择时间", style: UIBarButtonItemStyle.done, target:self, action:#selector(selectData))
         
     }

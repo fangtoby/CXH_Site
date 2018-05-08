@@ -46,6 +46,7 @@ class SearchInboxViewController:BaseViewController {
                 self.searchCollectHistoryForDriverByDriverUserCtime(self.userId, startTime: self.time, endTime: self.time, pageNumber: self.pageNumber, pageSize:10, isRefresh:false)
             }
         })
+        table.mj_footer.isHidden=true
         self.navigationItem.rightBarButtonItem=UIBarButtonItem(title:"选择时间", style: UIBarButtonItemStyle.done, target:self, action:#selector(selectData))
         
     }

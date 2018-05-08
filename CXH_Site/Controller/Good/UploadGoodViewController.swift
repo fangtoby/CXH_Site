@@ -13,6 +13,8 @@ import IQKeyboardManagerSwift
 /// 上传商品
 class UploadGoodViewController:BaseViewController{
     fileprivate var scrollView:UIScrollView!
+    ///选择商品上传类型
+    private var segmentedControl:UISegmentedControl!
     fileprivate var table:UITableView!
     fileprivate var txtGoodInfoName:UITextField!
     fileprivate var txtGoodUcode:UITextField!
@@ -29,7 +31,8 @@ class UploadGoodViewController:BaseViewController{
     fileprivate var txtRemark:UITextField!
     fileprivate var txtProducer:UITextField!
     fileprivate var lblCategory:UILabel!
-
+    private var txtGoodsMemberPrice:UITextField!
+    private var txtMemberPriceMiniCount:UITextField!
     fileprivate var collectionView:UICollectionView!
     fileprivate var sourceCollectionView:UICollectionView!
     fileprivate var sourceImgArr=[SourceEntity()]
@@ -37,6 +40,14 @@ class UploadGoodViewController:BaseViewController{
     fileprivate var categoryArr=[GoodsCategoryEntity]()
     fileprivate var showSourceInfoView:UIView!
     fileprivate var textViews:UITextView!
+    private var txtSellerAddress:UITextField!
+    private var btn:UIButton!
+    //是否同意用户协议
+    fileprivate var isImg:UIButton!
+    //用户协议文字按
+    fileprivate var btnUserAgreement:UIButton!
+    //用户协议view
+    private var  userAgreementView:UIView!
     //保存来源信息
     fileprivate var sourceEntity=SourceEntity()
     //保存来源图片
@@ -47,19 +58,11 @@ class UploadGoodViewController:BaseViewController{
         self.view.backgroundColor=UIColor.viewBackgroundColor()
         scrollView=UIScrollView(frame:CGRect(x: 0,y: 0,width: boundsWidth,height: boundsHeight))
         self.view.addSubview(scrollView)
-        table=UITableView(frame:CGRect(x: 0,y: 0,width: boundsWidth,height: 18*50+280))
-        table.delegate=self
-        table.dataSource=self
-        table.isScrollEnabled=false
-        table.tableFooterView=UIView(frame:CGRect.zero)
-        scrollView.addSubview(table)
-        let btn=ButtonControl().button(ButtonType.cornerRadiusButton, text:"确认上传", textColor:UIColor.white, font:15, backgroundColor:UIColor.applicationMainColor(), cornerRadius:20)
-        btn.frame=CGRect(x: 30,y: table.frame.maxY+30,width: boundsWidth-60,height: 40)
-        btn.addTarget(self, action:#selector(submit), for: UIControlEvents.touchUpInside)
-        
-        scrollView.addSubview(btn)
-        scrollView.contentSize=CGSize(width: boundsWidth,height: btn.frame.maxY+30)
-        
+        buildView()
+        let isExplained=userDefaults.object(forKey:"isExplained") as? Int
+        if isExplained != 1{//弹出说明
+            showExplained()
+        }
         //监听地区选择通知
         NotificationCenter.default.addObserver(self,selector:#selector(updateAddress), name:NSNotification.Name(rawValue: "postUpdateAddress"), object:nil)
         
@@ -74,6 +77,82 @@ class UploadGoodViewController:BaseViewController{
     @objc func updateCategory(_ obj:Notification){
         categoryArr=obj.object as! [GoodsCategoryEntity]
         lblCategory.text=categoryArr[1].goodscategoryName
+    }
+}
+
+extension UploadGoodViewController{
+    ///弹出说明
+    @objc private func showExplained(){
+        UIAlertController.showAlertYes(self, title:"说明", message:"只能零售说明:当前商品只能在普通区展示,不能用于批发。\n只能批发说明:不能在普通商品展示，只能在批发区展示,不能分享。\n可零售可批发说明:可以在普通区展示也能在批发区展示,可以分享", okButtonTitle:"知道了") { (a) in
+            userDefaults.set(1, forKey:"isExplained")
+            userDefaults.synchronize()
+        }
+    }
+    private func buildView(){
+        self.navigationItem.rightBarButtonItem=UIBarButtonItem.init(title:"说明", style: UIBarButtonItemStyle.done, target:self, action: #selector(showExplained))
+        segmentedControl=UISegmentedControl(items:["只能零售","只能批发","可零售可批发"])
+        segmentedControl.frame=CGRect.init(x:15, y:15, width:boundsWidth-30, height:40)
+        segmentedControl.tintColor=UIColor.applicationMainColor()
+        segmentedControl.selectedSegmentIndex=0
+        segmentedControl.addTarget(self, action: #selector(segmentedControlChanged), for: UIControlEvents.valueChanged)
+        scrollView.addSubview(segmentedControl)
+        table=UITableView(frame:CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 19*50+280))
+        table.delegate=self
+        table.dataSource=self
+        table.isScrollEnabled=false
+        table.tableFooterView=UIView(frame:CGRect.zero)
+        scrollView.addSubview(table)
+        userAgreementView=UIView.init()
+        userAgreementView.frame=CGRect.init(x:(boundsWidth-(25+143+115+5))/2, y:table.frame.maxY+30, width:(25+143+115+5),height:25)
+        scrollView.addSubview(userAgreementView)
+        isImg=UIButton(frame: CGRect.init(x:0, y:0, width:25, height: 25))
+        isImg.setBackgroundImage(UIImage(named:"register_selected"), for: UIControlState.selected)
+        isImg.isSelected=true
+        isImg.setBackgroundImage(UIImage(named:"register_select"), for: UIControlState.normal)
+        isImg.addTarget(self, action:#selector(isSelectedUserAgreement), for: UIControlEvents.touchUpInside)
+        userAgreementView.addSubview(isImg)
+
+        btnUserAgreement=UIButton(frame:CGRect.init(x:isImg.frame.maxX+5, y:0, width:143, height: 25))
+        btnUserAgreement.setTitleColor(UIColor.color999(), for: UIControlState.normal)
+        btnUserAgreement.setTitle("上传即代表您已经同意", for: UIControlState.normal)
+        btnUserAgreement.titleLabel!.font=UIFont.systemFont(ofSize: 14)
+        btnUserAgreement.addTarget(self, action:#selector(isSelectedUserAgreement), for: UIControlEvents.touchUpInside)
+        userAgreementView.addSubview(btnUserAgreement)
+
+        let btnQualityAssuranceAgreement=UIButton(frame:CGRect.init(x:btnUserAgreement.frame.maxX, y:0, width:115, height: 25))
+        btnQualityAssuranceAgreement.setTitle("《质量保证协议》", for: UIControlState.normal)
+        btnQualityAssuranceAgreement.titleLabel!.font=UIFont.systemFont(ofSize: 14)
+        btnQualityAssuranceAgreement.setTitleColor(UIColor.applicationMainColor(), for: UIControlState.normal)
+        userAgreementView.addSubview(btnQualityAssuranceAgreement)
+
+        btn=ButtonControl().button(ButtonType.cornerRadiusButton, text:"确认上传", textColor:UIColor.white, font:15, backgroundColor:UIColor.applicationMainColor(), cornerRadius:20)
+        btn.frame=CGRect(x:30,y:userAgreementView.frame.maxY+15,width: boundsWidth-60,height: 40)
+        btn.addTarget(self, action:#selector(submit), for: UIControlEvents.touchUpInside)
+
+        scrollView.addSubview(btn)
+        scrollView.contentSize=CGSize(width: boundsWidth,height: btn.frame.maxY+30)
+    }
+    ///选择用户协议
+    @objc private func isSelectedUserAgreement(sender:UIButton){
+        if isImg.isSelected{
+            isImg.isSelected=false
+        }else{
+            isImg.isSelected=true
+        }
+    }
+    //选择点击后的事件
+    @objc func segmentedControlChanged(sender:UISegmentedControl) {
+        if sender.selectedSegmentIndex == 2{
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 21*50+280)
+        }else if sender.selectedSegmentIndex == 1{
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 20*50+280)
+        }else{
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 19*50+280)
+        }
+        userAgreementView.frame=CGRect.init(x:(boundsWidth-(25+143+115+5))/2, y:table.frame.maxY+30, width:(25+143+115+5),height:25)
+        btn.frame=CGRect(x: 30,y:userAgreementView.frame.maxY+15,width: boundsWidth-60,height: 40)
+        scrollView.contentSize=CGSize(width: boundsWidth,height: btn.frame.maxY+30)
+        self.table.reloadData()
     }
 }
 // MARK: - 提交
@@ -91,6 +170,9 @@ extension UploadGoodViewController{
         var goodMixed=txtGoodMixed.text
         var remark=txtRemark.text
         var producer=txtProducer.text
+        let sellerAddress=txtSellerAddress.text
+        let memberPriceMiniCount=txtMemberPriceMiniCount?.text
+        let goodsMemberPrice=txtGoodsMemberPrice?.text
         if goodInfoName == nil || goodInfoName!.count == 0{
             self.showSVProgressHUD("商品名称不能为空", type: HUD.info)
             return
@@ -103,10 +185,40 @@ extension UploadGoodViewController{
             self.showSVProgressHUD("商品单位不能为空", type: HUD.info)
             return
         }
-        if goodsPrice == nil || goodsPrice!.count == 0{
-            self.showSVProgressHUD("商品价格不能为空", type: HUD.info)
-            return
+        switch self.segmentedControl.selectedSegmentIndex {
+        case 0:
+            if goodsPrice == nil || goodsPrice!.count == 0{
+                self.showSVProgressHUD("商品价格不能为空", type: HUD.info)
+                return
+            }
+            break
+        case 1:
+            if goodsMemberPrice == nil || goodsMemberPrice!.count == 0{
+                self.showSVProgressHUD("商品批发价不能为空", type: HUD.info)
+                return
+            }
+            if memberPriceMiniCount == nil || memberPriceMiniCount!.count == 0{
+                self.showSVProgressHUD("商品起订量不能为空", type: HUD.info)
+                return
+            }
+            break
+        case 2:
+            if goodsPrice == nil || goodsPrice!.count == 0{
+                self.showSVProgressHUD("商品价格不能为空", type: HUD.info)
+                return
+            }
+            if goodsMemberPrice == nil || goodsMemberPrice!.count == 0{
+                self.showSVProgressHUD("商品批发价不能为空", type: HUD.info)
+                return
+            }
+            if memberPriceMiniCount == nil || memberPriceMiniCount!.count == 0{
+                self.showSVProgressHUD("商品起订量不能为空", type: HUD.info)
+                return
+            }
+            break
+        default:break
         }
+
         if stock == nil || stock!.count == 0{
             self.showSVProgressHUD("商品库存不能为空", type: HUD.info)
             return
@@ -123,12 +235,24 @@ extension UploadGoodViewController{
             self.showSVProgressHUD("选择商品分类", type: HUD.info)
             return
         }
+        if producer == nil || producer!.count == 0{
+            self.showSVProgressHUD("提供人不能空", type: HUD.info)
+            return
+        }
+        if sellerAddress == nil || sellerAddress!.count == 0{
+            self.showSVProgressHUD("提供人地址不能为空", type: HUD.info)
+            return
+        }
         if imgArr.count == 1{
             self.showSVProgressHUD("请上传商品图片", type: HUD.info)
             return
         }
         if sourceImgArr.count == 1{
             self.showSVProgressHUD("请上传来源信息", type: HUD.info)
+            return
+        }
+        if isImg.isSelected == false{
+            self.showSVProgressHUD("请同意质量保证协议", type: HUD.info)
             return
         }
         let fCategoryId=categoryArr[0].goodscategoryId
@@ -143,10 +267,8 @@ extension UploadGoodViewController{
             for i in 1..<imgArr.count-1{
                 goodsDetailsPic+=imgArr[i]+","
             }
-            print(goodsDetailsPic)
             let index=goodsDetailsPic.characters.index(goodsDetailsPic.endIndex, offsetBy: -1)
             goodsDetailsPic=goodsDetailsPic.substring(to: index)
-            print(goodsDetailsPic)
         }
         var lyPic=""
         var lyMiaoshu=""
@@ -165,10 +287,9 @@ extension UploadGoodViewController{
         }
         self.showSVProgressHUD("正在加载...", type: HUD.textClear)
         let storeId=userDefaults.object(forKey: "storeId") as! Int
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.saveGoods(goodInfoName: goodInfoName!, goodUcode: goodUcode!, goodUnit: goodUnit!, goodsPrice: goodsPrice!, stock:Int(stock!)!, goodLife: goodLife!, goodSource: goodSource!, goodService: goodService!, goodPic:imgArr[0], goodsDetailsPic: goodsDetailsPic, goodInfoCode: goodInfoCode!, goodMixed: goodMixed!, remark: remark!, fCategoryId: fCategoryId!, sCategoryId:sCategoryId!,storeId:storeId,lyPic:lyPic,lyMiaoshu:lyMiaoshu,producer:producer!), successClosure: { (result) -> Void in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.saveGoods(goodInfoName: goodInfoName!, goodUcode: goodUcode!, goodUnit: goodUnit!, goodsPrice: goodsPrice ?? "", stock:Int(stock!)!, goodLife: goodLife!, goodSource: goodSource!, goodService: goodService!, goodPic:imgArr[0], goodsDetailsPic: goodsDetailsPic, goodInfoCode: goodInfoCode!, goodMixed: goodMixed!, remark: remark!, fCategoryId: fCategoryId!, sCategoryId:sCategoryId!,storeId:storeId,lyPic:lyPic,lyMiaoshu:lyMiaoshu,producer:producer!, goodsMemberPrice:goodsMemberPrice ?? "", memberPriceMiniCount:Int(memberPriceMiniCount ?? "0") ?? 0, goodsSaleFlag:segmentedControl.selectedSegmentIndex+1, sellerAddress:sellerAddress!), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
             let success=json["success"].stringValue
-            print(success)
             if success == "success"{
                 self.dismissHUD()
                 let qrcode=json["qrcode"].stringValue
@@ -183,6 +304,7 @@ extension UploadGoodViewController{
             }) { (errorMsg) -> Void in
                 self.showSVProgressHUD(errorMsg!, type: HUD.error)
         }
+
     }
     /**
      连接打印机
@@ -206,6 +328,10 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
         cell!.textLabel!.font=UIFont.systemFont(ofSize: 16)
         let name=buildLabel(UIColor.textColor(), font:15, textAlignment: NSTextAlignment.left)
         name.frame=CGRect(x: 15,y: 0,width: 55,height: 50)
+        for view in cell!.contentView.subviews{
+            view.removeFromSuperview()
+        }
+        cell!.textLabel!.text=nil
         switch indexPath.section{
         case 0:
             switch indexPath.row{
@@ -218,8 +344,10 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 txtGoodInfoName=buildTxt(14, placeholder:"请输入商品名称", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
                 txtGoodInfoName.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 cell!.contentView.addSubview(txtGoodInfoName)
+
                 break
             case 2:
+
                 name.attributedText=redText("*分类")
                 cell!.contentView.addSubview(name)
                 lblCategory=buildLabel(UIColor.color999(), font:14, textAlignment: NSTextAlignment.left)
@@ -227,34 +355,76 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 lblCategory.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 cell!.contentView.addSubview(lblCategory)
                 cell!.accessoryType = .disclosureIndicator
+
                 break
             case 3:
+
                 name.attributedText=redText("*单位")
                 cell!.contentView.addSubview(name)
                 txtGoodUnit=buildTxt(14, placeholder:"请输入商品单位,如包,箱等", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
                 txtGoodUnit.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 cell!.contentView.addSubview(txtGoodUnit)
+
                 break
             case 4:
+
                 name.attributedText=redText("*规格")
                 cell!.contentView.addSubview(name)
                 txtGoodUcode=buildTxt(14, placeholder:"请输入商品规格", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
                 txtGoodUcode.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 cell!.contentView.addSubview(txtGoodUcode)
+
                 break
             case 5:
-                name.attributedText=redText("*价格")
-                cell!.contentView.addSubview(name)
-                txtGoodsPrice=buildTxt(14, placeholder:"请输入商品单价", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.decimalPad)
-                txtGoodsPrice.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
-                cell!.contentView.addSubview(txtGoodsPrice)
-                break
-            case 6:
                 name.text="  条码"
                 cell!.contentView.addSubview(name)
                 txtGoodInfoCode=buildTxt(14, placeholder:"请输入商品条码(可无)", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
                 txtGoodInfoCode.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 cell!.contentView.addSubview(txtGoodInfoCode)
+
+                break
+            case 6:
+
+                if segmentedControl.selectedSegmentIndex == 1{
+                    name.attributedText=redText("*批发价")
+                    cell!.contentView.addSubview(name)
+                    txtGoodsMemberPrice=buildTxt(14, placeholder:"请输入商品批发价", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.decimalPad)
+                    txtGoodsMemberPrice.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
+                    cell!.contentView.addSubview(txtGoodsMemberPrice)
+                }else{
+                    name.attributedText=redText("*价格")
+                    cell!.contentView.addSubview(name)
+                    txtGoodsPrice=buildTxt(14, placeholder:"请输入商品单价", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.decimalPad)
+                    txtGoodsPrice.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
+                    cell!.contentView.addSubview(txtGoodsPrice)
+                }
+
+                break
+            case 7:
+
+                if segmentedControl.selectedSegmentIndex == 2{
+                    name.attributedText=redText("*批发价")
+                    cell!.contentView.addSubview(name)
+                    txtGoodsMemberPrice=buildTxt(14, placeholder:"请输入商品批发价", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.decimalPad)
+                    txtGoodsMemberPrice.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
+                    cell!.contentView.addSubview(txtGoodsMemberPrice)
+                }else{
+                    name.attributedText=redText("*起订量")
+                    cell!.contentView.addSubview(name)
+                    txtMemberPriceMiniCount=buildTxt(14, placeholder:"请输入起订量", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.numberPad)
+                    txtMemberPriceMiniCount.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
+                    cell!.contentView.addSubview(txtMemberPriceMiniCount)
+                }
+
+                break
+            case 8:
+
+                name.attributedText=redText("*起订量")
+                cell!.contentView.addSubview(name)
+                txtMemberPriceMiniCount=buildTxt(14, placeholder:"请输入起订量", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.numberPad)
+                txtMemberPriceMiniCount.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
+                cell!.contentView.addSubview(txtMemberPriceMiniCount)
+
                 break
             default:break
             }
@@ -265,20 +435,25 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 cell!.textLabel!.text="商品其他详细信息"
                 break
             case 1:
+
                 name.attributedText=redText("*库存")
                 cell!.contentView.addSubview(name)
                 txtStock=buildTxt(14, placeholder:"请输入商品库存", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.numberPad)
                 txtStock.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 cell!.contentView.addSubview(txtStock)
+
                 break
             case 2:
+
                 name.text="保质期"
                 cell!.contentView.addSubview(name)
                 txtGoodLife=buildTxt(14, placeholder:"请输入商品保质期(天)", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.numberPad)
                 txtGoodLife.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 cell!.contentView.addSubview(txtGoodLife)
+
                 break
             case 3:
+
                 name.attributedText=redText("*产地")
                 cell!.contentView.addSubview(name)
                 lblGoodSource=buildLabel(UIColor.color999(), font:14, textAlignment: NSTextAlignment.left)
@@ -286,34 +461,51 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 lblGoodSource.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 cell!.contentView.addSubview(lblGoodSource)
                 cell!.accessoryType = .disclosureIndicator
+
                 break
             case 4:
+
                 name.text="  售后"
                 cell!.contentView.addSubview(name)
                 txtGoodService=buildTxt(14, placeholder:"请输入商品售后服务(可无)", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
                 txtGoodService.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 cell!.contentView.addSubview(txtGoodService)
+
                 break
             case 5:
+
                 name.text="  配料"
                 cell!.contentView.addSubview(name)
                 txtGoodMixed=buildTxt(14, placeholder:"请输入商品相关配料(可无)", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
                 txtGoodMixed.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 cell!.contentView.addSubview(txtGoodMixed)
+
                 break
             case 6:
+
                 name.text="  描述"
                 cell!.contentView.addSubview(name)
                 txtRemark=buildTxt(14, placeholder:"请输入商品描述(可无)", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
                 txtRemark.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 cell!.contentView.addSubview(txtRemark)
+
                 break
             case 7:
-                name.text=" 提供人"
+
+                name.attributedText=redText("*提供人")
                 cell!.contentView.addSubview(name)
-                txtProducer=buildTxt(14, placeholder:"请输入提供人(可无)", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
+                txtProducer=buildTxt(14, placeholder:"请输入提供人", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
                 txtProducer.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 cell!.contentView.addSubview(txtProducer)
+
+                break
+            case 8:
+                name.attributedText=redText("*提供人地址")
+                name.frame=CGRect.init(x:15, y:0, width:85, height: 50)
+                cell!.contentView.addSubview(name)
+                txtSellerAddress=buildTxt(14, placeholder:"请输入提供人地址(不用填省市区)", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
+                txtSellerAddress.frame=CGRect(x:name.frame.maxX+5,y: 0,width: boundsWidth-120,height: 50)
+                cell!.contentView.addSubview(txtSellerAddress)
                 break
             default:break
             }
@@ -331,7 +523,7 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 layout.scrollDirection = UICollectionViewScrollDirection.horizontal
                 layout.minimumLineSpacing = 0;//每个相邻layout的上下
                 layout.minimumInteritemSpacing = 7.5;//每个相邻layout的左右
-                if collectionView == nil{
+
                     collectionView=UICollectionView(frame:CGRect(x: 15,y: 15,width: boundsWidth-30,height: 70), collectionViewLayout:layout)
                     collectionView.dataSource=self
                     collectionView.delegate=self
@@ -340,11 +532,12 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                     collectionView.backgroundColor=UIColor.clear
                     collectionView.register(UICollectionViewCell.self,forCellWithReuseIdentifier:"UICollectionViewCell")
                     cell!.contentView.addSubview(collectionView)
-                }
-                let lbl=buildLabel(UIColor.applicationMainColor(), font: 13, textAlignment: NSTextAlignment.left)
-                lbl.frame=CGRect(x: 15,y: collectionView.frame.maxY+10,width: boundsWidth-30,height: 20)
-                lbl.text="第一张为商品封面图片最多4张"
-                cell!.contentView.addSubview(lbl)
+                    let lbl=buildLabel(UIColor.applicationMainColor(), font: 13, textAlignment: NSTextAlignment.left)
+                    lbl.frame=CGRect(x: 15,y: collectionView.frame.maxY+10,width: boundsWidth-30,height: 20)
+                    lbl.text="第一张为商品封面图片最多4张"
+                    cell!.contentView.addSubview(lbl)
+
+
                 break
             default:break
             }
@@ -359,7 +552,7 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 layout.scrollDirection = UICollectionViewScrollDirection.horizontal
                 layout.minimumLineSpacing = 0;//每个相邻layout的上下
                 layout.minimumInteritemSpacing = 7.5;//每个相邻layout的左右
-                if sourceCollectionView == nil{
+
                     sourceCollectionView=UICollectionView(frame:CGRect(x: 15,y: 15,width: boundsWidth-30,height: 100), collectionViewLayout:layout)
                     sourceCollectionView.dataSource=self
                     sourceCollectionView.delegate=self
@@ -367,12 +560,13 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                     sourceCollectionView.backgroundColor=UIColor.clear
                     sourceCollectionView.register(UICollectionViewCell.self,forCellWithReuseIdentifier:"SourceCollectionViewCell")
                     cell!.contentView.addSubview(sourceCollectionView)
-                }
+                    let lbl=buildLabel(UIColor.applicationMainColor(), font: 13, textAlignment: NSTextAlignment.left)
+                    lbl.frame=CGRect(x: 15,y: sourceCollectionView.frame.maxY+10,width: boundsWidth-30,height: 20)
+                    lbl.text="上传数量不做限制"
+                    cell!.contentView.addSubview(lbl)
+
                 cell!.selectionStyle = .none
-                let lbl=buildLabel(UIColor.applicationMainColor(), font: 13, textAlignment: NSTextAlignment.left)
-                lbl.frame=CGRect(x: 15,y: sourceCollectionView.frame.maxY+10,width: boundsWidth-30,height: 20)
-                lbl.text="上传数量不做限制"
-                cell!.contentView.addSubview(lbl)
+
             }
             break
         default:break
@@ -386,9 +580,15 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
         if section == 2 || section == 3{
             return 2
         }else if section == 1{
-            return 8
+            return 9
         }else{
-            return 7
+            if segmentedControl.selectedSegmentIndex == 2{
+                return 9
+            }else if segmentedControl.selectedSegmentIndex == 1{
+                return 8
+            }else{
+                return 7
+            }
         }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -697,7 +897,7 @@ extension UploadGoodViewController:UIImagePickerControllerDelegate,UINavigationC
         let filePath = docPath.appendingPathComponent("currentImage.png")
         //        let imageData = UIImagePNGRepresentation(savedImage);
         self.showSVProgressHUD("正在上传中...", type: HUD.textClear)
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(.goodsUploads(goodsImg:"goodsImg", filePath: filePath), successClosure: { (value) in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.goodsUploads(goodsImg:"goodsImg", filePath: filePath), successClosure: { (value) in
             let json=self.swiftJSON(value)
             let pic=json["success"].stringValue
             if pic == "fail"{

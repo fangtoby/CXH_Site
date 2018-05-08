@@ -34,6 +34,7 @@ class WithdrawaRecordViewController:BaseViewController{
             self.pageNumber+=1
             self.queryWithdrawaRecord(storeId,pageNumber: self.pageNumber, pageSize:10, isRefresh:false)
         })
+        table.mj_footer.isHidden=true
         self.table.mj_header.beginRefreshing()
 
     }

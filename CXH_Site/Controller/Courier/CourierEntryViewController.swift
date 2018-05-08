@@ -866,7 +866,7 @@ extension CourierEntryViewController:UIImagePickerControllerDelegate,UINavigatio
         let filePath = docPath.appendingPathComponent("currentImage.png")
         //        let imageData = UIImagePNGRepresentation(savedImage);
         self.showSVProgressHUD("正在上传中...", type: HUD.textClear)
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(.idCardUploads(idCardImg:"idCardImg", filePath: filePath), successClosure: { (res) in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.idCardUploads(idCardImg:"idCardImg", filePath: filePath), successClosure: { (res) in
             let json=self.swiftJSON(res)
             let pic=json["success"].stringValue
             if pic == "fail"{

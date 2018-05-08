@@ -12,21 +12,21 @@ import Moya
 typealias SuccessClosure = (_ result: Any) -> Void
 /// 失败
 typealias FailClosure = (_ errorMsg: String?) -> Void
-
 /// 网络请求
 open class PHMoyaHttp {
     /// 共享实例
     static let sharedInstance = PHMoyaHttp()
-    fileprivate init(){}
-    let requestProvider = MoyaProvider<RequestAPI>()
+    private init(){}
+    private let SERVERERROR="数据解析失败"
     /**
      根据target请求JSON数据
-     
+
      - parameter target:         RequestAPI(先定义好,发送什么请求用什么case)
      - parameter successClosure: 成功结果
      - parameter failClosure:    失败结果
      */
-    func requestDataWithTargetJSON(_ target:RequestAPI,successClosure:@escaping SuccessClosure,failClosure: @escaping FailClosure) {
+    func requestDataWithTargetJSON<T:TargetType>(_ target:T,successClosure:@escaping SuccessClosure,failClosure: @escaping FailClosure) {
+        let requestProvider = MoyaProvider<T>(requestClosure:requestTimeoutClosure(target: target))
         let _=requestProvider.request(target) { (result) -> () in
             switch result{
             case let .success(response):
@@ -34,21 +34,22 @@ open class PHMoyaHttp {
                     let json = try response.mapJSON()
                     successClosure(json)
                 } catch {
-                    failClosure(SERVERERROR)
+                    failClosure(self.SERVERERROR)
                 }
             case let .failure(error):
-                failClosure(error.localizedDescription)
+                failClosure(error.errorDescription)
             }
         }
     }
     /**
      根据target请求String数据
-     
+
      - parameter target:         RequestAPI(先定义好,发送什么请求用什么case)
      - parameter successClosure: 成功结果
      - parameter failClosure:    失败结果
      */
-    func requestDataWithTargetString(_ target:RequestAPI,successClosure:@escaping SuccessClosure,failClosure: @escaping FailClosure) {
+    func requestDataWithTargetString<T:TargetType>(_ target:T,successClosure:@escaping SuccessClosure,failClosure:@escaping FailClosure) {
+        let requestProvider = MoyaProvider<T>(requestClosure:requestTimeoutClosure(target: target))
         let _=requestProvider.request(target) { (result) -> () in
             switch result{
             case let .success(response):
@@ -56,14 +57,39 @@ open class PHMoyaHttp {
                     let str = try response.mapString()
                     successClosure(str)
                 } catch {
-//                    log.error("网络请求数据解析错误")
+                    failClosure(self.SERVERERROR)
                 }
             case let .failure(error):
-                failClosure(error.localizedDescription)
+                failClosure(error.errorDescription)
             }
+
         }
     }
-    
+    //设置请求超时时间
+    private func requestTimeoutClosure<T:TargetType>(target:T) -> MoyaProvider<T>.RequestClosure{
+        let requestTimeoutClosure = { (endpoint:Endpoint<T>, done: @escaping MoyaProvider<T>.RequestResultClosure) in
+            do{
+                var request = try endpoint.urlRequest()
+                request.timeoutInterval = 20 //设置请求超时时间
+                done(.success(request))
+            }catch{
+                return
+            }
+        }
+        return requestTimeoutClosure
+    }
+}
+extension TargetType{
+    public var baseURL:Foundation.URL{
+        return Foundation.URL(string:URL)!
+    }
+    public var headers: [String : String]? {
+        return nil
+    }
+    //  单元测试用
+    public var sampleData: Data{
+        return "{}".data(using: String.Encoding.utf8)!
+    }
 }
 public enum RequestAPI {
     //业务员登录
@@ -72,7 +98,7 @@ public enum RequestAPI {
     /***商品接口****/
     
     //新增商品接口
-    case saveGoods(goodInfoName:String,goodUcode:String,goodUnit:String,goodsPrice:String,stock:Int,goodLife:String,goodSource:String,goodService:String,goodPic:String,goodsDetailsPic:String,goodInfoCode:String,goodMixed:String,remark:String,fCategoryId:Int,sCategoryId:Int,storeId:Int,lyPic:String,lyMiaoshu:String,producer:String)
+    case saveGoods(goodInfoName:String,goodUcode:String,goodUnit:String,goodsPrice:String,stock:Int,goodLife:String,goodSource:String,goodService:String,goodPic:String,goodsDetailsPic:String,goodInfoCode:String,goodMixed:String,remark:String,fCategoryId:Int,sCategoryId:Int,storeId:Int,lyPic:String,lyMiaoshu:String,producer:String,goodsMemberPrice:String,memberPriceMiniCount:Int,goodsSaleFlag:Int,sellerAddress:String)
     //查询商品
     case getAllGoods(flagHidden:Int,pageNumber:Int,pageSize:Int,storeId:Int)
     //商品详情接口
@@ -241,7 +267,7 @@ extension RequestAPI:TargetType{
         switch self{
         case .adminUserLogin(_,_):
             return "adminUser/adminUserLogin"
-        case .saveGoods(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_):
+        case .saveGoods(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_):
             return "goodsB/saveGoods"
         case .getAllGoods(_,_,_,_):
             return "goodsB/getAllGoods"
@@ -394,7 +420,7 @@ extension RequestAPI:TargetType{
     }
     public var method:Moya.Method{
         switch self{
-        case .adminUserLogin(_,_),.saveGoods(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.getAllGoods(_,_,_,_),.changeGoodsCategory(_,_,_),.delGoods(_),.changeGoodsFlag(_),.changeGoodsPic(_,_),.scanCodeGetInfo(_),.scanCodeGetLogisticspack(_,_,_),.scanCodeGetStorepack(_,_,_),.scanCodeGetExpressmailstorag(_,_,_),.searchCollectHistory(_,_),.inputExpress(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.searchGiveHistory(_,_),.saveExpress(_,_,_,_,_,_,_,_,_,_,_,_,_,_),.storeTodeliver(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.expressmailFreight(_,_,_,_,_,_,_,_),.scanCodeGetExpressmailForGivestoragByDriver(_,_),.addWithdrawa(_,_,_,_,_),.updateWithdrawa(_,_,_,_,_,_),.withdrawaTure(_,_,_),.storeTransferToMember(_,_),.scanCodeGetExpressmailForGivestoragByHeadquarters(_,_),.storeConfirmReturngoods(_,_),.codeInfoQueryMain(_),.replaceSignForUser(_,_,_),.driverGetReturn(_,_),.headquartersGetReturn(_,_),.updateExpressmailInfoByHeadquarters(_,_,_,_,_,_,_,_,_,_,_),.storeConfirmUpdateExpressmailInfo(_,_,_),.savePwd(_,_,_),.storeTongji(_,_),.getFoodByTestStoreId(_,_,_,_),.saveFood(_,_,_,_,_,_,_,_,_,_,_),.foodUpDown(_,_),.getFoodById(_),.queryIdentityByEmIdentityId(_),.idCardUploads(_,_),.testStoreUpload(_,_),.goodsUploads(_,_):
+        case .adminUserLogin(_,_),.saveGoods(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.getAllGoods(_,_,_,_),.changeGoodsCategory(_,_,_),.delGoods(_),.changeGoodsFlag(_),.changeGoodsPic(_,_),.scanCodeGetInfo(_),.scanCodeGetLogisticspack(_,_,_),.scanCodeGetStorepack(_,_,_),.scanCodeGetExpressmailstorag(_,_,_),.searchCollectHistory(_,_),.inputExpress(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.searchGiveHistory(_,_),.saveExpress(_,_,_,_,_,_,_,_,_,_,_,_,_,_),.storeTodeliver(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.expressmailFreight(_,_,_,_,_,_,_,_),.scanCodeGetExpressmailForGivestoragByDriver(_,_),.addWithdrawa(_,_,_,_,_),.updateWithdrawa(_,_,_,_,_,_),.withdrawaTure(_,_,_),.storeTransferToMember(_,_),.scanCodeGetExpressmailForGivestoragByHeadquarters(_,_),.storeConfirmReturngoods(_,_),.codeInfoQueryMain(_),.replaceSignForUser(_,_,_),.driverGetReturn(_,_),.headquartersGetReturn(_,_),.updateExpressmailInfoByHeadquarters(_,_,_,_,_,_,_,_,_,_,_),.storeConfirmUpdateExpressmailInfo(_,_,_),.savePwd(_,_,_),.storeTongji(_,_),.getFoodByTestStoreId(_,_,_,_),.saveFood(_,_,_,_,_,_,_,_,_,_,_),.foodUpDown(_,_),.getFoodById(_),.queryIdentityByEmIdentityId(_),.idCardUploads(_,_),.testStoreUpload(_,_),.goodsUploads(_,_):
             return .post
         case .getGoodsById(_),.queryCollectHistory(_,_,_,_),.queryGiveHistory(_,_,_,_),.queryShippinglines(),.wlQueryExpresscode(),.queryGoodsCateGoryForOne(),.queryGoodsCateGoryWhereGoodsCateGoryPId(_),.queryOrderInfoAndGoods(_,_,_,_),.queryOrderDetailsInfoAndGoods(_),.queryStoreCapitalSumMoney(_),.searchCollectHistoryForStoreBystoreUserCtime(_,_,_,_,_),.queryCollectHistoryForDriver(_,_,_,_),.queryGiveHistoryForDriver(_,_,_,_),.searchCollectHistoryForDriverByDriverUserCtime(_,_,_,_,_),.searchGiveHistoryForExpressLinkTime(_,_,_,_,_),.searchGiveHistoryForDriverUserCtime(_,_,_,_,_),.queryCxhSetInfo(),.queryWithdrawa(_),.storeQueryReturngoodsapply(_,_,_,_),.queryStorecapitalrecord(_,_,_),.queryWithdrawaRecord(_,_,_),.queryStorePrepaidrecord(_,_,_),.storeReturn(_,_,_),.queryCollectHistoryForDriverForLogisticspack(_,_,_),.queryCollectHistoryForDriverForStorepackByLogisticsPackId(_,_,_),.queryCollectHistoryForDriverForExpressmailstoragByStorePackId(_,_,_),.queryCollectHistoryForStorepackByStoreUserId(_,_,_),.queryReplaceSignForUser(_,_,_,_),.scanCodeQueryExpressmailstorag(_,_),.scanCodeGetExpressmailInfo(_,_),.storeQueryExpressmailUpdateInfo(_,_,_),.queryReturnHistory(_,_,_,_),.queryExpressmailDetail(_),.getExpressmailForGivestoragByDriver(_,_),.selectAddressInfo(_):
             return .get
@@ -404,8 +430,8 @@ extension RequestAPI:TargetType{
         switch self {
         case let .adminUserLogin(userAccount, userPossword):
             return .requestParameters(parameters: ["userAccount":userAccount,"userPossword":userPossword], encoding: URLEncoding.default)
-        case let .saveGoods(goodInfoName, goodUcode, goodUnit, goodsPrice, stock, goodLife, goodSource, goodService, goodPic, goodsDetailsPic, goodInfoCode, goodMixed, remark, fCategoryId, sCategoryId,storeId,lyPic,lyMiaoshu,producer):
-            return .requestParameters(parameters:["goodInfoName":goodInfoName,"goodUcode":goodUcode,"goodUnit":goodUnit,"goodsPrice":goodsPrice,"stock":stock,"goodLife":goodLife,"goodSource":goodSource,"goodService":goodService,"goodPic":goodPic,"goodsDetailsPic":goodsDetailsPic,"goodInfoCode":goodInfoCode,"goodMixed":goodMixed,"remark":remark,"fCategoryId":fCategoryId,"sCategoryId":sCategoryId,"storeId":storeId,"lyPic":lyPic,"lyMiaoshu":lyMiaoshu,"producer":producer], encoding: URLEncoding.default)
+        case let .saveGoods(goodInfoName, goodUcode, goodUnit, goodsPrice, stock, goodLife, goodSource, goodService, goodPic, goodsDetailsPic, goodInfoCode, goodMixed, remark, fCategoryId, sCategoryId,storeId,lyPic,lyMiaoshu,producer,goodsMemberPrice,memberPriceMiniCount,goodsSaleFlag,sellerAddress):
+            return .requestParameters(parameters:["goodInfoName":goodInfoName,"goodUcode":goodUcode,"goodUnit":goodUnit,"goodsPrice":goodsPrice,"stock":stock,"goodLife":goodLife,"goodSource":goodSource,"goodService":goodService,"goodPic":goodPic,"goodsDetailsPic":goodsDetailsPic,"goodInfoCode":goodInfoCode,"goodMixed":goodMixed,"remark":remark,"fCategoryId":fCategoryId,"sCategoryId":sCategoryId,"storeId":storeId,"lyPic":lyPic,"lyMiaoshu":lyMiaoshu,"producer":producer,"goodsMemberPrice":goodsMemberPrice,"memberPriceMiniCount":memberPriceMiniCount,"goodsSaleFlag":goodsSaleFlag,"sellerAddress":sellerAddress], encoding: URLEncoding.default)
         case let.getAllGoods(flagHidden, pageNumber, pageSize,storeId):
             return .requestParameters(parameters:["flagHidden":flagHidden,"pageNumber":pageNumber,"pageSize":pageSize,"storeId":storeId], encoding: URLEncoding.default)
         case let .getGoodsById(goodsbasicInfoId):

@@ -49,6 +49,7 @@ class HasInboxViewController:BaseViewController{
                 self.queryCollectHistoryForDriver(self.pageNumber, pageSize:10,isRefresh:false)
             }
         })
+        table.mj_footer.isHidden=true
         table.mj_header.beginRefreshing()
     }
 }

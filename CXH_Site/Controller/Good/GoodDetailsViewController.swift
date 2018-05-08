@@ -12,16 +12,36 @@ import UIKit
 class GoodDetailsViewController:BaseViewController{
     var goodName:String?
     var goodsbasicInfoId:Int?
+    var flag:Int? // 1修改 2不可修改
     fileprivate var entity:GoodDetailsEntity?
     fileprivate var scrollView:UIScrollView!
+    private var segmentedControl:UISegmentedControl!
     fileprivate var table:UITableView!
     fileprivate var collectionView:UICollectionView!
     fileprivate var sourceCollectionView:UICollectionView!
     fileprivate var imgArr=[String]()
     fileprivate var sourceArr=[SourceEntity]()
+    private var btn:UIButton!
+    private var txtGoodsMemberPrice:UITextField!
+    private var txtMemberPriceMiniCount:UITextField!
+    fileprivate var txtGoodUcode:UITextField!
+    fileprivate var txtGoodUnit:UITextField!
+    fileprivate var txtGoodsPrice:UITextField!
+    fileprivate var txtStock:UITextField!
+    fileprivate var txtGoodLife:UITextField!
+    //是否同意用户协议
+    fileprivate var isImg:UIButton!
+    //用户协议文字按
+    fileprivate var btnUserAgreement:UIButton!
+    //用户协议view
+    private var  userAgreementView:UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title=goodName
+        if flag == 1{
+            self.title=goodName==nil ? "(可修改)":(goodName!+"(可修改)")
+        }else{
+            self.title=goodName==nil ? "(不可修改)":(goodName!+"(不可修改)")
+        }
         self.view.backgroundColor=UIColor.viewBackgroundColor()
         httpGoodDetailsInfo()
         
@@ -33,12 +53,81 @@ class GoodDetailsViewController:BaseViewController{
     func buildView(){
         scrollView=UIScrollView(frame:self.view.bounds)
         self.view.addSubview(scrollView)
-        table=UITableView(frame:CGRect(x:0,y:0,width: boundsWidth,height: 18*50+210))
+        segmentedControl=UISegmentedControl(items:["只能零售","只能批发","可零售可批发"])
+        segmentedControl.frame=CGRect.init(x:15, y:15, width:boundsWidth-30, height:40)
+        segmentedControl.tintColor=UIColor.applicationMainColor()
+        segmentedControl.selectedSegmentIndex=(entity!.goodsSaleFlag ?? 1)-1
+        if flag == 2{
+            segmentedControl.isEnabled=false
+        }
+        segmentedControl.addTarget(self, action: #selector(segmentedControlChanged), for: UIControlEvents.valueChanged)
+        scrollView.addSubview(segmentedControl)
+        table=UITableView()
+        updateTableHeight()
         table.delegate=self
         table.dataSource=self
         table.isScrollEnabled=false
         scrollView.addSubview(table)
-        scrollView.contentSize=CGSize(width: boundsWidth,height: table.frame.maxY+10)
+        userAgreementView=UIView.init()
+        userAgreementView.frame=CGRect.init(x:(boundsWidth-(25+143+115+5))/2, y:table.frame.maxY+30, width:(25+143+115+5),height:25)
+        scrollView.addSubview(userAgreementView)
+        isImg=UIButton(frame: CGRect.init(x:0, y:0, width:25, height: 25))
+        isImg.setBackgroundImage(UIImage(named:"register_selected"), for: UIControlState.selected)
+        isImg.isSelected=true
+        isImg.setBackgroundImage(UIImage(named:"register_select"), for: UIControlState.normal)
+        isImg.addTarget(self, action:#selector(isSelectedUserAgreement), for: UIControlEvents.touchUpInside)
+        userAgreementView.addSubview(isImg)
+
+        btnUserAgreement=UIButton(frame:CGRect.init(x:isImg.frame.maxX+5, y:0, width:143, height: 25))
+        btnUserAgreement.setTitleColor(UIColor.color999(), for: UIControlState.normal)
+        btnUserAgreement.setTitle("上传即代表您已经同意", for: UIControlState.normal)
+        btnUserAgreement.titleLabel!.font=UIFont.systemFont(ofSize: 14)
+        btnUserAgreement.addTarget(self, action:#selector(isSelectedUserAgreement), for: UIControlEvents.touchUpInside)
+        userAgreementView.addSubview(btnUserAgreement)
+
+        let btnQualityAssuranceAgreement=UIButton(frame:CGRect.init(x:btnUserAgreement.frame.maxX, y:0, width:115, height: 25))
+        btnQualityAssuranceAgreement.setTitle("《质量保证协议》", for: UIControlState.normal)
+        btnQualityAssuranceAgreement.titleLabel!.font=UIFont.systemFont(ofSize: 14)
+        btnQualityAssuranceAgreement.setTitleColor(UIColor.applicationMainColor(), for: UIControlState.normal)
+        userAgreementView.addSubview(btnQualityAssuranceAgreement)
+
+        btn=ButtonControl().button(ButtonType.cornerRadiusButton, text:"确认上传", textColor:UIColor.white, font:15, backgroundColor:UIColor.applicationMainColor(), cornerRadius:20)
+        btn.frame=CGRect(x:30,y:userAgreementView.frame.maxY+15,width: boundsWidth-60,height: 40)
+        //btn.addTarget(self, action:#selector(submit), for: UIControlEvents.touchUpInside)
+
+        scrollView.addSubview(btn)
+        scrollView.contentSize=CGSize(width: boundsWidth,height: btn.frame.maxY+30)
+    }
+}
+extension GoodDetailsViewController{
+    ///选择用户协议
+    @objc private func isSelectedUserAgreement(sender:UIButton){
+        if isImg.isSelected{
+            isImg.isSelected=false
+        }else{
+            isImg.isSelected=true
+        }
+    }
+    //选择点击后的事件
+    @objc func segmentedControlChanged(sender:UISegmentedControl) {
+        updateTableHeight()
+        txtMemberPriceMiniCount?.removeFromSuperview()
+        txtGoodsMemberPrice?.removeFromSuperview()
+        txtGoodsPrice?.removeFromSuperview()
+        userAgreementView.frame=CGRect.init(x:(boundsWidth-(25+143+115+5))/2, y:table.frame.maxY+30, width:(25+143+115+5),height:25)
+        btn.frame=CGRect(x: 30,y:userAgreementView.frame.maxY+15,width: boundsWidth-60,height: 40)
+        scrollView.contentSize=CGSize(width: boundsWidth,height: btn.frame.maxY+30)
+        self.table.reloadData()
+    }
+    ///更新table高度
+    private func updateTableHeight(){
+        if segmentedControl.selectedSegmentIndex == 2{
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 21*50+210)
+        }else if segmentedControl.selectedSegmentIndex == 1{
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 20*50+210)
+        }else{
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 19*50+21)
+        }
     }
 }
 // MARK: - table协议
@@ -73,30 +162,72 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
                 cell!.contentView.addSubview(nameValue)
                 break
             case 3:
-                name.text="  单位"
-                nameValue.text=entity!.goodUnit
+
+                name.attributedText=redText(" 单位")
                 cell!.contentView.addSubview(name)
-                cell!.contentView.addSubview(nameValue)
+                txtGoodUnit=buildTxt(14, placeholder:"请输入商品单位,如包,箱等", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
+                txtGoodUnit.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
+                cell!.contentView.addSubview(txtGoodUnit)
+
                 break
             case 4:
-                name.text="  规格"
-                nameValue.text=entity!.goodUcode
+
+                name.attributedText=redText(" 规格")
                 cell!.contentView.addSubview(name)
-                cell!.contentView.addSubview(nameValue)
+                txtGoodUcode=buildTxt(14, placeholder:"请输入商品规格", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
+                txtGoodUcode.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
+                cell!.contentView.addSubview(txtGoodUcode)
+
                 break
             case 5:
-                name.text="  价格"
-                if entity!.goodsPrice != nil{
-                    nameValue.text="￥\(entity!.goodsPrice!)"
-                }
+                name.text="保质期"
                 cell!.contentView.addSubview(name)
-                cell!.contentView.addSubview(nameValue)
+                txtGoodInfoCode=buildTxt(14, placeholder:"请输入保质期", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
+                txtGoodInfoCode.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
+                cell!.contentView.addSubview(txtGoodInfoCode)
+
                 break
             case 6:
-                name.text="  条码"
-                nameValue.text=entity!.goodInfoCode
+
+                if segmentedControl.selectedSegmentIndex == 1{
+                    name.attributedText=redText("*批发价")
+                    cell!.contentView.addSubview(name)
+                    txtGoodsMemberPrice=buildTxt(14, placeholder:"请输入商品批发价", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.decimalPad)
+                    txtGoodsMemberPrice.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
+                    cell!.contentView.addSubview(txtGoodsMemberPrice)
+                }else{
+                    name.attributedText=redText("价格")
+                    cell!.contentView.addSubview(name)
+                    txtGoodsPrice=buildTxt(14, placeholder:"请输入商品单价", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.decimalPad)
+                    txtGoodsPrice.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
+                    cell!.contentView.addSubview(txtGoodsPrice)
+                }
+
+                break
+            case 7:
+
+                if segmentedControl.selectedSegmentIndex == 2{
+                    name.attributedText=redText("批发价")
+                    cell!.contentView.addSubview(name)
+                    txtGoodsMemberPrice=buildTxt(14, placeholder:"请输入商品批发价", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.decimalPad)
+                    txtGoodsMemberPrice.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
+                    cell!.contentView.addSubview(txtGoodsMemberPrice)
+                }else{
+                    name.attributedText=redText("起订量")
+                    cell!.contentView.addSubview(name)
+                    txtMemberPriceMiniCount=buildTxt(14, placeholder:"请输入起订量", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.numberPad)
+                    txtMemberPriceMiniCount.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
+                    cell!.contentView.addSubview(txtMemberPriceMiniCount)
+                }
+
+                break
+            case 8:
+                name.attributedText=redText("起订量")
                 cell!.contentView.addSubview(name)
-                cell!.contentView.addSubview(nameValue)
+                txtMemberPriceMiniCount=buildTxt(14, placeholder:"请输入起订量", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.numberPad)
+                txtMemberPriceMiniCount.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
+                cell!.contentView.addSubview(txtMemberPriceMiniCount)
+
                 break
             default:break
             }
@@ -154,6 +285,13 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
                 cell!.contentView.addSubview(name)
                 cell!.contentView.addSubview(nameValue)
                 break
+            case 8:
+                name.text="提供人地址"
+                name.frame=CGRect(x: 15,y: 0,width:85,height: 50)
+                nameValue.frame==CGRect(x:name.frame.maxX+5,y: 0,width:boundsWidth-120,height: 50)
+                nameValue.text=entity!.sellerAddress
+                cell!.contentView.addSubview(name)
+                cell!.contentView.addSubview(nameValue)
             default:break
             }
             
@@ -215,10 +353,16 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
             return 2
         }else if section == 3{
             return 2
-        }else if section == 0{
-            return 7
+        }else if section == 1{
+            return 9
         }else{
-            return 8
+            if segmentedControl.selectedSegmentIndex == 2{
+                return 9
+            }else if segmentedControl.selectedSegmentIndex == 1{
+                return 8
+            }else{
+                return 7
+            }
         }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -245,6 +389,9 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
         let view=UIView(frame:CGRect.zero)
         view.backgroundColor=UIColor.viewBackgroundColor()
         return view
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
 }

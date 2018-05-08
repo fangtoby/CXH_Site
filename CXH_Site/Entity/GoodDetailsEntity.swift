@@ -33,6 +33,10 @@ class GoodDetailsEntity:Mappable{
     var sCategoryName:String?
     var stock:Int?
     var producer:String?
+    var sellerAddress:String?
+    var goodsMemberPrice:String?
+    var memberPriceMiniCount:Int?
+    var goodsSaleFlag:Int?
     init(){}
     required init?(map: Map) {
         mapping(map: map)
@@ -61,5 +65,9 @@ class GoodDetailsEntity:Mappable{
         sCategoryName <- map["sCategoryName"]
         stock <- map["stock"]
         producer <- map["producer"]
+        sellerAddress <- map["sellerAddress"]
+        goodsMemberPrice <- map["goodsMemberPrice"]
+        memberPriceMiniCount <- map["memberPriceMiniCount"]
+        goodsSaleFlag <- map["goodsSaleFlag"]
     }
 }

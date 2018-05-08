@@ -40,6 +40,7 @@ class ReplaceSignListViewController:BaseViewController{
             self.pageNumber+=1
             self.queryReplaceSignForUser(self.pageNumber, pageSize: 10, isRefresh:false)
         })
+        table.mj_footer.isHidden=true
         table.mj_header.beginRefreshing()
     }
 }

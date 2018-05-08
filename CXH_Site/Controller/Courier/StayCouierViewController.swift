@@ -50,6 +50,7 @@ class StayCouierViewController:BaseViewController{
                 self.queryGiveHistoryForDriver(self.pageNumber, pageSize:10, isRefresh:false, statu:4)
             }
         })
+        table.mj_footer.isHidden=true
         table.mj_header.beginRefreshing()
 
     }
