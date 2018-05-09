@@ -17,8 +17,8 @@ class IndexViewController:BaseViewController{
     ///
     fileprivate var collectionView:UICollectionView!
     fileprivate let identity=userDefaults.object(forKey: "identity") as! Int
-    fileprivate var imgArr=["classify_1","sdsj","classify_3","classify_5","classify_6","classify_7","classify_8","classify_9"]
-    fileprivate var nameArr=["扫码收件","手动收件","手动揽件","收件历史","揽件清单","我的信息","商品管理","我的订单"]
+    fileprivate var imgArr=["classify_1","sdsj","classify_3","classify_5","classify_6","classify_7","classify_8","classify_9","classify_10"]
+    fileprivate var nameArr=["扫码收件","手动收件","手动揽件","收件历史","揽件清单","我的信息","商品管理","我的订单","批发授权"]
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isTranslucent=false
@@ -155,6 +155,10 @@ extension IndexViewController:UICollectionViewDelegate,UICollectionViewDataSourc
             case 7:
                 let vc=OrderListViewController()
                 self.navigationController?.pushViewController(vc, animated:true)
+                break
+            case 8:
+                let vc=WholesaleAuthViewController()
+                self.navigationController?.pushViewController(vc, animated: true)
                 break
             default:
                 break

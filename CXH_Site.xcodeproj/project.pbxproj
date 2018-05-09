@@ -24,6 +24,10 @@
 		63293FF31EE057B000798008 /* Level1CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63293FF21EE057B000798008 /* Level1CategoryViewController.swift */; };
 		63293FF51EE0586600798008 /* GoodsCategoryEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63293FF41EE0586600798008 /* GoodsCategoryEntity.swift */; };
 		63293FF71EE059EF00798008 /* Level2CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63293FF61EE059EF00798008 /* Level2CategoryViewController.swift */; };
+		632E33F820A29D5F004DA6B7 /* WholesaleAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632E33F720A29D5F004DA6B7 /* WholesaleAuthViewController.swift */; };
+		632E33FC20A2A310004DA6B7 /* WholesaleAuthTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632E33FA20A2A310004DA6B7 /* WholesaleAuthTableViewCell.swift */; };
+		632E33FD20A2A310004DA6B7 /* WholesaleAuthTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 632E33FB20A2A310004DA6B7 /* WholesaleAuthTableViewCell.xib */; };
+		632E33FF20A2A6AE004DA6B7 /* WholesaleAuthEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632E33FE20A2A6AE004DA6B7 /* WholesaleAuthEntity.swift */; };
 		6334FFDA1EF0D79B00920073 /* ReturnGoodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6334FFD91EF0D79B00920073 /* ReturnGoodsViewController.swift */; };
 		6334FFDC1EF0D80900920073 /* MemberHasMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6334FFDB1EF0D80900920073 /* MemberHasMailViewController.swift */; };
 		6334FFDE1EF0E20900920073 /* ReturnGoodsEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6334FFDD1EF0E20900920073 /* ReturnGoodsEntity.swift */; };
@@ -206,6 +210,10 @@
 		63293FF21EE057B000798008 /* Level1CategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level1CategoryViewController.swift; sourceTree = "<group>"; };
 		63293FF41EE0586600798008 /* GoodsCategoryEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoodsCategoryEntity.swift; sourceTree = "<group>"; };
 		63293FF61EE059EF00798008 /* Level2CategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level2CategoryViewController.swift; sourceTree = "<group>"; };
+		632E33F720A29D5F004DA6B7 /* WholesaleAuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WholesaleAuthViewController.swift; sourceTree = "<group>"; };
+		632E33FA20A2A310004DA6B7 /* WholesaleAuthTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WholesaleAuthTableViewCell.swift; sourceTree = "<group>"; };
+		632E33FB20A2A310004DA6B7 /* WholesaleAuthTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WholesaleAuthTableViewCell.xib; sourceTree = "<group>"; };
+		632E33FE20A2A6AE004DA6B7 /* WholesaleAuthEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WholesaleAuthEntity.swift; sourceTree = "<group>"; };
 		6334FFD91EF0D79B00920073 /* ReturnGoodsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReturnGoodsViewController.swift; sourceTree = "<group>"; };
 		6334FFDB1EF0D80900920073 /* MemberHasMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberHasMailViewController.swift; sourceTree = "<group>"; };
 		6334FFDD1EF0E20900920073 /* ReturnGoodsEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReturnGoodsEntity.swift; sourceTree = "<group>"; };
@@ -472,6 +480,23 @@
 			path = Category;
 			sourceTree = "<group>";
 		};
+		632E33F620A29D2A004DA6B7 /* WholesaleAuth */ = {
+			isa = PBXGroup;
+			children = (
+				632E33F720A29D5F004DA6B7 /* WholesaleAuthViewController.swift */,
+			);
+			path = WholesaleAuth;
+			sourceTree = "<group>";
+		};
+		632E33F920A2A2F3004DA6B7 /* WholesaleAuth */ = {
+			isa = PBXGroup;
+			children = (
+				632E33FA20A2A310004DA6B7 /* WholesaleAuthTableViewCell.swift */,
+				632E33FB20A2A310004DA6B7 /* WholesaleAuthTableViewCell.xib */,
+			);
+			path = WholesaleAuth;
+			sourceTree = "<group>";
+		};
 		6334FFD81EF0D77700920073 /* ReturnGoods */ = {
 			isa = PBXGroup;
 			children = (
@@ -607,6 +632,7 @@
 		639486B31E9E0D6700C19907 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				632E33F620A29D2A004DA6B7 /* WholesaleAuth */,
 				63C36CB01F999A6200665398 /* Food */,
 				637051DE1EEA892800BE840A /* ConnectThePrinter */,
 				63F2B5181EE5812400984988 /* Recruitment */,
@@ -651,6 +677,7 @@
 				63A89F101F78AE4700BEF114 /* RegionEntity.swift */,
 				63C36CAE1F9998EF00665398 /* FoodEntity.swift */,
 				638978481F9D8B2E00E5F9B9 /* SourceEntity.swift */,
+				632E33FE20A2A6AE004DA6B7 /* WholesaleAuthEntity.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -836,6 +863,7 @@
 		639487621E9E0D6700C19907 /* TableViewCell */ = {
 			isa = PBXGroup;
 			children = (
+				632E33F920A2A2F3004DA6B7 /* WholesaleAuth */,
 				63F2B4F81EE4FE5100984988 /* CouierTableViewCell.swift */,
 				63F2B4F91EE4FE5100984988 /* CouierTableViewCell.xib */,
 				63F2B5091EE5437600984988 /* OrderListTableViewCell.swift */,
@@ -1122,6 +1150,7 @@
 				639487D71E9E0D6800C19907 /* checked@2x.png in Resources */,
 				639487D61E9E0D6800C19907 /* checked.png in Resources */,
 				6394868A1E9E0C2C00C19907 /* Assets.xcassets in Resources */,
+				632E33FD20A2A310004DA6B7 /* WholesaleAuthTableViewCell.xib in Resources */,
 				639487D81E9E0D6800C19907 /* checked@3x.png in Resources */,
 				639486881E9E0C2C00C19907 /* Main.storyboard in Resources */,
 				639487C41E9E0D6800C19907 /* arrow@3x.png in Resources */,
@@ -1311,12 +1340,14 @@
 				639487951E9E0D6700C19907 /* PHNetWork.swift in Sources */,
 				639487D91E9E0D6800C19907 /* ShowAddressViewController.swift in Sources */,
 				63126EB71F9EE02F00D98658 /* FoodDetailsViewController.swift in Sources */,
+				632E33FC20A2A310004DA6B7 /* WholesaleAuthTableViewCell.swift in Sources */,
 				63F2B50E1EE5553900984988 /* OrderDetailsEntity.swift in Sources */,
 				63A89F111F78AE4700BEF114 /* RegionEntity.swift in Sources */,
 				639487EF1E9E184F00C19907 /* PersonalCenterViewController.swift in Sources */,
 				6334FFF01EF15FEB00920073 /* StorecapitalrecordEntity.swift in Sources */,
 				638978491F9D8B2E00E5F9B9 /* SourceEntity.swift in Sources */,
 				639487F61E9E1AB500C19907 /* BaseCollectionViewCell.swift in Sources */,
+				632E33F820A29D5F004DA6B7 /* WholesaleAuthViewController.swift in Sources */,
 				63F358C81EEF6A120024DDDB /* UpdateWithdrawaViewController.swift in Sources */,
 				6337505B1EFBA8B4009A0FF2 /* SweepCodeInboxDetailsViewController.swift in Sources */,
 				637051DD1EEA84C800BE840A /* UIWebView+UIImage.m in Sources */,
@@ -1345,6 +1376,7 @@
 				639486831E9E0C2C00C19907 /* AppDelegate.swift in Sources */,
 				639487C51E9E0D6800C19907 /* SKMacros.swift in Sources */,
 				6334FFDA1EF0D79B00920073 /* ReturnGoodsViewController.swift in Sources */,
+				632E33FF20A2A6AE004DA6B7 /* WholesaleAuthEntity.swift in Sources */,
 				639487EA1E9E184F00C19907 /* IndexViewController.swift in Sources */,
 				633750591EFB97CF009A0FF2 /* CKSweepCodeReceiptViewController.swift in Sources */,
 				6334FFE21EF1251C00920073 /* YReturnGoodsViewController.swift in Sources */,

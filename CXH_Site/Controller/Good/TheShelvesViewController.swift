@@ -157,6 +157,7 @@ extension TheShelvesViewController{
             if isRefresh{
                 self.goodArr.removeAll()
             }
+            print(json)
             for(_,value) in json["list"]{
                 let entity=self.jsonMappingEntity(GoodEntity(), object:value.object)
                 self.goodArr.append(entity!)
@@ -208,9 +209,24 @@ extension TheShelvesViewController{
         let vc=GoodDetailsViewController()
         vc.goodsbasicInfoId=entity.goodsbasicInfoId
         vc.goodName=entity.goodInfoName
+        vc.flag=1
         self.navigationController?.pushViewController(vc, animated:true)
     }
-    func theShelvesOperate(_ entity: GoodEntity) {}
+    func theShelvesOperate(_ entity: GoodEntity) {
+        self.showSVProgressHUD("正在加载...", type: HUD.textClear)
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.changeGoodsFlag(goodsbasicInfoId:entity.goodsbasicInfoId!), successClosure: { (result) -> Void in
+            let json=self.swiftJSON(result)
+            let success=json["success"].stringValue
+            if success == "success"{
+                self.showSVProgressHUD("上架成功", type: HUD.success)
+                self.table.mj_header.beginRefreshing()
+            }else{
+                self.showSVProgressHUD("上架失败", type: HUD.info)
+            }
+        }) { (errorMsg) -> Void in
+            self.showSVProgressHUD(errorMsg!, type: HUD.error)
+        }
+    }
     func theShelvesOperateFood(_ entity: FoodEntity) {
         let alertController = UIAlertController(title:"城乡惠", message:"请输入库存数量", preferredStyle: UIAlertControllerStyle.alert);
         alertController.addTextField {

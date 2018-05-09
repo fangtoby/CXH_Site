@@ -34,7 +34,7 @@ class GoodDetailsEntity:Mappable{
     var stock:Int?
     var producer:String?
     var sellerAddress:String?
-    var goodsMemberPrice:String?
+    var goodsMemberPrice:Double?
     var memberPriceMiniCount:Int?
     var goodsSaleFlag:Int?
     init(){}

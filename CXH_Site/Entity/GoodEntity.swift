@@ -24,6 +24,9 @@ class GoodEntity:Mappable{
     var stock:Int?
     var salesCount:Int?
     var qrcode:String?
+    var goodsMemberPrice:Double?
+    var memberPriceMiniCount:Int?
+    var goodsSaleFlag:Int?
     init(){}
     required init?(map: Map) {
         mapping(map: map)
@@ -43,6 +46,9 @@ class GoodEntity:Mappable{
         stock <- map["stock"]
         salesCount <- map["salesCount"]
         qrcode <- map["qrcode"]
+        goodsMemberPrice <- map["goodsMemberPrice"]
+        memberPriceMiniCount <- map["memberPriceMiniCount"]
+        goodsSaleFlag <- map["goodsSaleFlag"]
         
     }
 }

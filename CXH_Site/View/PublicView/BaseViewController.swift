@@ -78,6 +78,11 @@ extension BaseViewController{
      */
     func jsonMappingEntity<N:Mappable>(_ enitty:N,object:Any) -> N?{
         return Mapper<N>().map(JSONObject:object)
+
+    }
+    func jsonMappingArrEntity<N:Mappable>(_ enitty:N,object:Any) -> [N]?{
+        return Mapper<N>().mapArray(JSONObject:object)
+
     }
 }
 // MARK: - 跳转页面

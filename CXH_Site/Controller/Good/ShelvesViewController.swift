@@ -192,6 +192,7 @@ extension ShelvesViewController{
         let vc=GoodDetailsViewController()
         vc.goodsbasicInfoId=entity.goodsbasicInfoId
         vc.goodName=entity.goodInfoName
+        vc.flag=1
         self.navigationController?.pushViewController(vc, animated:true)
     }
     func pushFoodDetailsVC(_ entity: FoodEntity) {

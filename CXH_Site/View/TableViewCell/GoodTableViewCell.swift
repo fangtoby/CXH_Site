@@ -49,6 +49,10 @@ class GoodTableViewCell: UITableViewCell {
 
     @IBOutlet weak var btnDetails: UIButton!
 
+    @IBOutlet weak var lblGoodsSaleFlag:UILabel!
+
+    @IBOutlet weak var lblGoodsMemberPrice:UILabel!
+
     @IBOutlet weak var btn: UIButton!
 
     //二维码
@@ -63,8 +67,11 @@ class GoodTableViewCell: UITableViewCell {
         lblPrice.textColor=UIColor.textColor()
         lblStock.textColor=UIColor.textColor()
         lblSold.textColor=UIColor.textColor()
+        lblGoodsMemberPrice.textColor=UIColor.color666()
+        lblGoodsMemberPrice.isHidden=true
         lblTitle.textColor=UIColor.applicationMainColor()
         btnDetails.backgroundColor=UIColor.applicationMainColor()
+        lblGoodsSaleFlag.textColor=UIColor.applicationMainColor()
         btnDetails.layer.cornerRadius=5
         btn.backgroundColor=UIColor.applicationMainColor()
         btn.layer.cornerRadius=5
@@ -86,15 +93,27 @@ class GoodTableViewCell: UITableViewCell {
             goodImg.sd_setImage(with: Foundation.URL(string:URLIMG+entity.goodPic!), placeholderImage:UIImage(named: "default_icon"))
         }
         lblGoodName.text=entity.goodInfoName
-        if entity.goodsPrice != nil{
+        var goodPrice:Double?
+        if entity.goodsSaleFlag == 1{//普通商品
+            goodPrice=entity.goodsPrice
+        }else if entity.goodsSaleFlag == 2{//批发商品
+            lblGoodsSaleFlag.text="批发"
+            goodPrice=entity.goodsMemberPrice
+        }else if entity.goodsSaleFlag == 3{//普通商品/批发商品
+            lblGoodsSaleFlag.text="零售/批发"
+            goodPrice=entity.goodsPrice
+            lblGoodsMemberPrice.isHidden=false
+            lblGoodsMemberPrice.text="批发价:\(entity.goodsMemberPrice ?? 0)"
+        }
+        if goodPrice != nil{
             if entity.goodUnit != nil{
-                let priceCount="￥\(entity.goodsPrice!)".count
-                let str:NSMutableAttributedString=NSMutableAttributedString(string:"￥\(entity.goodsPrice!)/\(entity.goodUnit!)");
+                let priceCount="￥\(goodPrice!)".count
+                let str:NSMutableAttributedString=NSMutableAttributedString(string:"￥\(goodPrice!)/\(entity.goodUnit!)");
                 let normalAttributes = [NSAttributedStringKey.foregroundColor : UIColor.red,NSAttributedStringKey.font:UIFont.boldSystemFont(ofSize: 15)]
                 str.addAttributes(normalAttributes, range:NSMakeRange(0,priceCount))
                 lblPrice.attributedText=str
             }else{
-                lblPrice.text="￥\(entity.goodsPrice!)"
+                lblPrice.text="￥\(goodPrice!)"
             }
         }
         if entity.stock != nil{

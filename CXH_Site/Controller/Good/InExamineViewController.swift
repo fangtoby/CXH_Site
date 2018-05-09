@@ -108,6 +108,7 @@ extension InExamineViewController{
             if isRefresh{
                 self.arr.removeAll()
             }
+            print(json)
             for(_,value) in json["list"]{
                 let entity=self.jsonMappingEntity(GoodEntity(), object:value.object)
                 self.arr.append(entity!)
@@ -137,6 +138,7 @@ extension InExamineViewController{
         let vc=GoodDetailsViewController()
         vc.goodsbasicInfoId=entity.goodsbasicInfoId
         vc.goodName=entity.goodInfoName
+        vc.flag=2
         self.navigationController?.pushViewController(vc, animated:true)
     }
     func theShelvesOperate(_ entity: GoodEntity) {}
