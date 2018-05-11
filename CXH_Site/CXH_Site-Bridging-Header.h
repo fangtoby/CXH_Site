@@ -15,3 +15,6 @@
 /// 文本默认提示
 #import "UITextView+Placeholder.h"
 
+//百度移动统计
+#import "BaiduMobStat.h"
+

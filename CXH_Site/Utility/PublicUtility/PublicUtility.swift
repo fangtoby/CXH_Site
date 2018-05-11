@@ -50,9 +50,9 @@ import SDWebImage
 //app公用常量
 
 ///图片请求路径
-let URLIMG="http://192.168.1.152";
+let URLIMG="http://192.168.1.153";
 ///数据请求路径  http://192.168.199.121/
-let URL="http://192.168.1.152/";
+let URL="http://192.168.1.153/";
 
 let SERVERERROR="服务器异常"
 /// 屏幕宽
@@ -140,49 +140,18 @@ func isStrNil(_ arr:[String?]) -> Bool{
 }
 /**
  中文转拼音首字母
- 
+
  - parameter str: String
- 
+
  - returns:String
  */
 func chineISInitials(_ str:String)->String{
-    let str1:CFMutableString = CFStringCreateMutableCopy(nil, 0, str as CFString as CFString);
+    let str1:CFMutableString = CFStringCreateMutableCopy(nil, 0, str as CFString);
     CFStringTransform(str1, nil, kCFStringTransformToLatin, false)
     CFStringTransform(str1, nil, kCFStringTransformStripCombiningMarks, false)
     let str2 = CFStringCreateWithSubstring(nil, str1, CFRangeMake(0, 1))
-    return str2! as String
+    return (str2! as String).capitalized
 }
-/**
- 递归数据 把数据根据首字母分组
- 
- - parameter list: 数据源
- 
- - returns: 返回字典
- */
-//func recursiveList(list:NSMutableArray){
-//    var dic=Dictionary<String,[String]>()
-//    var keyArr=[String]()
-//    for(var i=0;i<list.count;i++){//循环数据源
-//        let entity=list[i] as! GoodDetailEntity
-//        //拿到商品名称转换成拼音首字母
-//        let key=chineISInitials(entity.goodInfoName!)
-//        //添加进key数组
-//        keyArr.append(key)
-//    }
-//    //过滤掉相同的值
-//    let key=Array(Set(keyArr))
-//    for k in key{//循环
-//        var arr=[String]()
-//        for(var i=0;i<list.count;i++){
-//            let entity=list[i] as! GoodDetailEntity
-//            if k==chineISInitials(entity.goodInfoName!){
-//                arr.append(entity.goodInfoName!)
-//            }
-//        }
-//        dic[k]=arr
-//    }
-//    let sortedKeysAndValues=dic.sort { $0.0 < $1.0 }
-//}
 // MARK: - 扩展UIButton
 extension UIButton{
     

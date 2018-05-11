@@ -66,6 +66,7 @@
 		6369B4D41EFA8584001C23DE /* LogisticsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369B4D31EFA8584001C23DE /* LogisticsTableViewCell.swift */; };
 		6369B4D61EFA8A20001C23DE /* StoreInboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369B4D51EFA8A20001C23DE /* StoreInboxViewController.swift */; };
 		6369B4D81EFA8CDE001C23DE /* StoreListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369B4D71EFA8CDE001C23DE /* StoreListTableViewCell.swift */; };
+		636B7A5E20A57328004466ED /* DB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636B7A5D20A57328004466ED /* DB.swift */; };
 		636C38DE1EE7EA200046EE75 /* InboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C38DD1EE7EA200046EE75 /* InboxTableViewCell.swift */; };
 		636C38E01EE7EC020046EE75 /* ExpressmailStorageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C38DF1EE7EC020046EE75 /* ExpressmailStorageEntity.swift */; };
 		637051DA1EEA84C800BE840A /* HLPrinter.m in Sources */ = {isa = PBXBuildFile; fileRef = 637051D21EEA84C800BE840A /* HLPrinter.m */; };
@@ -252,6 +253,7 @@
 		6369B4D31EFA8584001C23DE /* LogisticsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogisticsTableViewCell.swift; sourceTree = "<group>"; };
 		6369B4D51EFA8A20001C23DE /* StoreInboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreInboxViewController.swift; sourceTree = "<group>"; };
 		6369B4D71EFA8CDE001C23DE /* StoreListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreListTableViewCell.swift; sourceTree = "<group>"; };
+		636B7A5D20A57328004466ED /* DB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DB.swift; sourceTree = "<group>"; };
 		636C38DD1EE7EA200046EE75 /* InboxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxTableViewCell.swift; sourceTree = "<group>"; };
 		636C38DF1EE7EC020046EE75 /* ExpressmailStorageEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpressmailStorageEntity.swift; sourceTree = "<group>"; };
 		637051D11EEA84C800BE840A /* HLPrinter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLPrinter.h; sourceTree = "<group>"; };
@@ -716,6 +718,7 @@
 			children = (
 				639486F21E9E0D6700C19907 /* PublicUtility.swift */,
 				639486F31E9E0D6700C19907 /* RegularExpressionsValidation.swift */,
+				636B7A5D20A57328004466ED /* DB.swift */,
 			);
 			path = PublicUtility;
 			sourceTree = "<group>";
@@ -1195,6 +1198,7 @@
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SDCycleScrollView/SDCycleScrollView.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Siren/Siren.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
@@ -1213,6 +1217,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDCycleScrollView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Siren.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
@@ -1378,6 +1383,7 @@
 				6334FFDA1EF0D79B00920073 /* ReturnGoodsViewController.swift in Sources */,
 				632E33FF20A2A6AE004DA6B7 /* WholesaleAuthEntity.swift in Sources */,
 				639487EA1E9E184F00C19907 /* IndexViewController.swift in Sources */,
+				636B7A5E20A57328004466ED /* DB.swift in Sources */,
 				633750591EFB97CF009A0FF2 /* CKSweepCodeReceiptViewController.swift in Sources */,
 				6334FFE21EF1251C00920073 /* YReturnGoodsViewController.swift in Sources */,
 				6334FFEE1EF15E1600920073 /* StorecapitalrecordTableViewCell.swift in Sources */,

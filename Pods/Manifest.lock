@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (4.6.0)
+  - BaiduMobStat (4.6.5)
   - IQKeyboardManagerSwift (5.0.7)
   - JCore (1.1.7)
   - JPush (3.0.8):
@@ -23,6 +24,9 @@ PODS:
   - SDWebImage/Core (4.2.3)
   - Siren (3.2.0)
   - SnapKit (4.0.0)
+  - SQLite.swift (0.11.4):
+    - SQLite.swift/standard (= 0.11.4)
+  - SQLite.swift/standard (0.11.4)
   - SVProgressHUD (2.2.2)
   - SwiftyJSON (4.0.0)
   - XCGLogger (6.0.2):
@@ -32,6 +36,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - BaiduMobStat
   - IQKeyboardManagerSwift
   - JPush
   - KMNavigationBarTransition
@@ -43,6 +48,7 @@ DEPENDENCIES:
   - SDWebImage
   - Siren
   - SnapKit
+  - SQLite.swift
   - SVProgressHUD
   - SwiftyJSON
   - XCGLogger
@@ -50,6 +56,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
+    - BaiduMobStat
     - IQKeyboardManagerSwift
     - JCore
     - JPush
@@ -63,12 +70,14 @@ SPEC REPOS:
     - SDWebImage
     - Siren
     - SnapKit
+    - SQLite.swift
     - SVProgressHUD
     - SwiftyJSON
     - XCGLogger
 
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
+  BaiduMobStat: 41c1a17c89397d80e96eff37da5dab9e600fc7a2
   IQKeyboardManagerSwift: 30fb3a61de1af53a95e02b80fb54ed0a19d5ede5
   JCore: f7459c81c135281a874a6beafdd321666adcc834
   JPush: 9574d072cc37e93fa293ba69b43ce763c440943a
@@ -82,10 +91,11 @@ SPEC CHECKSUMS:
   SDWebImage: 791bb72962b3492327ddcac4b1880bd1b5458431
   Siren: 964f57553cf6a39d1bada4e403557523a213b397
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
+  SQLite.swift: 3e3bee21da701b5b9f87c4a672cb54f233505692
   SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   XCGLogger: c9601cae9a8912de34a58666ba931ed3d624dd31
 
-PODFILE CHECKSUM: eea62463a5b60db3b76f95f40c58169e6ff0dd51
+PODFILE CHECKSUM: 82d1afd00838ae9c6045f4a766745ca1006c2d23
 
 COCOAPODS: 1.5.0

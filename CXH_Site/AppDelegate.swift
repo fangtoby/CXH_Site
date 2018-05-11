@@ -129,6 +129,10 @@ extension AppDelegate{
         setUpNav()
         setupSiren()
         JPUSHService.setLogOFF()
+        //百度统计
+        BaiduMobStat.default().start(withAppId:"c2c15771f8")
+        BaiduMobStat.default().enableDebugOn=true
+        DB.shared.refreshData()
     }
     /**
      设置导航栏的各种状态

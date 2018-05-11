@@ -13,6 +13,7 @@ class ExpressEntity:Mappable{
     var expressName:String?
     var expressCode:String?
     var expressCodeId:Int?
+    var letter:String?
     init(){}
     required init?(map: Map) {
         mapping(map: map)
@@ -21,5 +22,6 @@ class ExpressEntity:Mappable{
         expressName <- map["expressName"]
         expressCode <- map["expressCode"]
         expressCodeId <- map["expressCodeId"]
+        letter <- map["letter"]
     }
 }
