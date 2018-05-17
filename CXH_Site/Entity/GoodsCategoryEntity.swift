@@ -17,6 +17,7 @@ class GoodsCategoryEntity:Mappable{
     var displayStatu:Int?
     var goodscategoryId:Int?
     var goodsCategorySort:Int?
+    var goodscategoryCommission:Double?
     init(){}
     required init?(map: Map) {
         mapping(map: map)
@@ -29,6 +30,7 @@ class GoodsCategoryEntity:Mappable{
         displayStatu <- map["displayStatu"]
         goodscategoryId <- map["goodscategoryId"]
         goodsCategorySort <- map["goodsCategorySort"]
+        goodscategoryCommission <- map["goodscategoryCommission"]
     }
 
 }

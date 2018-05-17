@@ -103,6 +103,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
+// MARK: - 支付回调
+extension AppDelegate{
+    // iOS 8 及以下请用这个
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        if url.host == "safepay"{
+            //支付回调
+            AlipaySDK.defaultService().processOrder(withPaymentResult: url, standbyCallback:{ (resultDic) in
+                if resultDic != nil{
+                    AliPayManager.shared.showResult(result:resultDic! as NSDictionary)
+                }
+            })
+            //授权回调
+            AlipaySDK.defaultService().processAuth_V2Result(url, standbyCallback: { (resultDic) in
+                if resultDic != nil{
+                    AliPayManager.shared.showAuth_V2Result(result:resultDic! as NSDictionary)
+                }
+            })
+            return true
+        }else{
+            return WXApi.handleOpen(url, delegate:WXApiManager.shared)
+        }
+
+    }
+    // iOS 9 以上请用这个
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
+        if url.host == "safepay"{
+            //支付回调
+            AlipaySDK.defaultService().processOrder(withPaymentResult: url, standbyCallback:{ (resultDic) in
+                if resultDic != nil{
+                    AliPayManager.shared.showResult(result:resultDic! as NSDictionary)
+                }
+            })
+            //授权回调
+            AlipaySDK.defaultService().processAuth_V2Result(url, standbyCallback: { (resultDic) in
+                if resultDic != nil{
+                    AliPayManager.shared.showAuth_V2Result(result:resultDic! as NSDictionary)
+                }
+            })
+            return true
+        }else{
+            return WXApi.handleOpen(url,delegate:WXApiManager.shared)
+        }
+    }
+}
 // MARK: - 实现极光推送协议
 extension AppDelegate:JPUSHRegisterDelegate{
         ///用户点击通知栏进入app执行
@@ -121,6 +165,7 @@ extension AppDelegate:JPUSHRegisterDelegate{
 
 extension AppDelegate{
     func setApp(){
+        WXApi.registerApp("wx661bad8146962af5")
         //开启键盘框架
         IQKeyboardManager.sharedManager().enable = true
         //设置菊花图默认前景色和背景色

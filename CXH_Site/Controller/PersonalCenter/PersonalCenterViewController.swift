@@ -54,7 +54,7 @@ class PersonalCenterViewController:BaseViewController{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isTranslucent=false
-        if identity == 2{
+        if identity == 2{//如果是站点查询余额
             queryStoreCapitalSumMoney()
         }
         

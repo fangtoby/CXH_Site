@@ -29,6 +29,7 @@ PODS:
   - SQLite.swift/standard (0.11.4)
   - SVProgressHUD (2.2.2)
   - SwiftyJSON (4.0.0)
+  - WechatOpenSDK (1.8.1)
   - XCGLogger (6.0.2):
     - XCGLogger/Core (= 6.0.2)
   - XCGLogger/Core (6.0.2):
@@ -51,6 +52,7 @@ DEPENDENCIES:
   - SQLite.swift
   - SVProgressHUD
   - SwiftyJSON
+  - WechatOpenSDK
   - XCGLogger
 
 SPEC REPOS:
@@ -73,6 +75,7 @@ SPEC REPOS:
     - SQLite.swift
     - SVProgressHUD
     - SwiftyJSON
+    - WechatOpenSDK
     - XCGLogger
 
 SPEC CHECKSUMS:
@@ -94,8 +97,9 @@ SPEC CHECKSUMS:
   SQLite.swift: 3e3bee21da701b5b9f87c4a672cb54f233505692
   SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
+  WechatOpenSDK: 491d965d79335070328571d3e79f714549e79a5e
   XCGLogger: c9601cae9a8912de34a58666ba931ed3d624dd31
 
-PODFILE CHECKSUM: 82d1afd00838ae9c6045f4a766745ca1006c2d23
+PODFILE CHECKSUM: 1b6781da447919e6d4722b9815c1adcc53e4d5ad
 
 COCOAPODS: 1.5.0

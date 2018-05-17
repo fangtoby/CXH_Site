@@ -29,6 +29,12 @@ class OrderDetailsEntity:Mappable{
     var tel:String?
     var shipaddress:String?
     var province:String?
+    ///确认收货时间
+    var receiptTime:String?
+    ///此笔订单的总佣金
+    var orderComment:String?
+    ///此笔订单总的分享费用
+    var orderShareSumPrice:String?
     init(){}
     required init?(map: Map) {
         mapping(map: map)
@@ -52,5 +58,8 @@ class OrderDetailsEntity:Mappable{
         tel <- map["tel"]
         shipaddress <- map["shipaddress"]
         province <- map["province"]
+        receiptTime <- map["receiptTime"]
+        orderComment <- map["orderComment"]
+        orderShareSumPrice <- map["orderShareSumPrice"]
     }
 }

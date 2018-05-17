@@ -94,6 +94,7 @@ extension UpdateWithdrawaViewController:UITableViewDelegate,UITableViewDataSourc
         if cell == nil{
             cell=UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier:"upid")
         }
+        cell!.selectionStyle = .none
         if indexPath.row == 0{
             txtWithdrawaName=buildTxt(15, placeholder:"请输入真实姓名", tintColor:UIColor.textColor(), keyboardType: UIKeyboardType.default)
             txtWithdrawaName.frame=CGRect(x: 15,y: 0,width: boundsWidth-15,height: 50)

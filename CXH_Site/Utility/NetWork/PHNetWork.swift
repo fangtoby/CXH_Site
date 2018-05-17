@@ -187,7 +187,7 @@ public enum RequestAPI {
     //查询提现信息
     case queryWithdrawa(storeId:Int)
     //提现
-    case withdrawaTure(withdrawaId:Int,withdrawaMoney:Int,storeId:Int)
+    case withdrawaTure(withdrawaId:Int?,withdrawaMoney:Int,storeId:Int,withdrawaType:Int)
     
     //查询退货申请
     case storeQueryReturngoodsapply(storeId:Int,statu:Int,pageNumber:Int,pageSize:Int)
@@ -341,7 +341,7 @@ extension RequestAPI:TargetType{
             return "withdrawa/updateWithdrawa"
         case .queryWithdrawa(_):
             return "withdrawa/queryWithdrawa"
-        case .withdrawaTure(_,_,_):
+        case .withdrawaTure(_,_,_,_):
             return "withdrawa/withdrawaTure"
         case .storeTransferToMember(_,_):
             return "adminCollect/storeTransferToMember"
@@ -420,7 +420,7 @@ extension RequestAPI:TargetType{
     }
     public var method:Moya.Method{
         switch self{
-        case .adminUserLogin(_,_),.saveGoods(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.getAllGoods(_,_,_,_),.changeGoodsCategory(_,_,_),.delGoods(_),.changeGoodsFlag(_),.changeGoodsPic(_,_),.scanCodeGetInfo(_),.scanCodeGetLogisticspack(_,_,_),.scanCodeGetStorepack(_,_,_),.scanCodeGetExpressmailstorag(_,_,_),.searchCollectHistory(_,_),.inputExpress(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.searchGiveHistory(_,_),.saveExpress(_,_,_,_,_,_,_,_,_,_,_,_,_,_),.storeTodeliver(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.expressmailFreight(_,_,_,_,_,_,_,_),.scanCodeGetExpressmailForGivestoragByDriver(_,_),.addWithdrawa(_,_,_,_,_),.updateWithdrawa(_,_,_,_,_,_),.withdrawaTure(_,_,_),.storeTransferToMember(_,_),.scanCodeGetExpressmailForGivestoragByHeadquarters(_,_),.storeConfirmReturngoods(_,_),.codeInfoQueryMain(_),.replaceSignForUser(_,_,_),.driverGetReturn(_,_),.headquartersGetReturn(_,_),.updateExpressmailInfoByHeadquarters(_,_,_,_,_,_,_,_,_,_,_),.storeConfirmUpdateExpressmailInfo(_,_,_),.savePwd(_,_,_),.storeTongji(_,_),.getFoodByTestStoreId(_,_,_,_),.saveFood(_,_,_,_,_,_,_,_,_,_,_),.foodUpDown(_,_),.getFoodById(_),.queryIdentityByEmIdentityId(_),.idCardUploads(_,_),.testStoreUpload(_,_),.goodsUploads(_,_):
+        case .adminUserLogin(_,_),.saveGoods(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.getAllGoods(_,_,_,_),.changeGoodsCategory(_,_,_),.delGoods(_),.changeGoodsFlag(_),.changeGoodsPic(_,_),.scanCodeGetInfo(_),.scanCodeGetLogisticspack(_,_,_),.scanCodeGetStorepack(_,_,_),.scanCodeGetExpressmailstorag(_,_,_),.searchCollectHistory(_,_),.inputExpress(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.searchGiveHistory(_,_),.saveExpress(_,_,_,_,_,_,_,_,_,_,_,_,_,_),.storeTodeliver(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.expressmailFreight(_,_,_,_,_,_,_,_),.scanCodeGetExpressmailForGivestoragByDriver(_,_),.addWithdrawa(_,_,_,_,_),.updateWithdrawa(_,_,_,_,_,_),.withdrawaTure(_,_,_,_),.storeTransferToMember(_,_),.scanCodeGetExpressmailForGivestoragByHeadquarters(_,_),.storeConfirmReturngoods(_,_),.codeInfoQueryMain(_),.replaceSignForUser(_,_,_),.driverGetReturn(_,_),.headquartersGetReturn(_,_),.updateExpressmailInfoByHeadquarters(_,_,_,_,_,_,_,_,_,_,_),.storeConfirmUpdateExpressmailInfo(_,_,_),.savePwd(_,_,_),.storeTongji(_,_),.getFoodByTestStoreId(_,_,_,_),.saveFood(_,_,_,_,_,_,_,_,_,_,_),.foodUpDown(_,_),.getFoodById(_),.queryIdentityByEmIdentityId(_),.idCardUploads(_,_),.testStoreUpload(_,_),.goodsUploads(_,_):
             return .post
         case .getGoodsById(_),.queryCollectHistory(_,_,_,_),.queryGiveHistory(_,_,_,_),.queryShippinglines(),.wlQueryExpresscode(),.queryGoodsCateGoryForOne(),.queryGoodsCateGoryWhereGoodsCateGoryPId(_),.queryOrderInfoAndGoods(_,_,_,_),.queryOrderDetailsInfoAndGoods(_),.queryStoreCapitalSumMoney(_),.searchCollectHistoryForStoreBystoreUserCtime(_,_,_,_,_),.queryCollectHistoryForDriver(_,_,_,_),.queryGiveHistoryForDriver(_,_,_,_),.searchCollectHistoryForDriverByDriverUserCtime(_,_,_,_,_),.searchGiveHistoryForExpressLinkTime(_,_,_,_,_),.searchGiveHistoryForDriverUserCtime(_,_,_,_,_),.queryCxhSetInfo(),.queryWithdrawa(_),.storeQueryReturngoodsapply(_,_,_,_),.queryStorecapitalrecord(_,_,_),.queryWithdrawaRecord(_,_,_),.queryStorePrepaidrecord(_,_,_),.storeReturn(_,_,_),.queryCollectHistoryForDriverForLogisticspack(_,_,_),.queryCollectHistoryForDriverForStorepackByLogisticsPackId(_,_,_),.queryCollectHistoryForDriverForExpressmailstoragByStorePackId(_,_,_),.queryCollectHistoryForStorepackByStoreUserId(_,_,_),.queryReplaceSignForUser(_,_,_,_),.scanCodeQueryExpressmailstorag(_,_),.scanCodeGetExpressmailInfo(_,_),.storeQueryExpressmailUpdateInfo(_,_,_),.queryReturnHistory(_,_,_,_),.queryExpressmailDetail(_),.getExpressmailForGivestoragByDriver(_,_),.selectAddressInfo(_):
             return .get
@@ -532,8 +532,12 @@ extension RequestAPI:TargetType{
             return .requestParameters(parameters:["withdrawaId":withdrawaId,"withdrawaName":withdrawaName,"withdrawaBankCardNumber":withdrawaBankCardNumber,"withdrawaStoreId":withdrawaStoreId,"withdrawaBankName":withdrawaBankName,"withdrawaBankBranch":withdrawaBankBranch], encoding: URLEncoding.default)
         case let .queryWithdrawa(storeId):
             return .requestParameters(parameters:["storeId":storeId], encoding: URLEncoding.default)
-        case let .withdrawaTure(withdrawaId, withdrawaMoney, storeId):
-            return .requestParameters(parameters:["withdrawaId":withdrawaId,"withdrawaMoney":withdrawaMoney,"storeId":storeId], encoding: URLEncoding.default)
+        case let .withdrawaTure(withdrawaId, withdrawaMoney, storeId,withdrawaType):
+            if withdrawaId != nil{
+                return .requestParameters(parameters:["withdrawaId":withdrawaId!,"withdrawaMoney":withdrawaMoney,"storeId":storeId,"withdrawaType":withdrawaType], encoding: URLEncoding.default)
+            }else{
+                return .requestParameters(parameters:["withdrawaMoney":withdrawaMoney,"storeId":storeId,"withdrawaType":withdrawaType], encoding: URLEncoding.default)
+            }
         case let .storeTransferToMember(userId, expressmailStorageId):
             return .requestParameters(parameters:["userId":userId,"expressmailStorageId":expressmailStorageId], encoding: URLEncoding.default)
         case let .scanCodeGetExpressmailForGivestoragByHeadquarters(codeInfo, userId):

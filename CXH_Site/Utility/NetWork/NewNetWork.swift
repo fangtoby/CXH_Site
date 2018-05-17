@@ -17,6 +17,16 @@ public enum NewRequestAPI{
     case updateBindWholesale(storeId:Int,storeAndMemberBindWholesaleId:Int,flag:Int)
     ///绑定批发商
     case bindWholesale(storeId:Int,memberAccount:String)
+    ///查询是否绑定微信或支付宝
+    case queryStoreBindWxOrAliStatu(storeId:Int)
+    ///店铺绑定支付宝
+    case updateStoreBindAli(storeId:Int,auth_code:String)
+    ///店铺绑定微信
+    case updateStoreBindWx(storeId:Int,code:String)
+    ///站点支付宝授权参数
+    case query_store_ali_AuthParams(storeId:Int)
+    ///发送验证码
+    case sendDuanxin(account:String)
 }
 extension NewRequestAPI:TargetType{
     public var path: String {
@@ -29,15 +39,25 @@ extension NewRequestAPI:TargetType{
             return "adminWholesale/updateBindWholesale"
         case .bindWholesale(_,_):
             return "adminWholesale/bindWholesale"
+        case .queryStoreBindWxOrAliStatu(_):
+            return "storeBindWxOrAli/queryStoreBindWxOrAliStatu"
+        case .updateStoreBindAli(_,_):
+            return "storeBindWxOrAli/updateStoreBindAli"
+        case .updateStoreBindWx(_,_):
+            return "storeBindWxOrAli/updateStoreBindWx"
+        case .query_store_ali_AuthParams(_):
+            return "queryStoreCommInfo/query_store_ali_AuthParams"
+        case .sendDuanxin(_):
+            return "sendDuanxin/sendDuanxin"
 
         }
     }
 
     public var method: Moya.Method {
         switch self {
-        case .updateGoods(_,_,_,_,_,_,_,_,_,_),.updateBindWholesale(_,_,_),.bindWholesale(_,_):
+        case .updateGoods(_,_,_,_,_,_,_,_,_,_),.updateBindWholesale(_,_,_),.bindWholesale(_,_),.updateStoreBindAli(_,_),.updateStoreBindWx(_,_),.sendDuanxin(_):
             return .post
-        case .queryBindWholesale(_,_,_):
+        case .queryBindWholesale(_,_,_),.queryStoreBindWxOrAliStatu(_),.query_store_ali_AuthParams(_):
             return .get
         }
     }
@@ -58,6 +78,16 @@ extension NewRequestAPI:TargetType{
             return .requestParameters(parameters:["storeId":storeId,"storeAndMemberBindWholesaleId":storeAndMemberBindWholesaleId,"flag":flag], encoding: URLEncoding.default)
         case let .bindWholesale(storeId, memberAccount):
             return .requestParameters(parameters:["storeId":storeId,"memberAccount":memberAccount], encoding: URLEncoding.default)
+        case let .queryStoreBindWxOrAliStatu(storeId):
+            return .requestParameters(parameters:["storeId":storeId], encoding: URLEncoding.default)
+        case let .updateStoreBindAli(storeId, auth_code):
+            return .requestParameters(parameters:["storeId":storeId,"auth_code":auth_code], encoding: URLEncoding.default)
+        case let .updateStoreBindWx(storeId, code):
+            return .requestParameters(parameters:["storeId":storeId,"code":code], encoding: URLEncoding.default)
+        case let .query_store_ali_AuthParams(storeId):
+            return .requestParameters(parameters:["storeId":storeId], encoding: URLEncoding.default)
+        case let .sendDuanxin(account):
+            return .requestParameters(parameters:["account":account], encoding: URLEncoding.default)
         }
     }
 

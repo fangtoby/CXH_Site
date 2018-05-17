@@ -262,6 +262,7 @@ extension OrderListViewController{
         let entity=arr[sender.tag]
         let vc=OrderDetailsViewController()
         vc.orderInfoId=entity.orderInfoId
+        vc.orderStatu=orderStatu
         self.navigationController?.pushViewController(vc, animated:true)
     }
     /**

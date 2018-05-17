@@ -27,6 +27,8 @@ class GoodEntity:Mappable{
     var goodsMemberPrice:Double?
     var memberPriceMiniCount:Int?
     var goodsSaleFlag:Int?
+    ///商品状态 1零售 2批发
+    var retailOrWholesaleFlag:Int?
     init(){}
     required init?(map: Map) {
         mapping(map: map)
@@ -49,6 +51,7 @@ class GoodEntity:Mappable{
         goodsMemberPrice <- map["goodsMemberPrice"]
         memberPriceMiniCount <- map["memberPriceMiniCount"]
         goodsSaleFlag <- map["goodsSaleFlag"]
+        retailOrWholesaleFlag <- map["retailOrWholesaleFlag"]
         
     }
 }

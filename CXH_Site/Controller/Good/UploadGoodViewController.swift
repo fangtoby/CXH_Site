@@ -76,7 +76,10 @@ class UploadGoodViewController:BaseViewController{
     }
     @objc func updateCategory(_ obj:Notification){
         categoryArr=obj.object as! [GoodsCategoryEntity]
-        lblCategory.text=categoryArr[1].goodscategoryName
+        lblCategory.text=(categoryArr[1].goodscategoryName ?? "")+"(佣金\(categoryArr[1].goodscategoryCommission ?? 0))%"
+    }
+    deinit{
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -347,7 +350,6 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
 
                 break
             case 2:
-
                 name.attributedText=redText("*分类")
                 cell!.contentView.addSubview(name)
                 lblCategory=buildLabel(UIColor.color999(), font:14, textAlignment: NSTextAlignment.left)

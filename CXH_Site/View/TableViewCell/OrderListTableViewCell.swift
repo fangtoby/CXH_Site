@@ -53,7 +53,15 @@ class OrderListTableViewCell:UITableViewCell{
         let normalAttributes = [NSAttributedStringKey.foregroundColor : UIColor.red,NSAttributedStringKey.font:UIFont.boldSystemFont(ofSize: 20)]
         str.addAttributes(normalAttributes, range:NSMakeRange(0,priceCount+1))
         lblPriceOfWeight.attributedText=str
-        lblGoodName.text=entity.goodInfoName
+        if entity.retailOrWholesaleFlag == 2{
+            let goodName="[批发商品]"+(entity.goodInfoName ?? "")
+            let str:NSMutableAttributedString=NSMutableAttributedString(string:goodName);
+            let normalAttributes = [NSAttributedStringKey.foregroundColor : UIColor.red,NSAttributedStringKey.font:UIFont.systemFont(ofSize:14)]
+            str.addAttributes(normalAttributes, range:NSMakeRange(0,6))
+            lblGoodName.attributedText=str
+        }else{
+            lblGoodName.text=entity.goodInfoName
+        }
         goodImg.sd_setImage(with: Foundation.URL(string:URLIMG+entity.goodPic!), placeholderImage:UIImage(named: "default_icon"))
     }
     required init?(coder aDecoder: NSCoder) {

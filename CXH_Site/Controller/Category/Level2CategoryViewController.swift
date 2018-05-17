@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-/// 1级分类
+/// 2级分类
 class Level2CategoryViewController:BaseViewController{
     //接收分类entity
     var pEntity:GoodsCategoryEntity?
@@ -37,9 +37,11 @@ extension Level2CategoryViewController:UITableViewDelegate,UITableViewDataSource
         cell!.textLabel!.textColor=UIColor.textColor()
         cell!.textLabel!.font=UIFont.systemFont(ofSize: 15)
         cell!.accessoryType = .disclosureIndicator
+        cell!.detailTextLabel!.font=UIFont.systemFont(ofSize:14)
         if arr.count > 0{
             let entity=arr[indexPath.row]
             cell!.textLabel!.text=entity.goodscategoryName
+            cell!.detailTextLabel!.text="佣金比例:\(entity.goodscategoryCommission ?? 0)%"
         }
         return cell!
     }

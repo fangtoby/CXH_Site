@@ -16,7 +16,7 @@ class ExpressEntity:Mappable{
     var letter:String?
     init(){}
     required init?(map: Map) {
-        mapping(map: map)
+        
     }
     func mapping(map: Map) {
         expressName <- map["expressName"]

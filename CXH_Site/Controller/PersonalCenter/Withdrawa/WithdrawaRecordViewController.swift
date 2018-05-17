@@ -11,8 +11,10 @@ import UIKit
 import MJRefresh
 /// 提现记录
 class WithdrawaRecordViewController:BaseViewController{
+    ///如果有值  返回个人中心页面
+    var flag:Int?
     fileprivate var table:UITableView!
-    fileprivate var arr=[WithdrawaEntity]()
+    fileprivate var arr=[WithdrawaRecordEntity]()
     fileprivate var pageNumber=0
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,10 +40,21 @@ class WithdrawaRecordViewController:BaseViewController{
         self.table.mj_header.beginRefreshing()
 
     }
-//    override func navigationShouldPopOnBackButton() -> Bool {
-//        self.navigationController?.popToRootViewController(animated: true)
-//        return true
-//    }
+    override func navigationShouldPopOnBackButton() -> Bool {
+        if flag != nil{
+            let navVC=self.navigationController
+            var viewControllers=[UIViewController]()
+            for(vc) in navVC!.viewControllers{
+                viewControllers.append(vc)
+                if vc.isKind(of:PersonalCenterViewController.self){
+                    break;
+                }
+            }
+            navVC?.setViewControllers(viewControllers, animated:true)
+            return false
+        }
+        return true
+    }
 }
 // MARK: - table协议
 extension WithdrawaRecordViewController:UITableViewDelegate,UITableViewDataSource{
@@ -61,6 +74,10 @@ extension WithdrawaRecordViewController:UITableViewDelegate,UITableViewDataSourc
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return arr.count
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        ///去掉行选中状态
+        tableView.deselectRow(at:indexPath, animated:true)
     }
 }
 
@@ -103,7 +120,7 @@ extension WithdrawaRecordViewController{
             let json=self.swiftJSON(result)
             print("提现记录\(json)")
             for(_,value) in json["list"]{
-                let entity=self.jsonMappingEntity(WithdrawaEntity(), object:value.object)
+                let entity=self.jsonMappingEntity(WithdrawaRecordEntity(), object:value.object)
                 self.arr.append(entity!)
                 count+=1
             }

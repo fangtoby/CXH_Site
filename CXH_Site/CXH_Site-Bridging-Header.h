@@ -14,7 +14,13 @@
 #import "SEPrinterManager.h"
 /// 文本默认提示
 #import "UITextView+Placeholder.h"
-
+///微信
+#import "WXApi.h"
+#import "WXApiObject.h"
+//支付宝
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <AlipaySDK/AlipaySDK.h>
 //百度移动统计
 #import "BaiduMobStat.h"
 

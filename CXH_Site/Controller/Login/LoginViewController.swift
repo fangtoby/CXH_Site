@@ -41,13 +41,9 @@ class LoginViewController:BaseViewController{
         super.viewWillAppear(animated)
         //导航栏隐藏
         self.navigationController?.setNavigationBarHidden(true, animated:true)
-        //设置状态栏颜色为默认颜色
-        UIApplication.shared.statusBarStyle = .default
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        //设置状态栏颜色为白色
-        UIApplication.shared.statusBarStyle = .lightContent
     }
     override func viewDidLoad() {
         super.viewDidLoad()

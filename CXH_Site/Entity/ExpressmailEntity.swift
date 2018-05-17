@@ -46,9 +46,10 @@ class ExpressmailEntity:Mappable{
     var expressLinkId:Int?
     var idCard:String?
     var packagePic:String?
+    var storeName:String?
+    var storeNo:String?
     init(){}
     required init?(map: Map) {
-        mapping(map: map)
     }
     func mapping(map: Map) {
         expressmailId <- map["expressmailId"]
@@ -87,6 +88,8 @@ class ExpressmailEntity:Mappable{
         expressLinkId <- map["expressLinkId"]
         idCard <- map["idCard"]
         packagePic <- map["packagePic"]
+        storeName <- map["storeName"]
+        storeNo <- map["storeNo"]
     }
 
 }

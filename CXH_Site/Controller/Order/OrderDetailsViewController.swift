@@ -23,19 +23,19 @@ class OrderDetailsViewController:BaseViewController{
         super.viewDidLoad()
         self.title="订单详情"
         self.view.backgroundColor=UIColor.viewBackgroundColor()
-        if orderStatu == 3{
-            self.navigationItem.rightBarButtonItem=UIBarButtonItem(title:"查看物流", style: UIBarButtonItemStyle.done, target:self, action:#selector(pushRecruitment))
-        }
+//        if orderStatu == 3{
+//            self.navigationItem.rightBarButtonItem=UIBarButtonItem(title:"查看物流", style: UIBarButtonItemStyle.done, target:self, action:#selector(pushRecruitment))
+//        }
         queryOrderDetailsInfoAndGoods()
     }
-    /**
-     跳转查看物流
-     */
-    @objc func pushRecruitment(){
-        let vc=PublicRecruitmentViewController()
-        vc.orderInfoId=orderInfoId
-        self.navigationController?.pushViewController(vc, animated:true)
-    }
+//    /**
+//     跳转查看物流
+//     */
+//    @objc func pushRecruitment(){
+//        let vc=PublicRecruitmentViewController()
+//        vc.orderInfoId=orderInfoId
+//        self.navigationController?.pushViewController(vc, animated:true)
+//    }
 }
 // MARK: - 网络请求
 extension OrderDetailsViewController{
@@ -137,11 +137,20 @@ extension OrderDetailsViewController:UITableViewDelegate,UITableViewDataSource{
             goodImg.sd_setImage(with: Foundation.URL(string:URLIMG+entity.goodPic!), placeholderImage:UIImage(named: "default_icon"))
             cell!.contentView.addSubview(goodImg)
             let lblGoodName=UILabel(frame:CGRect(x: goodImg.frame.maxX+5,y: 5,width: boundsWidth-(goodImg.frame.maxX+5)-15,height: 40))
-            lblGoodName.text=entity.goodInfoName
+            lblGoodName.textColor=UIColor.RGBFromHexColor("#333333")
+            if entity.retailOrWholesaleFlag == 2{
+                let goodName="[批发商品]"+(entity.goodInfoName ?? "")
+                let str:NSMutableAttributedString=NSMutableAttributedString(string:goodName);
+                let normalAttributes = [NSAttributedStringKey.foregroundColor : UIColor.red,NSAttributedStringKey.font:UIFont.systemFont(ofSize:14)]
+                str.addAttributes(normalAttributes, range:NSMakeRange(0,6))
+                lblGoodName.attributedText=str
+            }else{
+                lblGoodName.text=entity.goodInfoName
+            }
             lblGoodName.font=UIFont.systemFont(ofSize: 14)
             lblGoodName.lineBreakMode=NSLineBreakMode.byWordWrapping
             lblGoodName.numberOfLines=2
-            lblGoodName.textColor=UIColor.RGBFromHexColor("#333333")
+
             cell!.contentView.addSubview(lblGoodName)
             
             let lblPriceOfWeight=UILabel(frame:CGRect(x: goodImg.frame.maxX+5,y: 85,width: 200,height: 20))
@@ -199,8 +208,13 @@ extension OrderDetailsViewController:UITableViewDelegate,UITableViewDataSource{
                 }
                 break
             case 4:
-                name.text="创建时间"
-                nameValue.text=self.orderDetailsEntity!.addTime
+                if orderStatu! > 3{
+                    name.text="收货时间"
+                    nameValue.text=self.orderDetailsEntity!.receiptTime
+                }else{
+                    name.text="下单时间"
+                    nameValue.text=self.orderDetailsEntity!.addTime
+                }
             default:break
             }
             break
@@ -274,12 +288,23 @@ extension OrderDetailsViewController:UITableViewDelegate,UITableViewDataSource{
         if section == 2{
             let view=UIView(frame:CGRect.zero)
             view.backgroundColor=UIColor.white
-            let lblYf=UILabel(frame:CGRect(x: 15,y: 15,width: (boundsWidth-15)/2,height: 20))
-            lblYf.text="运费:￥0.0"
+            let lblYf=UILabel(frame:CGRect(x: 15,y:5,width: (boundsWidth-30)/2,height:20))
+            lblYf.text="运费:￥0"
             lblYf.font=UIFont.systemFont(ofSize: 13)
             lblYf.textColor=UIColor.color666()
             view.addSubview(lblYf)
-            let lblMoblieSumPrice=UILabel(frame:CGRect(x: lblYf.frame.maxX,y: 15,width: boundsWidth-lblYf.frame.maxX-15,height: 20))
+            //订单总佣金
+            let lblOrderComment=buildLabel(UIColor.color666(), font:13, textAlignment: NSTextAlignment.right)
+            lblOrderComment.frame=CGRect.init(x:lblYf.frame.maxX, y:5, width:(boundsWidth-30)/2, height:20)
+            lblOrderComment.text="佣金:￥\(self.orderDetailsEntity!.orderComment ?? "0")"
+            view.addSubview(lblOrderComment)
+            //订单总分享费用
+            let lblOrderShareSumPrice=buildLabel(UIColor.color666(),font:13, textAlignment: NSTextAlignment.left)
+            lblOrderShareSumPrice.frame=CGRect(x: 15,y:lblYf.frame.maxY+5,width: (boundsWidth-30)/2,height:20)
+            lblOrderShareSumPrice.text="分享费:￥\(self.orderDetailsEntity!.orderShareSumPrice ?? "0")"
+            view.addSubview(lblOrderShareSumPrice)
+            ///订单总价
+            let lblMoblieSumPrice=UILabel(frame:CGRect(x: lblYf.frame.maxX,y: lblYf.frame.maxY+5,width:(boundsWidth-30)/2,height: 20))
             lblMoblieSumPrice.textAlignment = .right
             lblMoblieSumPrice.font=UIFont.systemFont(ofSize: 14)
             lblMoblieSumPrice.textColor=UIColor.color333()
@@ -302,7 +327,7 @@ extension OrderDetailsViewController:UITableViewDelegate,UITableViewDataSource{
     //给每个分组的尾部设置5高度
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == 2{
-            return 50
+            return 55
         }else{
             return 5
         }
