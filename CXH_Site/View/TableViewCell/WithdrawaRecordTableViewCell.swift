@@ -23,6 +23,8 @@ class WithdrawaRecordTableViewCell: UITableViewCell {
     @IBOutlet weak var lblWithdrawaType:UILabel!
 
     @IBOutlet weak var lblWithdrawaRecordStatu:UILabel!
+
+    @IBOutlet weak var lblWithdrawaServiceChargeMoney:UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -34,6 +36,7 @@ class WithdrawaRecordTableViewCell: UITableViewCell {
     func updateCell(_ entity:WithdrawaRecordEntity){
         lblTime.text="提现时间:"+(entity.withdrawaRecordTime ?? "")
         lblName.text="提现人:\(entity.withdrawaRecordName ?? "")"
+        lblWithdrawaServiceChargeMoney.text="手续费:\(entity.withdrawaRecordServiceChargeMoney ?? 0)"
         if entity.withdrawaType == 1{
             img.image=UIImage(named:"tx")
             lblWithdrawaType.text="银行卡"

@@ -85,7 +85,7 @@ extension WithdrawaRecordViewController:UITableViewDelegate,UITableViewDataSourc
 extension WithdrawaRecordViewController:DZNEmptyDataSetDelegate,DZNEmptyDataSetSource{
     //图片
     func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
-        return UIImage(named: "nil_img")
+        return nil
     }
     //文字提示
     func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {

@@ -33,6 +33,8 @@ class WithdrawaRecordEntity:Mappable{
     var withdrawalsFailMs:String?
     ///‘微信支付宝 提现成功时间’,
     var withdrawalsSusscesTime:String?
+    ///提现手续费
+    var withdrawaRecordServiceChargeMoney:Double?
     init(){}
     required init?(map: Map) {
 
@@ -50,5 +52,6 @@ class WithdrawaRecordEntity:Mappable{
         withdrawaRecordStatu <- map["withdrawaRecordStatu"]
         withdrawalsFailMs <- map["withdrawalsFailMs"]
         withdrawalsSusscesTime <- map["withdrawalsSusscesTime"]
+        withdrawaRecordServiceChargeMoney <- map["withdrawaRecordServiceChargeMoney"]
     }
 }

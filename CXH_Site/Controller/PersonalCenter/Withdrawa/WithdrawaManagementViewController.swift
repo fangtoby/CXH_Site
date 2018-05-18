@@ -333,6 +333,7 @@ extension WithdrawaManagementViewController{
                 self.wx_nickname=json["wxforstoreInfo"]["wx_nickname"].string
             }
             self.table.reloadRows(at:[IndexPath.init(row:4, section:0)], with: UITableViewRowAnimation.none)
+            self.dismissHUD()
         }) { (error) in
             self.showSVProgressHUD(error!, type: HUD.error)
         }

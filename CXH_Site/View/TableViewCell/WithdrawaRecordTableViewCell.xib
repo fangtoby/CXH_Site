@@ -74,6 +74,16 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="手续费:0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4rz-TT-XPk">
+                        <rect key="frame" x="267" y="79.5" width="48" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="15" id="Qfs-Ne-7TN"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="gkx-za-UFX"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="0xS-2K-pYs" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="0s4-CN-OEE"/>
@@ -81,9 +91,11 @@
                     <constraint firstItem="Up8-Dt-a9U" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="2bt-xj-Kw1"/>
                     <constraint firstItem="X3B-nt-Ddu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="7NR-KO-sM5"/>
                     <constraint firstItem="qID-UC-f9t" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="23" id="EeP-kr-ZtS"/>
+                    <constraint firstAttribute="bottom" secondItem="4rz-TT-XPk" secondAttribute="bottom" constant="5" id="GCZ-h1-MKr"/>
                     <constraint firstItem="X3B-nt-Ddu" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="MsC-3I-FWs"/>
                     <constraint firstAttribute="trailing" secondItem="chW-jc-smS" secondAttribute="trailing" constant="8" id="NGt-et-9gP"/>
                     <constraint firstItem="0xS-2K-pYs" firstAttribute="top" secondItem="X3B-nt-Ddu" secondAttribute="bottom" constant="5" id="PfM-aa-sfA"/>
+                    <constraint firstItem="chW-jc-smS" firstAttribute="trailing" secondItem="4rz-TT-XPk" secondAttribute="trailing" id="URi-UF-xhd"/>
                     <constraint firstAttribute="bottom" secondItem="chW-jc-smS" secondAttribute="bottom" constant="20" id="W6l-ix-JWB"/>
                     <constraint firstItem="Paa-Me-0Nu" firstAttribute="leading" secondItem="X3B-nt-Ddu" secondAttribute="trailing" constant="8" id="nyQ-u4-FHJ"/>
                     <constraint firstItem="qID-UC-f9t" firstAttribute="leading" secondItem="X3B-nt-Ddu" secondAttribute="trailing" constant="8" id="uCh-Bb-cbC"/>
@@ -96,6 +108,7 @@
                 <outlet property="lblPrice" destination="chW-jc-smS" id="pAV-3o-AxN"/>
                 <outlet property="lblTime" destination="Paa-Me-0Nu" id="Tly-JR-kkN"/>
                 <outlet property="lblWithdrawaRecordStatu" destination="Up8-Dt-a9U" id="LAX-qJ-Cfw"/>
+                <outlet property="lblWithdrawaServiceChargeMoney" destination="4rz-TT-XPk" id="8PA-jQ-WjI"/>
                 <outlet property="lblWithdrawaType" destination="0xS-2K-pYs" id="C3k-sw-2aG"/>
             </connections>
             <point key="canvasLocation" x="141.5" y="182"/>
