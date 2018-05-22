@@ -171,9 +171,13 @@ extension WithdrawaManagementViewController{
 
                 })
             }else if success == "withdrawaStartMoney"{
-                self.showSVProgressHUD("最低起提金额不足", type: HUD.info)
+                self.showSVProgressHUD("最低起提金额不足", type: HUD.error)
             }else if success == "capitalSumMoney"{
-                self.showSVProgressHUD("余额不足", type: HUD.info)
+                self.showSVProgressHUD("余额不足", type: HUD.error)
+            }else if success == "notBingWx"{
+                self.showSVProgressHUD("没有绑定微信", type: HUD.error)
+            }else if success == "notBingAli"{
+                self.showSVProgressHUD("没有绑定支付宝", type: HUD.error)
             }else{
                 self.showSVProgressHUD("申请提现失败", type: HUD.error)
             }

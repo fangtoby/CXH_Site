@@ -31,6 +31,7 @@ class UploadGoodViewController:BaseViewController{
     fileprivate var txtRemark:UITextField!
     fileprivate var txtProducer:UITextField!
     fileprivate var lblCategory:UILabel!
+    private var txtWeight:UITextField!
     private var txtGoodsMemberPrice:UITextField!
     private var txtMemberPriceMiniCount:UITextField!
     fileprivate var collectionView:UICollectionView!
@@ -99,7 +100,7 @@ extension UploadGoodViewController{
         segmentedControl.selectedSegmentIndex=0
         segmentedControl.addTarget(self, action: #selector(segmentedControlChanged), for: UIControlEvents.valueChanged)
         scrollView.addSubview(segmentedControl)
-        table=UITableView(frame:CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 19*50+280))
+        table=UITableView(frame:CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 20*50+280))
         table.delegate=self
         table.dataSource=self
         table.isScrollEnabled=false
@@ -125,6 +126,7 @@ extension UploadGoodViewController{
         let btnQualityAssuranceAgreement=UIButton(frame:CGRect.init(x:btnUserAgreement.frame.maxX, y:0, width:115, height: 25))
         btnQualityAssuranceAgreement.setTitle("《质量保证协议》", for: UIControlState.normal)
         btnQualityAssuranceAgreement.titleLabel!.font=UIFont.systemFont(ofSize: 14)
+        btnQualityAssuranceAgreement.addTarget(self, action:#selector(pushAgreementVC), for: UIControlEvents.touchUpInside)
         btnQualityAssuranceAgreement.setTitleColor(UIColor.applicationMainColor(), for: UIControlState.normal)
         userAgreementView.addSubview(btnQualityAssuranceAgreement)
 
@@ -134,6 +136,11 @@ extension UploadGoodViewController{
 
         scrollView.addSubview(btn)
         scrollView.contentSize=CGSize(width: boundsWidth,height: btn.frame.maxY+30)
+    }
+    ///跳转到质量保证协议
+    @objc private func pushAgreementVC(){
+        let vc=AgreementViewController()
+        self.navigationController?.pushViewController(vc,animated:true)
     }
     ///选择用户协议
     @objc private func isSelectedUserAgreement(sender:UIButton){
@@ -146,11 +153,11 @@ extension UploadGoodViewController{
     //选择点击后的事件
     @objc func segmentedControlChanged(sender:UISegmentedControl) {
         if sender.selectedSegmentIndex == 2{
-            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 21*50+280)
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 22*50+280)
         }else if sender.selectedSegmentIndex == 1{
-            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 20*50+280)
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 21*50+280)
         }else{
-            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 19*50+280)
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 20*50+280)
         }
         userAgreementView.frame=CGRect.init(x:(boundsWidth-(25+143+115+5))/2, y:table.frame.maxY+30, width:(25+143+115+5),height:25)
         btn.frame=CGRect(x: 30,y:userAgreementView.frame.maxY+15,width: boundsWidth-60,height: 40)
@@ -176,6 +183,7 @@ extension UploadGoodViewController{
         let sellerAddress=txtSellerAddress.text
         let memberPriceMiniCount=txtMemberPriceMiniCount?.text
         let goodsMemberPrice=txtGoodsMemberPrice?.text
+        let weight=txtWeight.text
         if goodInfoName == nil || goodInfoName!.count == 0{
             self.showSVProgressHUD("商品名称不能为空", type: HUD.info)
             return
@@ -187,6 +195,9 @@ extension UploadGoodViewController{
         if goodUnit == nil || goodUnit!.count == 0{
             self.showSVProgressHUD("商品单位不能为空", type: HUD.info)
             return
+        }
+        if weight == nil || weight!.count == 0{
+            self.showSVProgressHUD("商品重量不能为空", type: HUD.info)
         }
         switch self.segmentedControl.selectedSegmentIndex {
         case 0:
@@ -290,7 +301,7 @@ extension UploadGoodViewController{
         }
         self.showSVProgressHUD("正在加载...", type: HUD.textClear)
         let storeId=userDefaults.object(forKey: "storeId") as! Int
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.saveGoods(goodInfoName: goodInfoName!, goodUcode: goodUcode!, goodUnit: goodUnit!, goodsPrice: goodsPrice ?? "", stock:Int(stock!)!, goodLife: goodLife!, goodSource: goodSource!, goodService: goodService!, goodPic:imgArr[0], goodsDetailsPic: goodsDetailsPic, goodInfoCode: goodInfoCode!, goodMixed: goodMixed!, remark: remark!, fCategoryId: fCategoryId!, sCategoryId:sCategoryId!,storeId:storeId,lyPic:lyPic,lyMiaoshu:lyMiaoshu,producer:producer!, goodsMemberPrice:goodsMemberPrice ?? "", memberPriceMiniCount:Int(memberPriceMiniCount ?? "0") ?? 0, goodsSaleFlag:segmentedControl.selectedSegmentIndex+1, sellerAddress:sellerAddress!), successClosure: { (result) -> Void in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.saveGoods(goodInfoName: goodInfoName!, goodUcode: goodUcode!, goodUnit: goodUnit!, goodsPrice: goodsPrice ?? "", stock:Int(stock!)!, goodLife: goodLife!, goodSource: goodSource!, goodService: goodService!, goodPic:imgArr[0], goodsDetailsPic: goodsDetailsPic, goodInfoCode: goodInfoCode!, goodMixed: goodMixed!, remark: remark!, fCategoryId: fCategoryId!, sCategoryId:sCategoryId!,storeId:storeId,lyPic:lyPic,lyMiaoshu:lyMiaoshu,producer:producer!, goodsMemberPrice:goodsMemberPrice ?? "", memberPriceMiniCount:Int(memberPriceMiniCount ?? "0") ?? 0, goodsSaleFlag:segmentedControl.selectedSegmentIndex+1, sellerAddress:sellerAddress!,weight:weight!), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
             let success=json["success"].stringValue
             if success == "success"{
@@ -375,9 +386,15 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 txtGoodUcode=buildTxt(14, placeholder:"请输入商品规格", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
                 txtGoodUcode.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 cell!.contentView.addSubview(txtGoodUcode)
-
                 break
             case 5:
+                name.attributedText=redText("*重量")
+                cell!.contentView.addSubview(name)
+                txtWeight=buildTxt(14, placeholder:"请输入商品重量", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.decimalPad)
+                txtWeight.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
+                cell!.contentView.addSubview(txtWeight)
+                break
+            case 6:
                 name.text="  条码"
                 cell!.contentView.addSubview(name)
                 txtGoodInfoCode=buildTxt(14, placeholder:"请输入商品条码(可无)", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
@@ -385,7 +402,7 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 cell!.contentView.addSubview(txtGoodInfoCode)
 
                 break
-            case 6:
+            case 7:
 
                 if segmentedControl.selectedSegmentIndex == 1{
                     name.attributedText=redText("*批发价")
@@ -402,7 +419,7 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 }
 
                 break
-            case 7:
+            case 8:
 
                 if segmentedControl.selectedSegmentIndex == 2{
                     name.attributedText=redText("*批发价")
@@ -419,7 +436,7 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 }
 
                 break
-            case 8:
+            case 9:
 
                 name.attributedText=redText("*起订量")
                 cell!.contentView.addSubview(name)
@@ -585,11 +602,11 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
             return 9
         }else{
             if segmentedControl.selectedSegmentIndex == 2{
-                return 9
+                return 10
             }else if segmentedControl.selectedSegmentIndex == 1{
-                return 8
+                return 9
             }else{
-                return 7
+                return 8
             }
         }
     }

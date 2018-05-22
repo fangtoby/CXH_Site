@@ -220,6 +220,8 @@ extension TheShelvesViewController{
             if success == "success"{
                 self.showSVProgressHUD("上架成功", type: HUD.success)
                 self.table.mj_header.beginRefreshing()
+            }else if success == "weightNotExist"{
+                self.showSVProgressHUD("商品重量不能为空", type: HUD.error)
             }else{
                 self.showSVProgressHUD("上架失败", type: HUD.info)
             }

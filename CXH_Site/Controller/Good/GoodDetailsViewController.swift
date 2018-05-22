@@ -29,6 +29,7 @@ class GoodDetailsViewController:BaseViewController{
     fileprivate var txtGoodsPrice:UITextField!
     fileprivate var txtStock:UITextField!
     fileprivate var txtGoodLife:UITextField!
+    private var txtWeight:UITextField!
     //是否同意用户协议
     fileprivate var isImg:UIButton!
     //用户协议文字按
@@ -90,6 +91,7 @@ class GoodDetailsViewController:BaseViewController{
         let btnQualityAssuranceAgreement=UIButton(frame:CGRect.init(x:btnUserAgreement.frame.maxX, y:0, width:115, height: 25))
         btnQualityAssuranceAgreement.setTitle("《质量保证协议》", for: UIControlState.normal)
         btnQualityAssuranceAgreement.titleLabel!.font=UIFont.systemFont(ofSize: 14)
+        btnQualityAssuranceAgreement.addTarget(self, action:#selector(pushAgreementVC), for: UIControlEvents.touchUpInside)
         btnQualityAssuranceAgreement.setTitleColor(UIColor.applicationMainColor(), for: UIControlState.normal)
         userAgreementView.addSubview(btnQualityAssuranceAgreement)
 
@@ -102,6 +104,11 @@ class GoodDetailsViewController:BaseViewController{
     }
 }
 extension GoodDetailsViewController{
+    ///跳转到质量保证协议
+    @objc private func pushAgreementVC(){
+        let vc=AgreementViewController()
+        self.navigationController?.pushViewController(vc,animated:true)
+    }
     ///选择用户协议
     @objc private func isSelectedUserAgreement(sender:UIButton){
         if isImg.isSelected{
@@ -124,11 +131,11 @@ extension GoodDetailsViewController{
     ///更新table高度
     private func updateTableHeight(){
         if segmentedControl.selectedSegmentIndex == 2{
-            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 21*50+210)
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 22*50+210)
         }else if segmentedControl.selectedSegmentIndex == 1{
-            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 20*50+210)
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 21*50+210)
         }else{
-            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 19*50+210)
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 20*50+210)
         }
     }
 }
@@ -191,9 +198,19 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
                 if flag != 1{
                     txtGoodUcode.isEnabled=false
                 }
-
                 break
             case 5:
+                name.attributedText=redText(" 重量")
+                cell!.contentView.addSubview(name)
+                txtWeight=buildTxt(14, placeholder:"请输入商品重量", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.decimalPad)
+                txtWeight.frame=CGRect(x: 75,y:0,width: boundsWidth-75-30,height: 50)
+                txtWeight.text=entity!.weight?.description
+                cell!.contentView.addSubview(txtWeight)
+                if flag != 1{
+                    txtWeight.isEnabled=false
+                }
+                break
+            case 6:
                 name.text="保质期"
                 cell!.contentView.addSubview(name)
                 txtGoodLife=buildTxt(14, placeholder:"请输入保质期", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
@@ -205,7 +222,7 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
                 }
 
                 break
-            case 6:
+            case 7:
 
                 if segmentedControl.selectedSegmentIndex == 1{
                     name.text="批发价"
@@ -231,7 +248,7 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
                 }
 
                 break
-            case 7:
+            case 8:
 
                 if segmentedControl.selectedSegmentIndex == 2{
                     name.text="批发价"
@@ -256,7 +273,7 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
                 }
 
                 break
-            case 8:
+            case 9:
                 name.text="起订量"
                 cell!.contentView.addSubview(name)
                 txtMemberPriceMiniCount=buildTxt(14, placeholder:"请输入起订量", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.numberPad)
@@ -396,11 +413,11 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
             return 9
         }else{
             if segmentedControl.selectedSegmentIndex == 2{
-                return 9
+                return 10
             }else if segmentedControl.selectedSegmentIndex == 1{
-                return 8
+                return 9
             }else{
-                return 7
+                return 8
             }
         }
     }
@@ -503,6 +520,7 @@ extension GoodDetailsViewController{
         let stock=txtStock.text
         let goodsMemberPrice=txtGoodsMemberPrice?.text
         let memberPriceMiniCount=txtMemberPriceMiniCount?.text
+        let weight=txtWeight.text
         if stock == nil || stock!.count == 0{
             self.showSVProgressHUD("商品库存不能为空", type: HUD.info)
             return
@@ -513,6 +531,10 @@ extension GoodDetailsViewController{
         }
         if goodUcode == nil || goodUcode!.count == 0{
             self.showSVProgressHUD("商品规格不能为空", type: HUD.info)
+            return
+        }
+        if weight == nil || weight!.count == 0{
+            self.showSVProgressHUD("重量不能为空", type: HUD.info)
             return
         }
         if goodUnit == nil || goodUnit!.count == 0{
@@ -556,7 +578,7 @@ extension GoodDetailsViewController{
         self.showSVProgressHUD("正在加载...", type: HUD.textClear)
 
 
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.updateGoods(goodsbasicInfoId:goodsbasicInfoId!, goodUnit: goodUnit!, goodUcode: goodUcode!, goodsPrice: goodsPrice, goodLife: goodLife!, stock:Int(stock!)!, storeId:entity!.storeId!, goodsSaleFlag: segmentedControl.selectedSegmentIndex+1, goodsMemberPrice:goodsMemberPrice, memberPriceMiniCount: memberPriceMiniCount==nil ? nil : Int(memberPriceMiniCount!)), successClosure: { (any) in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.updateGoods(goodsbasicInfoId:goodsbasicInfoId!, goodUnit: goodUnit!, goodUcode: goodUcode!, goodsPrice: goodsPrice, goodLife: goodLife!, stock:Int(stock!)!, storeId:entity!.storeId!, goodsSaleFlag: segmentedControl.selectedSegmentIndex+1, goodsMemberPrice:goodsMemberPrice, memberPriceMiniCount: memberPriceMiniCount==nil ? nil : Int(memberPriceMiniCount!),weight: weight!), successClosure: { (any) in
             let success=self.swiftJSON(any)["success"].stringValue
             if success == "success"{
                 self.showSVProgressHUD("修改成功", type: HUD.success)

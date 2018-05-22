@@ -14,6 +14,9 @@
 		630BAC2A20ABD2B5001ACA7A /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 630BAC2920ABD2B5001ACA7A /* CoreText.framework */; };
 		630BAC2C20ABD2DB001ACA7A /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 630BAC2B20ABD2DB001ACA7A /* CoreMotion.framework */; };
 		630BAC2E20ABD2F4001ACA7A /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 630BAC2D20ABD2F4001ACA7A /* libc++.tbd */; };
+		6311C3F620B3FA0E00803AE7 /* SettingPostageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6311C3F520B3FA0E00803AE7 /* SettingPostageViewController.swift */; };
+		6311C3F820B3FD4B00803AE7 /* StorePostageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6311C3F720B3FD4B00803AE7 /* StorePostageEntity.swift */; };
+		6311C3FA20B41EF500803AE7 /* AgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6311C3F920B41EF500803AE7 /* AgreementViewController.swift */; };
 		63126EB71F9EE02F00D98658 /* FoodDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63126EB61F9EE02F00D98658 /* FoodDetailsViewController.swift */; };
 		631333141E9F060D007E8A6A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631333131E9F060D007E8A6A /* SettingsViewController.swift */; };
 		6314B2572099B2850074126B /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6314B2562099B2850074126B /* UserNotifications.framework */; };
@@ -214,6 +217,9 @@
 		630BAC2920ABD2B5001ACA7A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		630BAC2B20ABD2DB001ACA7A /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		630BAC2D20ABD2F4001ACA7A /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		6311C3F520B3FA0E00803AE7 /* SettingPostageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingPostageViewController.swift; sourceTree = "<group>"; };
+		6311C3F720B3FD4B00803AE7 /* StorePostageEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePostageEntity.swift; sourceTree = "<group>"; };
+		6311C3F920B41EF500803AE7 /* AgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementViewController.swift; sourceTree = "<group>"; };
 		63126EB61F9EE02F00D98658 /* FoodDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodDetailsViewController.swift; sourceTree = "<group>"; };
 		631333131E9F060D007E8A6A /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		6314B2562099B2850074126B /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -733,6 +739,7 @@
 				638978481F9D8B2E00E5F9B9 /* SourceEntity.swift */,
 				632E33FE20A2A6AE004DA6B7 /* WholesaleAuthEntity.swift */,
 				63702F7520AC341D008A53F8 /* WithdrawaRecordEntity.swift */,
+				6311C3F720B3FD4B00803AE7 /* StorePostageEntity.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -963,6 +970,7 @@
 			isa = PBXGroup;
 			children = (
 				639487E41E9E184F00C19907 /* LoginViewController.swift */,
+				6311C3F920B41EF500803AE7 /* AgreementViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -981,6 +989,7 @@
 				6395DA9A1F1353A200FA029B /* UpdatePasswordViewController.swift */,
 				633BA22C1F2195D900C9BA04 /* ManualReceiptViewController.swift */,
 				63250BED1F46844B006D834A /* TouchBalanceViewController.swift */,
+				6311C3F520B3FA0E00803AE7 /* SettingPostageViewController.swift */,
 			);
 			path = PersonalCenter;
 			sourceTree = "<group>";
@@ -1327,6 +1336,7 @@
 				6334FFF41EF1667500920073 /* StorePrepaidrecordViewController.swift in Sources */,
 				63F2B5031EE52DA000984988 /* CourierDetailsViewController.swift in Sources */,
 				639487961E9E0D6700C19907 /* PublicUtility.swift in Sources */,
+				6311C3F620B3FA0E00803AE7 /* SettingPostageViewController.swift in Sources */,
 				63293FF51EE0586600798008 /* GoodsCategoryEntity.swift in Sources */,
 				639487F91E9E1BBB00C19907 /* IndexUICollectionViewCell.swift in Sources */,
 				63F2B4FF1EE5076200984988 /* ExpressmailEntity.swift in Sources */,
@@ -1417,6 +1427,7 @@
 				6337505B1EFBA8B4009A0FF2 /* SweepCodeInboxDetailsViewController.swift in Sources */,
 				637051DD1EEA84C800BE840A /* UIWebView+UIImage.m in Sources */,
 				639487F21E9E19FA00C19907 /* BaseControl.swift in Sources */,
+				6311C3F820B3FD4B00803AE7 /* StorePostageEntity.swift in Sources */,
 				630BAC2620ABD052001ACA7A /* AliSdkManager.swift in Sources */,
 				63C36CB41F99A5FD00665398 /* UploadFoodViewController.swift in Sources */,
 				63250BEE1F46844B006D834A /* TouchBalanceViewController.swift in Sources */,
@@ -1443,6 +1454,7 @@
 				639487C51E9E0D6800C19907 /* SKMacros.swift in Sources */,
 				6334FFDA1EF0D79B00920073 /* ReturnGoodsViewController.swift in Sources */,
 				632E33FF20A2A6AE004DA6B7 /* WholesaleAuthEntity.swift in Sources */,
+				6311C3FA20B41EF500803AE7 /* AgreementViewController.swift in Sources */,
 				639487EA1E9E184F00C19907 /* IndexViewController.swift in Sources */,
 				636B7A5E20A57328004466ED /* DB.swift in Sources */,
 				633750591EFB97CF009A0FF2 /* CKSweepCodeReceiptViewController.swift in Sources */,

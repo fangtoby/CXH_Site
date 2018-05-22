@@ -143,6 +143,7 @@ extension LoginViewController{
         let btnQualityAssuranceAgreement=UIButton()
         btnQualityAssuranceAgreement.setTitle("《质量保证协议》", for: UIControlState.normal)
         btnQualityAssuranceAgreement.titleLabel!.font=UIFont.systemFont(ofSize: 14)
+        btnQualityAssuranceAgreement.addTarget(self, action:#selector(pushAgreementVC), for: UIControlEvents.touchUpInside)
         btnQualityAssuranceAgreement.setTitleColor(UIColor.applicationMainColor(), for: UIControlState.normal)
         self.view.addSubview(btnQualityAssuranceAgreement)
         
@@ -219,6 +220,11 @@ extension LoginViewController{
 
 
 extension LoginViewController{
+    ///跳转到质量保证协议
+    @objc private func pushAgreementVC(){
+        let vc=AgreementViewController()
+        self.navigationController?.pushViewController(vc,animated:true)
+    }
     ///选择用户协议
     @objc private func isSelectedUserAgreement(sender:UIButton){
         if isImg.isSelected{

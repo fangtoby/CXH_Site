@@ -37,6 +37,7 @@ class GoodDetailsEntity:Mappable{
     var goodsMemberPrice:Double?
     var memberPriceMiniCount:Int?
     var goodsSaleFlag:Int?
+    var weight:Double?
     init(){}
     required init?(map: Map) {
         mapping(map: map)
@@ -69,5 +70,6 @@ class GoodDetailsEntity:Mappable{
         goodsMemberPrice <- map["goodsMemberPrice"]
         memberPriceMiniCount <- map["memberPriceMiniCount"]
         goodsSaleFlag <- map["goodsSaleFlag"]
+        weight <- map["weight"]
     }
 }

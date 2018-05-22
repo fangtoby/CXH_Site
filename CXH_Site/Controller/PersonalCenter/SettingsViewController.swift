@@ -11,8 +11,7 @@ import UIKit
 /// 设置页面
 class SettingsViewController:BaseViewController{
     fileprivate var table:UITableView!
-    fileprivate var nameArr=["关于我们","修改密码"]
-    fileprivate var imgArr=["gywm","bb"]
+    fileprivate var nameArr=["订单包邮设置","提现账户设置","修改密码"]
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title="设置"
@@ -31,15 +30,8 @@ extension SettingsViewController:UITableViewDelegate,UITableViewDataSource{
         if cell == nil{
             cell=UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier:"cellid")
         }
-        //图片
-        let img=UIImageView(frame:CGRect(x:14,y:12.5,width:25,height:25))
-        img.image=UIImage(named:imgArr[indexPath.row])
-        cell!.contentView.addSubview(img)
-        //文字描述
-        let name=UILabel(frame:CGRect(x:img.frame.maxX+5,y:15,width:100,height:20))
-        name.font=UIFont.systemFont(ofSize: 14)
-        name.text=nameArr[indexPath.row]
-        cell!.contentView.addSubview(name)
+        cell!.textLabel!.font=UIFont.systemFont(ofSize: 14)
+        cell!.textLabel!.text=nameArr[indexPath.row]
         cell?.accessoryType = .disclosureIndicator
         return cell!
     }
@@ -47,12 +39,18 @@ extension SettingsViewController:UITableViewDelegate,UITableViewDataSource{
         return 50
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //取消选中的样式
         tableView.deselectRow(at: indexPath, animated: true);
-        if indexPath.row == 1{
+        if indexPath.row == 0{
+            let vc=SettingPostageViewController()
+            self.navigationController?.pushViewController(vc, animated:true)
+        }else if indexPath.row == 1{
+            let vc=BindWxAndAliViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
+        }else if indexPath.row == 2{
             let vc=UpdatePasswordViewController()
             self.navigationController?.pushViewController(vc, animated:true)
         }
