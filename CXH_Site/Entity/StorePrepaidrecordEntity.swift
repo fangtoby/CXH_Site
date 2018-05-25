@@ -13,6 +13,7 @@ class StorePrepaidrecordEntity:Mappable{
     var prepaidTime:String?
     var prepaidMoney:Double?
     var prepaidType:Int?
+    var prepaidrecordId:Int?
     init(){}
     required init?(map: Map) {
         mapping(map: map)
@@ -21,5 +22,6 @@ class StorePrepaidrecordEntity:Mappable{
         prepaidTime <- map["prepaidTime"]
         prepaidMoney <- map["prepaidMoney"]
         prepaidType <- map["prepaidType"]
+        prepaidrecordId <- map["prepaidrecordId"]
     }
 }

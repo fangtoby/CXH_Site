@@ -43,6 +43,7 @@ extension OrderDetailsViewController{
         self.showSVProgressHUD("正在加载...", type: HUD.text)
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.queryOrderDetailsInfoAndGoods(orderInfoId:orderInfoId!), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
+            print(json)
             self.orderDetailsEntity=self.jsonMappingEntity(OrderDetailsEntity(), object:json.object)
             var goodArr=[GoodEntity]()
             for(_,value) in json["orderAndGoods"]{
@@ -72,10 +73,15 @@ extension OrderDetailsViewController{
         /// 订单视图
         let orderingView=UIView(frame:CGRect(x: 0,y: boundsHeight-50,width: boundsWidth,height: 50))
         orderingView.backgroundColor=UIColor.white
-        lblTotalPrice=UILabel(frame:CGRect(x: 15,y: 15,width: boundsWidth/3*2-30,height: 20))
+        lblTotalPrice=UILabel(frame:CGRect(x: 15,y: 15,width: (boundsWidth-30)/2,height: 20))
         lblTotalPrice!.text="实付款 : ￥\(self.orderDetailsEntity!.orderPrice!)"
         lblTotalPrice!.font=UIFont.systemFont(ofSize: 14)
         orderingView.addSubview(lblTotalPrice!)
+
+        let lblToTheAccountPrice=buildLabel(UIColor.color333(), font:14, textAlignment: NSTextAlignment.right)
+        lblToTheAccountPrice.frame=CGRect(x:lblTotalPrice.frame.maxX,y: 15,width: (boundsWidth-30)/2,height: 20)
+        lblToTheAccountPrice.text="到账金额 : ￥"+calculateToTheAccountPrice()
+        orderingView.addSubview(lblToTheAccountPrice)
         
         //        //下单按钮
         //        btnOrdering=UIButton(frame:CGRectMake(orderingView.frame.width/3*2,0,orderingView.frame.width/3,50))
@@ -88,6 +94,16 @@ extension OrderDetailsViewController{
         
         
         self.view.addSubview(orderingView)
+    }
+    ///计算到账金额
+    private func calculateToTheAccountPrice() -> String{
+        var str=""
+        ///减佣金
+        str=PriceComputationsUtil.decimalNumberWithString(multiplierValue:self.orderDetailsEntity!.orderPrice!.description, multiplicandValue:(self.orderDetailsEntity!.orderComment ?? 0).description, type: ComputationsType.subtraction, position: 2)
+        ///减分享费用
+        str=PriceComputationsUtil.decimalNumberWithString(multiplierValue:str, multiplicandValue:(self.orderDetailsEntity!.orderShareSumPrice! ?? 0).description, type: ComputationsType.subtraction, position: 2)
+
+        return str
     }
 }
 // MARK: - table协议
@@ -276,6 +292,15 @@ extension OrderDetailsViewController:UITableViewDelegate,UITableViewDataSource{
             let borderView=UIView(frame:CGRect(x: 0,y: 49.5,width: boundsWidth,height: 0.5))
             borderView.backgroundColor=UIColor.borderColor()
             view.addSubview(borderView)
+            ///是否包邮
+            let lblWhetherExemptionFromPostage=buildLabel(UIColor.color666(), font:13, textAlignment: NSTextAlignment.right)
+            lblWhetherExemptionFromPostage.frame=CGRect.init(x:name.frame.maxX, y:15, width:boundsWidth-name.frame.maxX-15, height:20)
+            view.addSubview(lblWhetherExemptionFromPostage)
+            if self.orderDetailsEntity!.orderWhetherExemptionFromPostage == 1{
+                lblWhetherExemptionFromPostage.text="包邮"
+            }else if self.orderDetailsEntity!.orderWhetherExemptionFromPostage == 2{
+                lblWhetherExemptionFromPostage.text="不包邮"
+            }
             return view
         }else{
             let view=UIView(frame:CGRect.zero)
@@ -288,32 +313,22 @@ extension OrderDetailsViewController:UITableViewDelegate,UITableViewDataSource{
         if section == 2{
             let view=UIView(frame:CGRect.zero)
             view.backgroundColor=UIColor.white
-            let lblYf=UILabel(frame:CGRect(x: 15,y:5,width: (boundsWidth-30)/2,height:20))
-            lblYf.text="运费:￥0"
+            let lblYf=UILabel(frame:CGRect(x: 15,y:15,width: (boundsWidth-30)/3,height:20))
+            lblYf.text="运费:￥\(self.orderDetailsEntity!.orderSumFreight ?? 0)"
             lblYf.font=UIFont.systemFont(ofSize: 13)
             lblYf.textColor=UIColor.color666()
             view.addSubview(lblYf)
+            //订单总分享费用
+            let lblOrderShareSumPrice=buildLabel(UIColor.color666(),font:13, textAlignment: NSTextAlignment.center)
+            lblOrderShareSumPrice.frame=CGRect(x:lblYf.frame.maxX,y:15,width: (boundsWidth-30)/3,height:20)
+            lblOrderShareSumPrice.text="分享费:￥\(self.orderDetailsEntity!.orderShareSumPrice ?? 0)"
+            view.addSubview(lblOrderShareSumPrice)
             //订单总佣金
             let lblOrderComment=buildLabel(UIColor.color666(), font:13, textAlignment: NSTextAlignment.right)
-            lblOrderComment.frame=CGRect.init(x:lblYf.frame.maxX, y:5, width:(boundsWidth-30)/2, height:20)
-            lblOrderComment.text="佣金:￥\(self.orderDetailsEntity!.orderComment ?? "0")"
+            lblOrderComment.frame=CGRect.init(x:lblOrderShareSumPrice.frame.maxX, y:15, width:(boundsWidth-30)/3,height:20)
+            lblOrderComment.text="佣金:￥\(self.orderDetailsEntity!.orderComment ?? 0)"
             view.addSubview(lblOrderComment)
-            //订单总分享费用
-            let lblOrderShareSumPrice=buildLabel(UIColor.color666(),font:13, textAlignment: NSTextAlignment.left)
-            lblOrderShareSumPrice.frame=CGRect(x: 15,y:lblYf.frame.maxY+5,width: (boundsWidth-30)/2,height:20)
-            lblOrderShareSumPrice.text="分享费:￥\(self.orderDetailsEntity!.orderShareSumPrice ?? "0")"
-            view.addSubview(lblOrderShareSumPrice)
-            ///订单总价
-            let lblMoblieSumPrice=UILabel(frame:CGRect(x: lblYf.frame.maxX,y: lblYf.frame.maxY+5,width:(boundsWidth-30)/2,height: 20))
-            lblMoblieSumPrice.textAlignment = .right
-            lblMoblieSumPrice.font=UIFont.systemFont(ofSize: 14)
-            lblMoblieSumPrice.textColor=UIColor.color333()
-            let priceCount="\(self.orderDetailsEntity!.orderPrice!)".count
-            let str:NSMutableAttributedString=NSMutableAttributedString(string:"合计:\(self.orderDetailsEntity!.orderPrice!)");
-            let normalAttributes = [NSAttributedStringKey.foregroundColor : UIColor.red,NSAttributedStringKey.font:UIFont.boldSystemFont(ofSize: 15)]
-            str.addAttributes(normalAttributes, range:NSMakeRange(3,priceCount))
-            lblMoblieSumPrice.attributedText=str
-            view.addSubview(lblMoblieSumPrice)
+
             let borderView=UIView(frame:CGRect(x: 0,y: 0,width: boundsWidth,height: 0.5))
             borderView.backgroundColor=UIColor.borderColor()
             view.addSubview(borderView)
@@ -327,7 +342,7 @@ extension OrderDetailsViewController:UITableViewDelegate,UITableViewDataSource{
     //给每个分组的尾部设置5高度
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == 2{
-            return 55
+            return 50
         }else{
             return 5
         }

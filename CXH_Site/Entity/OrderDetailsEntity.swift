@@ -32,9 +32,13 @@ class OrderDetailsEntity:Mappable{
     ///确认收货时间
     var receiptTime:String?
     ///此笔订单的总佣金
-    var orderComment:String?
+    var orderComment:Double?
     ///此笔订单总的分享费用
-    var orderShareSumPrice:String?
+    var orderShareSumPrice:Double?
+    /// 1 包邮； 2 不包邮
+    var orderWhetherExemptionFromPostage:Int?
+    ///订单运费
+    var orderSumFreight:Double?
     init(){}
     required init?(map: Map) {
         mapping(map: map)
@@ -61,5 +65,7 @@ class OrderDetailsEntity:Mappable{
         receiptTime <- map["receiptTime"]
         orderComment <- map["orderComment"]
         orderShareSumPrice <- map["orderShareSumPrice"]
+        orderWhetherExemptionFromPostage <- map["orderWhetherExemptionFromPostage"]
+        orderSumFreight <- map["orderSumFreight"]
     }
 }

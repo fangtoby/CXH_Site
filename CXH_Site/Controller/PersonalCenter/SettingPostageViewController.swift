@@ -12,6 +12,7 @@ class SettingPostageViewController:BaseViewController {
     private var table:UITableView!
     private var txt:UITextField?
     private var sw:UISwitch?
+    private var segmentedControl:UISegmentedControl!
     private var entity:StorePostageEntity?
     private var storeId=userDefaults.object(forKey:"storeId") as! Int
     override func viewDidLoad() {
@@ -21,10 +22,23 @@ class SettingPostageViewController:BaseViewController {
         table=UITableView(frame:self.view.bounds)
         table.dataSource=self
         table.delegate=self
+        table.tableHeaderView=headerView()
         table.tableFooterView=footerView()
         self.view.addSubview(table)
         self.showSVProgressHUD("正在查询...",type: HUD.textClear)
         queryStorePostage()
+    }
+    private func headerView() -> UIView{
+        let view=UIView.init(frame: CGRect.init(x:0, y:0, width:boundsWidth, height:70))
+        view.backgroundColor=UIColor.viewBackgroundColor()
+        segmentedControl=UISegmentedControl(items:["包邮","满多少元包邮","不包邮"])
+        segmentedControl.frame=CGRect.init(x:15, y:15, width:boundsWidth-30, height:40)
+        segmentedControl.tintColor=UIColor.applicationMainColor()
+        segmentedControl.selectedSegmentIndex=0
+        segmentedControl.addTarget(self, action: #selector(segmentedControlChanged), for: UIControlEvents.valueChanged)
+        view.addSubview(segmentedControl)
+        return view
+        
     }
     private func footerView() -> UIView{
         let view=UIView(frame: CGRect.init(x:0, y:0, width:boundsWidth, height:80))
@@ -38,19 +52,30 @@ class SettingPostageViewController:BaseViewController {
         view.addSubview(btn)
         return view
     }
+
+    @objc private func segmentedControlChanged(){
+        entity?.whetherExemptionFromPostage=segmentedControl.selectedSegmentIndex+1
+        self.table.reloadData()
+    }
     ///提交
     @objc private func submit(){
         self.showSVProgressHUD("正在加载...",type:HUD.textClear)
         let specifiedAmountExemptionFromPostage=txt?.text
-        if entity!.whetherExemptionFromPostage == 1{
+        if entity!.whetherExemptionFromPostage == 2{
             if specifiedAmountExemptionFromPostage == nil || specifiedAmountExemptionFromPostage!.count == 0{
-                self.showSVProgressHUD("包邮金额金额不能为空", type: HUD.error)
+                self.showSVProgressHUD("包邮金额金额不能为空", type: HUD.info)
                 return
             }
         }
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.updateStorePostage(storeId:storeId, specifiedAmountExemptionFromPostage:entity!.whetherExemptionFromPostage!==1 ? (Double(specifiedAmountExemptionFromPostage!)!):0, expressCodeId:entity!.expressCodeId, storePostageId:entity!.storePostageId,whetherExemptionFromPostage:entity!.whetherExemptionFromPostage!), successClosure: { (any) in
+        if entity!.expressCodeId == nil{
+            self.showSVProgressHUD("请选择快递公司", type: HUD.info)
+            return
+        }
+
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.updateStorePostage(storeId:storeId, specifiedAmountExemptionFromPostage:entity!.whetherExemptionFromPostage!==2 ? (Double(specifiedAmountExemptionFromPostage!)!):0, expressCodeId:entity!.expressCodeId, storePostageId:entity!.storePostageId,whetherExemptionFromPostage:entity!.whetherExemptionFromPostage!), successClosure: { (any) in
             let json=self.swiftJSON(any)
             let success=json["success"].stringValue
+            print(json)
             if success == "success"{
                 self.showSVProgressHUD("修改成功", type: HUD.success)
             }else{
@@ -74,6 +99,7 @@ class SettingPostageViewController:BaseViewController {
                 self.entity=StorePostageEntity()
                 self.entity?.whetherExemptionFromPostage=1//默认包邮
             }
+            self.segmentedControl.selectedSegmentIndex=self.entity!.whetherExemptionFromPostage!-1
             self.table.reloadData()
             self.dismissHUD()
         }) { (error) in
@@ -88,36 +114,26 @@ extension SettingPostageViewController:UITableViewDelegate,UITableViewDataSource
             cell=UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier:"cellid")
         }
         cell!.textLabel?.font=UIFont.systemFont(ofSize:15)
+        cell!.contentView.viewWithTag(11)?.removeFromSuperview()
         if indexPath.row == 0{
-            cell!.textLabel?.text="订单是否包邮"
-            sw=cell!.contentView.viewWithTag(1) as? UISwitch
-            if sw == nil{
-                sw=UISwitch(frame:CGRect.init(x:boundsWidth-75, y:10, width:60, height:30))
-                sw!.onTintColor=UIColor.applicationMainColor()
-                sw!.addTarget(self, action:#selector(isOn), for: UIControlEvents.valueChanged)
-                sw!.tag=1
-                cell!.contentView.addSubview(sw!)
-            }
-            sw!.isOn=entity?.whetherExemptionFromPostage == 1 ? true : false
-        }else if indexPath.row == 1{
-            if entity?.whetherExemptionFromPostage == 1{//如果包邮
+            if entity?.whetherExemptionFromPostage == 2{//如果包邮
                 cell!.textLabel!.text="商品包邮金额"
-                txt=cell!.contentView.viewWithTag(11) as? UITextField
-                if txt == nil{
-                    txt=buildTxt(14, placeholder:"请输入包邮金额(默认0元包邮)", tintColor: UIColor.color666(), keyboardType: UIKeyboardType.numberPad)
-                    txt!.frame=CGRect.init(x:110, y:10, width:boundsWidth-125, height: 30)
-                    txt!.text=entity?.specifiedAmountExemptionFromPostage?.description
-                    txt!.textAlignment = .right
-                    txt!.tag=11
-                    cell!.contentView.addSubview(txt!)
-                }
+                txt=buildTxt(14, placeholder:"请输入包邮金额(默认0元包邮)", tintColor: UIColor.color666(), keyboardType: UIKeyboardType.numberPad)
+                txt!.frame=CGRect.init(x:110, y:10, width:boundsWidth-125, height: 30)
+                txt!.text=entity?.specifiedAmountExemptionFromPostage?.description
+                txt!.textAlignment = .right
+                txt!.tag=11
+                cell!.contentView.addSubview(txt!)
                 cell!.accessoryType = .none
             }else{
-                txt?.removeFromSuperview()
                 cell!.textLabel!.text="快递公司"
                 cell!.detailTextLabel?.text=entity?.expressName
                 cell!.accessoryType = .disclosureIndicator
             }
+        }else if indexPath.row == 1{
+            cell!.textLabel!.text="快递公司"
+            cell!.detailTextLabel?.text=entity?.expressName
+            cell!.accessoryType = .disclosureIndicator
         }
         return cell!
     }
@@ -125,22 +141,30 @@ extension SettingPostageViewController:UITableViewDelegate,UITableViewDataSource
         return 50
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        if entity?.whetherExemptionFromPostage == 2{
+            return 2
+        }
+        return 1
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //取消选中的样式
         tableView.deselectRow(at: indexPath, animated: true);
-        if indexPath.row == 1{
-            if entity?.whetherExemptionFromPostage == 2{
-                let vc=SelectwlQueryExpresscodeViewController()
-                vc.expressEntity={ (entity) in
-                    self.entity?.expressName=entity.expressName
-                    self.entity?.expressCodeId=entity.expressCodeId
-                    self.table.reloadData()
-                }
-                let nav=UINavigationController(rootViewController:vc)
-                self.present(nav, animated:true, completion:nil)
+        if indexPath.row == 0{
+            if entity?.whetherExemptionFromPostage != 2{
+                pushSelectwlQueryExpresscodeVC()
             }
+        }else{
+            pushSelectwlQueryExpresscodeVC()
         }
+    }
+    private func pushSelectwlQueryExpresscodeVC(){
+        let vc=SelectwlQueryExpresscodeViewController()
+        vc.expressEntity={ (entity) in
+            self.entity?.expressName=entity.expressName
+            self.entity?.expressCodeId=entity.expressCodeId
+            self.table.reloadData()
+        }
+        let nav=UINavigationController(rootViewController:vc)
+        self.present(nav, animated:true, completion:nil)
     }
 }

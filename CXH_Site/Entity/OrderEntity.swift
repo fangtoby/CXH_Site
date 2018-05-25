@@ -17,6 +17,18 @@ class OrderEntity:Mappable{
     var addTime:String?
     var province:String?
     var city:String?
+    ///运费
+    var orderSumFreight:Double?
+    ///此笔订单是否已经为用户包邮； 1 包邮； 2 不包邮
+    var orderWhetherExemptionFromPostage:Int?
+    ///分享费
+    var orderShareSumPrice:Double?
+    ///总佣金
+    var orderComment:Double?
+    ///确认收货时间
+    var receiptTime:String?
+    ///重量
+    var orderSumGoodsWeight:Int?
     init(){}
     required init?(map: Map) {
         mapping(map: map)
@@ -28,5 +40,11 @@ class OrderEntity:Mappable{
         addTime <- map["addTime"]
         province <- map["province"]
         city <- map["city"]
+        orderSumFreight <- map["orderSumFreight"]
+        orderWhetherExemptionFromPostage <- map["orderWhetherExemptionFromPostage"]
+        orderShareSumPrice <- map["orderShareSumPrice"]
+        orderComment <- map["orderComment"]
+        receiptTime <- map["receiptTime"]
+        orderSumGoodsWeight <- map["orderSumGoodsWeight"]
     }
 }

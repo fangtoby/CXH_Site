@@ -173,7 +173,7 @@ public enum RequestAPI {
     //查询订单详情
     case queryOrderDetailsInfoAndGoods(orderInfoId:Int)
     //站点人员发货
-    case storeTodeliver(orderInfoId:Int,storeId:Int,expressCode:String,logisticsSN:String,freight:String,storeToHeadquarters:String,weight:Int,expressName:String,userId:Int,moneyToMember:String,moneyToStore:String,moneyToCompany:String,length:String?,width:String?,height:String?,expressCodeId:Int)
+    case storeTodeliver(orderInfoId:Int,storeId:Int,expressCode:String?,logisticsSN:String,freight:String?,storeToHeadquarters:String?,expressName:String?,userId:Int,moneyToMember:String?,moneyToStore:String?,moneyToCompany:String?,length:String?,width:String?,height:String?,expressCodeId:Int?,whetherExemptionFromPostage:Int)
     //计算运费
     case expressmailFreight(expressCode:String,weight:Int,province:String,length:String?,width:String?,height:String?,insuredMoney:Int,city:String)
     //查询积分余额
@@ -194,11 +194,11 @@ public enum RequestAPI {
     //站点确认退货
     case storeConfirmReturngoods(storeId:Int,orderInfoId:Int)
     //消费/扣除记录
-    case queryStorecapitalrecord(storeId:Int,pageNumber:Int,pageSize:Int)
+    case queryStorecapitalrecord(storeId:Int,pageNumber:Int,pageSize:Int,statu:Int?)
     //提现记录
     case queryWithdrawaRecord(storeId:Int,pageNumber:Int,pageSize:Int)
     //充值记录
-    case queryStorePrepaidrecord(storeId:Int,pageNumber:Int,pageSize:Int)
+    case queryStorePrepaidrecord(storeId:Int,pageNumber:Int,pageSize:Int,statu:Int?)
     //根据条码查询是揽件还是收件
     case codeInfoQueryMain(codeInfo:String)
     //代签收
@@ -351,11 +351,11 @@ extension RequestAPI:TargetType{
             return "adminRgc/storeQueryReturngoodsapply"
         case .storeConfirmReturngoods(_,_):
             return "adminRgc/storeConfirmReturngoods"
-        case .queryStorecapitalrecord(_,_,_):
+        case .queryStorecapitalrecord(_,_,_,_):
             return "cc/queryStorecapitalrecord"
         case .queryWithdrawaRecord(_,_,_):
             return "withdrawa/queryWithdrawaRecord"
-        case .queryStorePrepaidrecord(_,_,_):
+        case .queryStorePrepaidrecord(_,_,_,_):
             return "adminSpc/queryStorePrepaidrecord"
         case .codeInfoQueryMain(_):
             return "adminUser/codeInfoQueryMain"
@@ -422,7 +422,7 @@ extension RequestAPI:TargetType{
         switch self{
         case .adminUserLogin(_,_),.saveGoods(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.getAllGoods(_,_,_,_),.changeGoodsCategory(_,_,_),.delGoods(_),.changeGoodsFlag(_),.changeGoodsPic(_,_),.scanCodeGetInfo(_),.scanCodeGetLogisticspack(_,_,_),.scanCodeGetStorepack(_,_,_),.scanCodeGetExpressmailstorag(_,_,_),.searchCollectHistory(_,_),.inputExpress(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.searchGiveHistory(_,_),.saveExpress(_,_,_,_,_,_,_,_,_,_,_,_,_,_),.storeTodeliver(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.expressmailFreight(_,_,_,_,_,_,_,_),.scanCodeGetExpressmailForGivestoragByDriver(_,_),.addWithdrawa(_,_,_,_,_),.updateWithdrawa(_,_,_,_,_,_),.withdrawaTure(_,_,_,_),.storeTransferToMember(_,_),.scanCodeGetExpressmailForGivestoragByHeadquarters(_,_),.storeConfirmReturngoods(_,_),.codeInfoQueryMain(_),.replaceSignForUser(_,_,_),.driverGetReturn(_,_),.headquartersGetReturn(_,_),.updateExpressmailInfoByHeadquarters(_,_,_,_,_,_,_,_,_,_,_),.storeConfirmUpdateExpressmailInfo(_,_,_),.savePwd(_,_,_),.storeTongji(_,_),.getFoodByTestStoreId(_,_,_,_),.saveFood(_,_,_,_,_,_,_,_,_,_,_),.foodUpDown(_,_),.getFoodById(_),.queryIdentityByEmIdentityId(_),.idCardUploads(_,_),.testStoreUpload(_,_),.goodsUploads(_,_):
             return .post
-        case .getGoodsById(_),.queryCollectHistory(_,_,_,_),.queryGiveHistory(_,_,_,_),.queryShippinglines(),.wlQueryExpresscode(),.queryGoodsCateGoryForOne(),.queryGoodsCateGoryWhereGoodsCateGoryPId(_),.queryOrderInfoAndGoods(_,_,_,_),.queryOrderDetailsInfoAndGoods(_),.queryStoreCapitalSumMoney(_),.searchCollectHistoryForStoreBystoreUserCtime(_,_,_,_,_),.queryCollectHistoryForDriver(_,_,_,_),.queryGiveHistoryForDriver(_,_,_,_),.searchCollectHistoryForDriverByDriverUserCtime(_,_,_,_,_),.searchGiveHistoryForExpressLinkTime(_,_,_,_,_),.searchGiveHistoryForDriverUserCtime(_,_,_,_,_),.queryCxhSetInfo(),.queryWithdrawa(_),.storeQueryReturngoodsapply(_,_,_,_),.queryStorecapitalrecord(_,_,_),.queryWithdrawaRecord(_,_,_),.queryStorePrepaidrecord(_,_,_),.storeReturn(_,_,_),.queryCollectHistoryForDriverForLogisticspack(_,_,_),.queryCollectHistoryForDriverForStorepackByLogisticsPackId(_,_,_),.queryCollectHistoryForDriverForExpressmailstoragByStorePackId(_,_,_),.queryCollectHistoryForStorepackByStoreUserId(_,_,_),.queryReplaceSignForUser(_,_,_,_),.scanCodeQueryExpressmailstorag(_,_),.scanCodeGetExpressmailInfo(_,_),.storeQueryExpressmailUpdateInfo(_,_,_),.queryReturnHistory(_,_,_,_),.queryExpressmailDetail(_),.getExpressmailForGivestoragByDriver(_,_),.selectAddressInfo(_):
+        case .getGoodsById(_),.queryCollectHistory(_,_,_,_),.queryGiveHistory(_,_,_,_),.queryShippinglines(),.wlQueryExpresscode(),.queryGoodsCateGoryForOne(),.queryGoodsCateGoryWhereGoodsCateGoryPId(_),.queryOrderInfoAndGoods(_,_,_,_),.queryOrderDetailsInfoAndGoods(_),.queryStoreCapitalSumMoney(_),.searchCollectHistoryForStoreBystoreUserCtime(_,_,_,_,_),.queryCollectHistoryForDriver(_,_,_,_),.queryGiveHistoryForDriver(_,_,_,_),.searchCollectHistoryForDriverByDriverUserCtime(_,_,_,_,_),.searchGiveHistoryForExpressLinkTime(_,_,_,_,_),.searchGiveHistoryForDriverUserCtime(_,_,_,_,_),.queryCxhSetInfo(),.queryWithdrawa(_),.storeQueryReturngoodsapply(_,_,_,_),.queryStorecapitalrecord(_,_,_,_),.queryWithdrawaRecord(_,_,_),.queryStorePrepaidrecord(_,_,_,_),.storeReturn(_,_,_),.queryCollectHistoryForDriverForLogisticspack(_,_,_),.queryCollectHistoryForDriverForStorepackByLogisticsPackId(_,_,_),.queryCollectHistoryForDriverForExpressmailstoragByStorePackId(_,_,_),.queryCollectHistoryForStorepackByStoreUserId(_,_,_),.queryReplaceSignForUser(_,_,_,_),.scanCodeQueryExpressmailstorag(_,_),.scanCodeGetExpressmailInfo(_,_),.storeQueryExpressmailUpdateInfo(_,_,_),.queryReturnHistory(_,_,_,_),.queryExpressmailDetail(_),.getExpressmailForGivestoragByDriver(_,_),.selectAddressInfo(_):
             return .get
         }
     }
@@ -496,11 +496,11 @@ extension RequestAPI:TargetType{
             return .requestParameters(parameters:["storeId":storeId,"pageNumber":pageNumber,"pageSize":pageSize,"orderStatu":orderStatu], encoding: URLEncoding.default)
         case let .queryOrderDetailsInfoAndGoods(orderInfoId):
             return .requestParameters(parameters:["orderInfoId":orderInfoId], encoding: URLEncoding.default)
-        case let .storeTodeliver(orderInfoId, storeId, expressCode, logisticsSN, freight, storeToHeadquarters,weight,expressName,userId,moneyToMember,moneyToStore,moneyToCompany,length,width,height,expressCodeId):
-            if length != nil{
-                return .requestParameters(parameters:["orderInfoId":orderInfoId,"storeId":storeId,"expressCode":expressCode,"logisticsSN":logisticsSN,"freight":freight,"storeToHeadquarters":storeToHeadquarters,"weight":weight,"expressName":expressName,"userId":userId,"moneyToMember":moneyToMember,"moneyToStore":moneyToStore,"moneyToCompany":moneyToCompany,"length":length!,"width":width!,"height":height!,"expressCodeId":expressCodeId], encoding: URLEncoding.default)
-            }else{
-                return .requestParameters(parameters:["orderInfoId":orderInfoId,"storeId":storeId,"expressCode":expressCode,"logisticsSN":logisticsSN,"freight":freight,"storeToHeadquarters":storeToHeadquarters,"weight":weight,"expressName":expressName,"userId":userId,"moneyToMember":moneyToMember,"moneyToStore":moneyToStore,"moneyToCompany":moneyToCompany,"expressCodeId":expressCodeId], encoding: URLEncoding.default)
+        case let .storeTodeliver(orderInfoId, storeId, expressCode, logisticsSN, freight, storeToHeadquarters,expressName,userId,moneyToMember,moneyToStore,moneyToCompany,length,width,height,expressCodeId,whetherExemptionFromPostage):
+            if whetherExemptionFromPostage == 1{//如果是包邮
+                return .requestParameters(parameters:["orderInfoId":orderInfoId,"storeId":storeId,"expressCode":expressCode!,"logisticsSN":logisticsSN,"freight":freight!,"storeToHeadquarters":storeToHeadquarters!,"expressName":expressName!,"userId":userId,"moneyToMember":moneyToMember!,"moneyToStore":moneyToStore!,"moneyToCompany":moneyToCompany!,"length":length!,"width":width!,"height":height!,"expressCodeId":expressCodeId!], encoding: URLEncoding.default)
+            }else{//如果是不包邮
+                return .requestParameters(parameters:["orderInfoId":orderInfoId,"storeId":storeId,"logisticsSN":logisticsSN,"userId":userId], encoding: URLEncoding.default)
             }
         case let .expressmailFreight(expressCode, weight,province,length,width,height,insuredMoney,city):
             if length != nil{
@@ -546,12 +546,12 @@ extension RequestAPI:TargetType{
             return .requestParameters(parameters:["storeId":storeId,"statu":statu,"pageNumber":pageNumber,"pageSize":pageSize], encoding: URLEncoding.default)
         case let .storeConfirmReturngoods(storeId, orderInfoId):
             return .requestParameters(parameters:["storeId":storeId,"orderInfoId":orderInfoId], encoding: URLEncoding.default)
-        case let .queryStorecapitalrecord(storeId, pageNumber, pageSize):
-            return .requestParameters(parameters:["storeId":storeId,"pageNumber":pageNumber,"pageSize":pageSize], encoding: URLEncoding.default)
+        case let .queryStorecapitalrecord(storeId, pageNumber, pageSize,statu):
+            return .requestParameters(parameters:["storeId":storeId,"pageNumber":pageNumber,"pageSize":pageSize,"statu":statu ?? ""], encoding: URLEncoding.default)
         case let .queryWithdrawaRecord(storeId, pageNumber, pageSize):
             return .requestParameters(parameters:["storeId":storeId,"pageNumber":pageNumber,"pageSize":pageSize], encoding: URLEncoding.default)
-        case let .queryStorePrepaidrecord(storeId, pageNumber, pageSize):
-            return .requestParameters(parameters:["storeId":storeId,"pageNumber":pageNumber,"pageSize":pageSize], encoding: URLEncoding.default)
+        case let .queryStorePrepaidrecord(storeId, pageNumber, pageSize,statu):
+            return .requestParameters(parameters:["storeId":storeId,"pageNumber":pageNumber,"pageSize":pageSize,"statu":statu ?? ""], encoding: URLEncoding.default)
         case let .codeInfoQueryMain(codeInfo):
             return .requestParameters(parameters:["codeInfo":codeInfo], encoding: URLEncoding.default)
         case let .replaceSignForUser(userId, expressmailStorageId, identity):

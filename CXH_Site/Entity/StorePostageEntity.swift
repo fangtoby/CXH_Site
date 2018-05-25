@@ -16,6 +16,7 @@ class StorePostageEntity:Mappable{
     var expressCodeId:Int?
     var expressCode:String?
     var storeId:Int?
+    ///1包邮 2指定金额包邮 3不包邮
     var whetherExemptionFromPostage:Int?
     init(){}
     required init?(map: Map) {

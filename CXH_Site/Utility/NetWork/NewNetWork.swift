@@ -31,6 +31,14 @@ public enum NewRequestAPI{
     case queryStorePostage(storeId:Int)
     ///新增/修改店铺的邮费设置
     case updateStorePostage(storeId:Int,specifiedAmountExemptionFromPostage:Double,expressCodeId:Int?,storePostageId:Int?,whetherExemptionFromPostage:Int)
+    ///发货查询运费信息
+    case queryOrderFreightByOrderId(orderId:Int)
+    ///查询站点信息
+    case queryStoreInfo(storeId:Int)
+    ///修改站点的部分信息
+    case updateStoreInfo(storeId:Int,shareBili:Int)
+    ///查询订单扣费明细
+    case queryStoreOrderPrepaidrecordDetailByPrepaidrecordId(prepaidrecordId:Int)
 }
 extension NewRequestAPI:TargetType{
     public var path: String {
@@ -57,6 +65,14 @@ extension NewRequestAPI:TargetType{
             return "storepostage/queryStorePostage"
         case .updateStorePostage(_,_,_,_,_):
             return "storepostage/updateStorePostage"
+        case .queryOrderFreightByOrderId(_):
+            return "adminOrder/queryOrderFreightByOrderId"
+        case .queryStoreInfo(_):
+            return "storeInfo/queryStoreInfo"
+        case .updateStoreInfo(_,_):
+            return "storeInfo/updateStoreInfo"
+        case .queryStoreOrderPrepaidrecordDetailByPrepaidrecordId(_):
+            return "adminSpc/queryStoreOrderPrepaidrecordDetailByPrepaidrecordId"
         
 
         }
@@ -64,9 +80,9 @@ extension NewRequestAPI:TargetType{
 
     public var method: Moya.Method {
         switch self {
-        case .updateGoods(_,_,_,_,_,_,_,_,_,_,_),.updateBindWholesale(_,_,_),.bindWholesale(_,_),.updateStoreBindAli(_,_),.updateStoreBindWx(_,_),.sendDuanxin(_),.updateStorePostage(_,_,_,_,_):
+        case .updateGoods(_,_,_,_,_,_,_,_,_,_,_),.updateBindWholesale(_,_,_),.bindWholesale(_,_),.updateStoreBindAli(_,_),.updateStoreBindWx(_,_),.sendDuanxin(_),.updateStorePostage(_,_,_,_,_),.updateStoreInfo(_,_):
             return .post
-        case .queryBindWholesale(_,_,_),.queryStoreBindWxOrAliStatu(_),.query_store_ali_AuthParams(_),.queryStorePostage(_):
+        case .queryBindWholesale(_,_,_),.queryStoreBindWxOrAliStatu(_),.query_store_ali_AuthParams(_),.queryStorePostage(_),.queryOrderFreightByOrderId(_),.queryStoreInfo(_),.queryStoreOrderPrepaidrecordDetailByPrepaidrecordId(_):
             return .get
         }
     }
@@ -101,6 +117,14 @@ extension NewRequestAPI:TargetType{
             return .requestParameters(parameters:["storeId":storeId], encoding: URLEncoding.default)
         case let .updateStorePostage(storeId, specifiedAmountExemptionFromPostage, expressCodeId, storePostageId,whetherExemptionFromPostage):
             return .requestParameters(parameters:["storeId":storeId,"specifiedAmountExemptionFromPostage":specifiedAmountExemptionFromPostage,"expressCodeId":expressCodeId ?? "","storePostageId":storePostageId ?? "","whetherExemptionFromPostage":whetherExemptionFromPostage], encoding: URLEncoding.default)
+        case let .queryOrderFreightByOrderId(orderId):
+            return .requestParameters(parameters:["orderId":orderId], encoding: URLEncoding.default)
+        case let .queryStoreInfo(storeId):
+            return .requestParameters(parameters:["storeId":storeId], encoding: URLEncoding.default)
+        case let .updateStoreInfo(storeId, shareBili):
+            return .requestParameters(parameters:["storeId":storeId,"shareBili":shareBili], encoding: URLEncoding.default)
+        case let .queryStoreOrderPrepaidrecordDetailByPrepaidrecordId(prepaidrecordId):
+            return .requestParameters(parameters:["prepaidrecordId":prepaidrecordId], encoding: URLEncoding.default)
 
         }
     }

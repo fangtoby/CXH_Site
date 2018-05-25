@@ -143,6 +143,7 @@
 		63A89F111F78AE4700BEF114 /* RegionEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A89F101F78AE4700BEF114 /* RegionEntity.swift */; };
 		63B941D620A026FB00E1A952 /* Proposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B941D420A026FB00E1A952 /* Proposer.swift */; };
 		63B941D720A026FB00E1A952 /* UIViewController+Proposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B941D520A026FB00E1A952 /* UIViewController+Proposer.swift */; };
+		63BF5B4020B80F48003BA0E9 /* StorePrepaidrecordDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BF5B3F20B80F48003BA0E9 /* StorePrepaidrecordDetailViewController.swift */; };
 		63C2E4DB1EE8EBE0008AE35B /* MyNumberDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C2E4DA1EE8EBE0008AE35B /* MyNumberDetailsViewController.swift */; };
 		63C36CAF1F9998EF00665398 /* FoodEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C36CAE1F9998EF00665398 /* FoodEntity.swift */; };
 		63C36CB21F999A7400665398 /* FoodListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C36CB11F999A7400665398 /* FoodListViewController.swift */; };
@@ -362,6 +363,7 @@
 		63A89F101F78AE4700BEF114 /* RegionEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionEntity.swift; sourceTree = "<group>"; };
 		63B941D420A026FB00E1A952 /* Proposer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proposer.swift; sourceTree = "<group>"; };
 		63B941D520A026FB00E1A952 /* UIViewController+Proposer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Proposer.swift"; sourceTree = "<group>"; };
+		63BF5B3F20B80F48003BA0E9 /* StorePrepaidrecordDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePrepaidrecordDetailViewController.swift; sourceTree = "<group>"; };
 		63C2E4DA1EE8EBE0008AE35B /* MyNumberDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyNumberDetailsViewController.swift; sourceTree = "<group>"; };
 		63C36CAE1F9998EF00665398 /* FoodEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodEntity.swift; sourceTree = "<group>"; };
 		63C36CB11F999A7400665398 /* FoodListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodListViewController.swift; sourceTree = "<group>"; };
@@ -990,6 +992,7 @@
 				633BA22C1F2195D900C9BA04 /* ManualReceiptViewController.swift */,
 				63250BED1F46844B006D834A /* TouchBalanceViewController.swift */,
 				6311C3F520B3FA0E00803AE7 /* SettingPostageViewController.swift */,
+				63BF5B3F20B80F48003BA0E9 /* StorePrepaidrecordDetailViewController.swift */,
 			);
 			path = PersonalCenter;
 			sourceTree = "<group>";
@@ -1419,6 +1422,7 @@
 				63F2B50E1EE5553900984988 /* OrderDetailsEntity.swift in Sources */,
 				63A89F111F78AE4700BEF114 /* RegionEntity.swift in Sources */,
 				639487EF1E9E184F00C19907 /* PersonalCenterViewController.swift in Sources */,
+				63BF5B4020B80F48003BA0E9 /* StorePrepaidrecordDetailViewController.swift in Sources */,
 				6334FFF01EF15FEB00920073 /* StorecapitalrecordEntity.swift in Sources */,
 				638978491F9D8B2E00E5F9B9 /* SourceEntity.swift in Sources */,
 				639487F61E9E1AB500C19907 /* BaseCollectionViewCell.swift in Sources */,

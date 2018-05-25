@@ -77,7 +77,7 @@ class UploadGoodViewController:BaseViewController{
     }
     @objc func updateCategory(_ obj:Notification){
         categoryArr=obj.object as! [GoodsCategoryEntity]
-        lblCategory.text=(categoryArr[1].goodscategoryName ?? "")+"(佣金\(categoryArr[1].goodscategoryCommission ?? 0))%"
+        lblCategory.text=(categoryArr[1].goodscategoryName ?? "")+"(佣金\((categoryArr[1].goodscategoryCommission ?? 0)/10)%"
     }
     deinit{
         NotificationCenter.default.removeObserver(self)
@@ -390,7 +390,7 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
             case 5:
                 name.attributedText=redText("*重量")
                 cell!.contentView.addSubview(name)
-                txtWeight=buildTxt(14, placeholder:"请输入商品重量", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.decimalPad)
+                txtWeight=buildTxt(14, placeholder:"请输入商品重量", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.numberPad)
                 txtWeight.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 cell!.contentView.addSubview(txtWeight)
                 break

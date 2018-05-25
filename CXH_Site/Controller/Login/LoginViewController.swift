@@ -41,9 +41,13 @@ class LoginViewController:BaseViewController{
         super.viewWillAppear(animated)
         //导航栏隐藏
         self.navigationController?.setNavigationBarHidden(true, animated:true)
+        UIApplication.shared.statusBarStyle = UIStatusBarStyle.default
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        //导航栏隐藏
+        self.navigationController?.setNavigationBarHidden(false, animated:true)
+        UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
     }
     override func viewDidLoad() {
         super.viewDidLoad()

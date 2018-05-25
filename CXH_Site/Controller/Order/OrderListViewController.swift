@@ -156,15 +156,11 @@ extension OrderListViewController:UITableViewDelegate,UITableViewDataSource{
             let view=UIView(frame:CGRect.zero)
             view.backgroundColor=UIColor.white
             let lblOrderPrice=UILabel(frame:CGRect(x: 0,y: 10,width: boundsWidth-15,height: 20))
-            lblOrderPrice.font=UIFont.systemFont(ofSize: 15)
+            lblOrderPrice.font=UIFont.systemFont(ofSize: 14)
             lblOrderPrice.textAlignment = .right
-            
+            lblOrderPrice.textColor=UIColor.color333()
             let entity=arr[section]
-            let name="合计:￥\(entity.orderPrice!) (运费￥0.0)"
-            let str:NSMutableAttributedString=NSMutableAttributedString(string:name);
-            let normalAttributes = [NSAttributedStringKey.foregroundColor : UIColor.color999(),NSAttributedStringKey.font:UIFont.systemFont(ofSize: 13)]
-            str.addAttributes(normalAttributes, range:NSMakeRange(name.count-8,8))
-            lblOrderPrice.attributedText=str
+            lblOrderPrice.text="合计:￥\(entity.orderPrice!)(运费￥\(entity.orderSumFreight ?? 0))"
             
             view.addSubview(lblOrderPrice)
             let border=UIView(frame:CGRect(x: 0,y: 0,width: boundsWidth,height: 0.5))
@@ -273,7 +269,7 @@ extension OrderListViewController{
     @objc func storeTodeliver(_ sender:UIButton){
         let entity=arr[sender.tag]
         let vc=TheDeliveryViewController()
-        vc.orderInfoId=entity.orderInfoId
+        vc.orderEntity=entity
         vc.province=entity.province
         vc.city=entity.city
         self.navigationController?.pushViewController(vc,animated:true)

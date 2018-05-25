@@ -11,14 +11,13 @@ import UIKit
 /// 发货
 class TheDeliveryViewController:BaseViewController {
     let storeId=userDefaults.object(forKey: "storeId") as! Int
-    var orderInfoId:Int?
+    var orderEntity:OrderEntity?
     var province:String?
     var city:String?
     fileprivate var table:UITableView!
     fileprivate var expressCode:String?
     fileprivate var lblExpressName:UILabel!
     fileprivate var txtExpressNo:UITextField!
-    fileprivate var txtWeight:UITextField!
     fileprivate var lblFreight:UILabel!
     fileprivate var lblStoreToHeadquarters:UILabel!
     fileprivate var freight=""
@@ -37,6 +36,7 @@ class TheDeliveryViewController:BaseViewController {
         table.dataSource=self
         table.tableFooterView=footerView()
         self.view.addSubview(table)
+        self.queryOrderFreightByOrderId()
     }
     func footerView()->UIView{
         let view=UIView(frame:CGRect(x: 0,y: 0,width: boundsWidth,height: 70))
@@ -57,7 +57,7 @@ class TheDeliveryViewController:BaseViewController {
             return
         }
         self.showSVProgressHUD("正在加载...", type: HUD.textClear)
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.storeTodeliver(orderInfoId:orderInfoId!, storeId: storeId, expressCode: expressCode!, logisticsSN:self.txtExpressNo.text!,freight:freight,storeToHeadquarters:storeToHeadquarters,weight:Int(txtWeight.text!)!,expressName:self.lblExpressName.text!,userId:userId,moneyToMember:"\(self.freightEntity!.moneyToMember!)",moneyToStore:"\(self.freightEntity!.moneyToStore!)",moneyToCompany:"\(self.freightEntity!.moneyToCompany!)",length:txtLength.text,width:txtWidth.text,height:txtheight.text,expressCodeId:expressCodeId!), successClosure: { (result) -> Void in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.storeTodeliver(orderInfoId:orderEntity!.orderInfoId!, storeId: storeId, expressCode: expressCode!, logisticsSN:self.txtExpressNo.text!,freight:freight,storeToHeadquarters:storeToHeadquarters,expressName:self.lblExpressName.text!,userId:userId,moneyToMember:"\(self.freightEntity!.moneyToMember!)",moneyToStore:"\(self.freightEntity!.moneyToStore!)",moneyToCompany:"\(self.freightEntity!.moneyToCompany!)",length:txtLength.text,width:txtWidth.text,height:txtheight.text,expressCodeId:expressCodeId!, whetherExemptionFromPostage:orderEntity!.orderWhetherExemptionFromPostage!), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
             let success=json["success"].stringValue
             print(success)
@@ -77,7 +77,7 @@ class TheDeliveryViewController:BaseViewController {
             }else if success == "capitalSumMoney"{
                 self.showSVProgressHUD("余额不足,不能发货", type: HUD.info)
             }else if success == "expressExist"{
-                self.showSVProgressHUD("第三方快递单号已经存在", type: HUD.info)
+                self.showSVProgressHUD("第三方快递单号 或者是 MK开头的平台编码已经存在", type: HUD.info)
             }else{
                 self.showSVProgressHUD("发货失败", type: HUD.error)
             }
@@ -101,7 +101,6 @@ class TheDeliveryViewController:BaseViewController {
                 self.storeToHeadquarters=json["storeToHeadquarters"].stringValue
                 self.lblStoreToHeadquarters.text="城乡运费:"+self.storeToHeadquarters+"元"
                 self.lblFreight.text="总运费:"+self.freight+"元"
-                self.txtWeight.isEnabled=false
                 self.txtLength.isEnabled=false
                 self.txtWidth.isEnabled=false
                 self.txtheight.isEnabled=false
@@ -114,7 +113,32 @@ class TheDeliveryViewController:BaseViewController {
                 self.showSVProgressHUD(errorMsg!, type: HUD.info)
         }
     }
-
+    ///查询运费
+    private func queryOrderFreightByOrderId(){
+        self.showSVProgressHUD("正在加载...", type:HUD.textClear)
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.queryOrderFreightByOrderId(orderId:orderEntity!.orderInfoId!), successClosure: { (any) in
+            let json=self.swiftJSON(any)
+            let success=json["success"].string
+            if success == nil{
+                self.freightEntity=self.jsonMappingEntity(FreightEntity(), object: json.object)
+                if self.freightEntity != nil{
+                    self.freight=json["sumFreight"].stringValue
+                    self.expressCode=self.freightEntity!.expressCode
+                    self.expressCodeId=self.freightEntity!.expressCodeId
+                    self.lblExpressName.text=self.freightEntity!.expressName
+                    self.storeToHeadquarters=json["storeToHeadquarters"].stringValue
+                    self.lblStoreToHeadquarters.text="城乡运费:"+self.storeToHeadquarters+"元"
+                    self.lblFreight.text="总运费:"+self.freight+"元"
+                    self.txtLength.isEnabled=false
+                    self.txtWidth.isEnabled=false
+                    self.txtheight.isEnabled=false
+                }
+            }
+            self.dismissHUD()
+        }) { (error) in
+            self.showSVProgressHUD(error!, type: HUD.error)
+        }
+    }
 }
 // MARK: - table协议
 extension TheDeliveryViewController:UITableViewDelegate,UITableViewDataSource{
@@ -124,11 +148,15 @@ extension TheDeliveryViewController:UITableViewDelegate,UITableViewDataSource{
             cell=UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier:"id")
         }
         cell!.textLabel!.font=UIFont.systemFont(ofSize: 15)
+        cell!.detailTextLabel!.font=UIFont.systemFont(ofSize: 14)
         switch indexPath.row{
         case 0:
-            txtWeight=buildTxt(15, placeholder:"请输入商品重量(kg)填完后不能更改", tintColor: UIColor.color999(), keyboardType:UIKeyboardType.numberPad)
-            txtWeight.frame=CGRect(x: 15,y: 0,width: boundsWidth-40,height: 50)
-            cell!.contentView.addSubview(txtWeight)
+            cell!.textLabel!.text="订单是否包邮"
+            if orderEntity!.orderWhetherExemptionFromPostage == 1{
+                cell!.detailTextLabel!.text="包邮"
+            }else{
+                cell!.detailTextLabel!.text="不包邮"
+            }
             break
         case 1:
             txtLength=buildTxt(14, placeholder:"请输入长度CM(可无)", tintColor:UIColor.color999(), keyboardType:UIKeyboardType.numberPad)
@@ -175,7 +203,6 @@ extension TheDeliveryViewController:UITableViewDelegate,UITableViewDataSource{
             cell!.contentView.addSubview(lblStoreToHeadquarters)
         default:break
         }
-
         return cell!
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -186,31 +213,30 @@ extension TheDeliveryViewController:UITableViewDelegate,UITableViewDataSource{
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true);
-        if indexPath.row == 4{
-            let weight=txtWeight.text
-            let isNil=isStrNil([txtheight.text,txtWidth.text,txtLength.text])
-            if weight == nil||weight!.count==0{
-                self.showSVProgressHUD("请输入重量", type: HUD.info)
-            }else if !isNil{
-                self.showSVProgressHUD("请填写完整的长,宽,高", type: HUD.info)
-            }else{
-                let vc=SelectwlQueryExpresscodeViewController()
-                vc.expressEntity={ (entity) in
-                    self.expressCode=entity.expressCode
-                    self.lblExpressName.text=entity.expressName
-                    self.expressCodeId=entity.expressCodeId
-                    self.expressmailFreight(self.expressCode!,weight:Int(self.txtWeight.text!)!,insuredMoney:0)
+        if orderEntity!.orderWhetherExemptionFromPostage == 1{//如果包邮
+            if indexPath.row == 4{
+                let isNil=isStrNil([txtheight.text,txtWidth.text,txtLength.text])
+                if !isNil{
+                    self.showSVProgressHUD("请填写完整的长,宽,高", type: HUD.info)
+                }else{
+                    let vc=SelectwlQueryExpresscodeViewController()
+                    vc.expressEntity={ (entity) in
+                        self.expressCode=entity.expressCode
+                        self.lblExpressName.text=entity.expressName
+                        self.expressCodeId=entity.expressCodeId
+                        self.expressmailFreight(self.expressCode!,weight:self.orderEntity!.orderSumGoodsWeight!,insuredMoney:0)
+                    }
+                    let nav=UINavigationController(rootViewController:vc)
+                    self.present(nav, animated:true, completion:nil)
                 }
-                let nav=UINavigationController(rootViewController:vc)
-                self.present(nav, animated:true, completion:nil)
             }
-        }else if indexPath.row == 6{
+        }
+        if indexPath.row == 6{
             let vc=BarCodeScanningViewController()
             vc.strClosure={ str in
                 self.txtExpressNo.text=str
             }
             self.navigationController?.pushViewController(vc, animated:true)
         }
-
     }
 }

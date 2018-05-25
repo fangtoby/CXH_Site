@@ -148,6 +148,7 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
         }
         cell!.textLabel!.textColor=UIColor.black
         cell!.textLabel!.font=UIFont.systemFont(ofSize: 16)
+        cell!.detailTextLabel!.font=UIFont.systemFont(ofSize: 14)
         let name=buildLabel(UIColor.textColor(), font:15, textAlignment: NSTextAlignment.left)
         name.frame=CGRect(x: 15,y: 0,width: 55,height: 50)
         let nameValue=buildLabel(UIColor.color999(), font:14, textAlignment: NSTextAlignment.left)
@@ -171,6 +172,7 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
             case 2:
                 name.text="  分类"
                 nameValue.text=entity!.sCategoryName
+                cell!.detailTextLabel?.text="佣金\((entity!.goodscategoryCommission ?? 0)/10)%"
                 cell!.contentView.addSubview(name)
                 cell!.contentView.addSubview(nameValue)
                 break
@@ -202,8 +204,8 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
             case 5:
                 name.attributedText=redText(" 重量")
                 cell!.contentView.addSubview(name)
-                txtWeight=buildTxt(14, placeholder:"请输入商品重量", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.decimalPad)
-                txtWeight.frame=CGRect(x: 75,y:0,width: boundsWidth-75-30,height: 50)
+                txtWeight=buildTxt(14, placeholder:"请输入商品重量", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.numberPad)
+                txtWeight.frame=CGRect(x: 75,y:0,width: boundsWidth-75-30,height:50)
                 txtWeight.text=entity!.weight?.description
                 cell!.contentView.addSubview(txtWeight)
                 if flag != 1{
@@ -213,7 +215,7 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
             case 6:
                 name.text="保质期"
                 cell!.contentView.addSubview(name)
-                txtGoodLife=buildTxt(14, placeholder:"请输入保质期", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
+                txtGoodLife=buildTxt(14, placeholder:"请输入保质期(天)", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.numberPad)
                 txtGoodLife.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 txtGoodLife.text=entity!.goodLife
                 cell!.contentView.addSubview(txtGoodLife)
@@ -597,6 +599,7 @@ extension GoodDetailsViewController{
             print(json)
             self.entity=self.jsonMappingEntity(GoodDetailsEntity(), object:json["ga"].object)
             self.entity!.sCategoryName=json["sCategoryName"].string
+            self.entity!.goodscategoryCommission=json["goodscategoryCommission"].double
             self.imgArr.append(self.entity!.goodPic!)
             for(_,value) in json["goodsdetailspic"]{
                 let imgPic=value["goodsDetailsPic"].stringValue

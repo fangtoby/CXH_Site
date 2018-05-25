@@ -44,7 +44,7 @@ class  WithdrawalSuccessViewController:BaseViewController {
             lblMsg.text="\(withdrawNumberDays ?? 1)天内到账，请注意前往绑定的提现账号查收!"
         }
         ///手续费小于1毛扣1毛
-        let cashRateBy=Double(cashRateByMoney!)! < 0.1 ? "0.1":cashRateByMoney
+        let cashRateBy=Double(cashRateByMoney!)! < 0.10 ? "0.1":cashRateByMoney
         lblCashRateBy.text="￥"+cashRateBy!
         if withdrawType == 1{
             lblAccount.text="到账银行卡"
