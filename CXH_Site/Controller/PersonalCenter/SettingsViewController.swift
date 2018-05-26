@@ -11,7 +11,7 @@ import UIKit
 /// 设置页面
 class SettingsViewController:BaseViewController{
     fileprivate var table:UITableView!
-    fileprivate var nameArr=["订单包邮设置","提现账户设置","修改密码"]
+    fileprivate var nameArr=["订单包邮设置","提现账户设置","设置分享费比例","修改密码"]
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title="设置"
@@ -39,7 +39,7 @@ extension SettingsViewController:UITableViewDelegate,UITableViewDataSource{
         return 50
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 4
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //取消选中的样式
@@ -51,6 +51,9 @@ extension SettingsViewController:UITableViewDelegate,UITableViewDataSource{
             let vc=BindWxAndAliViewController()
             self.navigationController?.pushViewController(vc, animated: true)
         }else if indexPath.row == 2{
+            let vc=SettingShareProportionViewController()
+            self.navigationController?.pushViewController(vc, animated:true)
+        }else if indexPath.row == 3{
             let vc=UpdatePasswordViewController()
             self.navigationController?.pushViewController(vc, animated:true)
         }

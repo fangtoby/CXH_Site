@@ -108,10 +108,12 @@ extension PersonalCenterViewController{
         
         img=UIImageView()
         img.image=UIImage(named:"login_log")
+        img.isUserInteractionEnabled=true
+        img.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action:#selector(pushStoreInfoVC)))
         informationView.addSubview(img)
         
         lblTel=buildLabel(UIColor.white, font: 14, textAlignment: NSTextAlignment.center)
-        lblTel.text=userDefaults.object(forKey: "userAccount") as? String
+        lblTel.text=userDefaults.object(forKey:"userAccount") as? String
         informationView.addSubview(lblTel)
         
         positionView=UIView()
@@ -272,6 +274,11 @@ extension PersonalCenterViewController{
             // 最后的-30是边距，这个可以随意设置
             make.bottom.lessThanOrEqualTo(viewContainer).offset(-30)
         }
+    }
+    ///跳转到店铺信息
+    @objc func pushStoreInfoVC(){
+        let vc=StoreInfoViewController()
+        self.navigationController?.pushViewController(vc, animated:true)
     }
     /**
      跳转到余额明细

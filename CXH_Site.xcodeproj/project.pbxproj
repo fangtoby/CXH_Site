@@ -59,6 +59,9 @@
 		6337505D1EFBDCFB009A0FF2 /* SweepCodeCourierDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6337505C1EFBDCFB009A0FF2 /* SweepCodeCourierDetailsViewController.swift */; };
 		633BA22D1F2195D900C9BA04 /* ManualReceiptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633BA22C1F2195D900C9BA04 /* ManualReceiptViewController.swift */; };
 		634155A51EE2599F009C9415 /* InExamineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634155A41EE2599F009C9415 /* InExamineViewController.swift */; };
+		6343CC7720B8F3D700EBB0D6 /* SettingShareProportionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6343CC7620B8F3D700EBB0D6 /* SettingShareProportionViewController.swift */; };
+		6343CC7920B904C100EBB0D6 /* StoreInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6343CC7820B904C100EBB0D6 /* StoreInfoViewController.swift */; };
+		6343CC7B20B905FB00EBB0D6 /* StoreEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6343CC7A20B905FB00EBB0D6 /* StoreEntity.swift */; };
 		6346607920AD2A4300B803C4 /* WithdrawalSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6346607820AD2A4300B803C4 /* WithdrawalSuccessViewController.swift */; };
 		6346607B20AD35FC00B803C4 /* PriceComputationsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6346607A20AD35FC00B803C4 /* PriceComputationsUtil.swift */; };
 		6353DF1B20A19ABA00A09A13 /* GoodTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6353DF1920A19ABA00A09A13 /* GoodTableViewCell.swift */; };
@@ -264,6 +267,9 @@
 		6337505C1EFBDCFB009A0FF2 /* SweepCodeCourierDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SweepCodeCourierDetailsViewController.swift; sourceTree = "<group>"; };
 		633BA22C1F2195D900C9BA04 /* ManualReceiptViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManualReceiptViewController.swift; sourceTree = "<group>"; };
 		634155A41EE2599F009C9415 /* InExamineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InExamineViewController.swift; sourceTree = "<group>"; };
+		6343CC7620B8F3D700EBB0D6 /* SettingShareProportionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingShareProportionViewController.swift; sourceTree = "<group>"; };
+		6343CC7820B904C100EBB0D6 /* StoreInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreInfoViewController.swift; sourceTree = "<group>"; };
+		6343CC7A20B905FB00EBB0D6 /* StoreEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreEntity.swift; sourceTree = "<group>"; };
 		6346607820AD2A4300B803C4 /* WithdrawalSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalSuccessViewController.swift; sourceTree = "<group>"; };
 		6346607A20AD35FC00B803C4 /* PriceComputationsUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PriceComputationsUtil.swift; sourceTree = "<group>"; };
 		6353DF1920A19ABA00A09A13 /* GoodTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodTableViewCell.swift; sourceTree = "<group>"; };
@@ -742,6 +748,7 @@
 				632E33FE20A2A6AE004DA6B7 /* WholesaleAuthEntity.swift */,
 				63702F7520AC341D008A53F8 /* WithdrawaRecordEntity.swift */,
 				6311C3F720B3FD4B00803AE7 /* StorePostageEntity.swift */,
+				6343CC7A20B905FB00EBB0D6 /* StoreEntity.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -993,6 +1000,8 @@
 				63250BED1F46844B006D834A /* TouchBalanceViewController.swift */,
 				6311C3F520B3FA0E00803AE7 /* SettingPostageViewController.swift */,
 				63BF5B3F20B80F48003BA0E9 /* StorePrepaidrecordDetailViewController.swift */,
+				6343CC7620B8F3D700EBB0D6 /* SettingShareProportionViewController.swift */,
+				6343CC7820B904C100EBB0D6 /* StoreInfoViewController.swift */,
 			);
 			path = PersonalCenter;
 			sourceTree = "<group>";
@@ -1408,6 +1417,7 @@
 				632A550C20AAE2C6006E7E7C /* BindWxAndAliViewController.swift in Sources */,
 				637051DC1EEA84C800BE840A /* UIImage+Bitmap.m in Sources */,
 				63F2B4EA1EE3FFC900984988 /* UIScrollView+EmptyDataSet.m in Sources */,
+				6343CC7920B904C100EBB0D6 /* StoreInfoViewController.swift in Sources */,
 				63293FF71EE059EF00798008 /* Level2CategoryViewController.swift in Sources */,
 				63C36CB21F999A7400665398 /* FoodListViewController.swift in Sources */,
 				639487971E9E0D6700C19907 /* RegularExpressionsValidation.swift in Sources */,
@@ -1435,6 +1445,7 @@
 				630BAC2620ABD052001ACA7A /* AliSdkManager.swift in Sources */,
 				63C36CB41F99A5FD00665398 /* UploadFoodViewController.swift in Sources */,
 				63250BEE1F46844B006D834A /* TouchBalanceViewController.swift in Sources */,
+				6343CC7B20B905FB00EBB0D6 /* StoreEntity.swift in Sources */,
 				637CDBC51FBD8987009BC65C /* LBXScanViewStyle.swift in Sources */,
 				639486851E9E0C2C00C19907 /* ViewController.swift in Sources */,
 				6353DF1B20A19ABA00A09A13 /* GoodTableViewCell.swift in Sources */,
@@ -1463,6 +1474,7 @@
 				636B7A5E20A57328004466ED /* DB.swift in Sources */,
 				633750591EFB97CF009A0FF2 /* CKSweepCodeReceiptViewController.swift in Sources */,
 				6334FFE21EF1251C00920073 /* YReturnGoodsViewController.swift in Sources */,
+				6343CC7720B8F3D700EBB0D6 /* SettingShareProportionViewController.swift in Sources */,
 				6334FFEE1EF15E1600920073 /* StorecapitalrecordTableViewCell.swift in Sources */,
 				63B941D720A026FB00E1A952 /* UIViewController+Proposer.swift in Sources */,
 				631333141E9F060D007E8A6A /* SettingsViewController.swift in Sources */,

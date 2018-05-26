@@ -50,9 +50,9 @@ import SDWebImage
 //app公用常量
 
 ///图片请求路径
-let URLIMG="http://192.168.1.154";
+let URLIMG="http://192.168.1.140";
 ///数据请求路径  http://192.168.199.121/
-let URL="http://192.168.1.154/";
+let URL="http://192.168.1.140/";
 
 let SERVERERROR="服务器异常"
 /// 屏幕宽

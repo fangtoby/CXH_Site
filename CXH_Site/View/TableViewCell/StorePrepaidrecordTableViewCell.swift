@@ -24,17 +24,20 @@ class StorePrepaidrecordTableViewCell:UITableViewCell{
         self.contentView.addSubview(time)
         
         capitalSum=buildLabel(UIColor.applicationMainColor(), font:16, textAlignment: NSTextAlignment.right)
-        capitalSum.frame=CGRect(x: 200,y: 30,width: boundsWidth-215,height: 20)
+        capitalSum.frame=CGRect(x: 200,y: 30,width: boundsWidth-230,height: 20)
         self.contentView.addSubview(capitalSum)
+
     }
     /**
      更新cell
      */
     func updateCell(_ entity:StorePrepaidrecordEntity){
+        self.accessoryType = .none
         if entity.prepaidType == 1{
             name.text="后台管理人员充值"
         }else if entity.prepaidType == 2{
             name.text="系统返回销售金额"
+            self.accessoryType = .disclosureIndicator
         }else if entity.prepaidType == 3{
             name.text="系统返回快递费"
         }else if entity.prepaidType == 4{
