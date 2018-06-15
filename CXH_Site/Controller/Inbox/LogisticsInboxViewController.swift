@@ -110,7 +110,7 @@ extension LogisticsInboxViewController{
         var count=0
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.queryCollectHistoryForDriverForLogisticspack(userId:userId, pageNumber: pageNumber, pageSize: pageSize), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
-            print("司机物流包:\(json)")
+            //print("司机物流包:\(json)")
             if isRefresh{
                 self.arr.removeAll()
             }

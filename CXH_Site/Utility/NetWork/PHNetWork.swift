@@ -98,7 +98,7 @@ public enum RequestAPI {
     /***商品接口****/
     
     //新增商品接口
-    case saveGoods(goodInfoName:String,goodUcode:String,goodUnit:String,goodsPrice:String,stock:Int,goodLife:String,goodSource:String,goodService:String,goodPic:String,goodsDetailsPic:String,goodInfoCode:String,goodMixed:String,remark:String,fCategoryId:Int,sCategoryId:Int,storeId:Int,lyPic:String,lyMiaoshu:String,producer:String,goodsMemberPrice:String,memberPriceMiniCount:Int,goodsSaleFlag:Int,sellerAddress:String,weight:String)
+    case saveGoods(goodInfoName:String,goodUcode:String,goodUnit:String,goodsPrice:String,stock:Int,goodLife:String,goodSource:String,goodService:String,goodPic:String,goodsDetailsPic:String,goodInfoCode:String,goodMixed:String,remark:String,fCategoryId:Int,sCategoryId:Int,storeId:Int,lyPic:String,lyMiaoshu:String,producer:String,goodsMemberPrice:String,memberPriceMiniCount:Int,goodsSaleFlag:Int,sellerAddress:String,weight:String,tag:Int)
     //查询商品
     case getAllGoods(flagHidden:Int,pageNumber:Int,pageSize:Int,storeId:Int)
     //商品详情接口
@@ -175,7 +175,7 @@ public enum RequestAPI {
     //站点人员发货
     case storeTodeliver(orderInfoId:Int,storeId:Int,expressCode:String?,logisticsSN:String,freight:String?,storeToHeadquarters:String?,expressName:String?,userId:Int,moneyToMember:String?,moneyToStore:String?,moneyToCompany:String?,length:String?,width:String?,height:String?,expressCodeId:Int?,whetherExemptionFromPostage:Int)
     //计算运费
-    case expressmailFreight(expressCode:String,weight:Int,province:String,length:String?,width:String?,height:String?,insuredMoney:Int,city:String)
+    case expressmailFreight(expressCode:String,weight:Int,province:String,length:String?,width:String?,height:String?,insuredMoney:Int,city:String,county:String)
     //查询积分余额
     case queryStoreCapitalSumMoney(storeId:Int)
     //查询物流设置信息
@@ -267,7 +267,7 @@ extension RequestAPI:TargetType{
         switch self{
         case .adminUserLogin(_,_):
             return "adminUser/adminUserLogin"
-        case .saveGoods(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_):
+        case .saveGoods(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_):
             return "goodsB/saveGoods"
         case .getAllGoods(_,_,_,_):
             return "goodsB/getAllGoods"
@@ -315,7 +315,7 @@ extension RequestAPI:TargetType{
             return "queryOrder/queryOrderDetailsInfoAndGoods"
         case .storeTodeliver(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_):
             return "adminOrder/storeTodeliver"
-        case .expressmailFreight(_,_,_,_,_,_,_,_):
+        case .expressmailFreight(_,_,_,_,_,_,_,_,_):
             return "adminGive/expressmailFreight"
         case .scanCodeGetExpressmailForGivestoragByDriver(_,_):
             return "adminGive/scanCodeGetExpressmailForGivestoragByDriver"
@@ -420,7 +420,7 @@ extension RequestAPI:TargetType{
     }
     public var method:Moya.Method{
         switch self{
-        case .adminUserLogin(_,_),.saveGoods(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.getAllGoods(_,_,_,_),.changeGoodsCategory(_,_,_),.delGoods(_),.changeGoodsFlag(_),.changeGoodsPic(_,_),.scanCodeGetInfo(_),.scanCodeGetLogisticspack(_,_,_),.scanCodeGetStorepack(_,_,_),.scanCodeGetExpressmailstorag(_,_,_),.searchCollectHistory(_,_),.inputExpress(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.searchGiveHistory(_,_),.saveExpress(_,_,_,_,_,_,_,_,_,_,_,_,_,_),.storeTodeliver(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.expressmailFreight(_,_,_,_,_,_,_,_),.scanCodeGetExpressmailForGivestoragByDriver(_,_),.addWithdrawa(_,_,_,_,_),.updateWithdrawa(_,_,_,_,_,_),.withdrawaTure(_,_,_,_),.storeTransferToMember(_,_),.scanCodeGetExpressmailForGivestoragByHeadquarters(_,_),.storeConfirmReturngoods(_,_),.codeInfoQueryMain(_),.replaceSignForUser(_,_,_),.driverGetReturn(_,_),.headquartersGetReturn(_,_),.updateExpressmailInfoByHeadquarters(_,_,_,_,_,_,_,_,_,_,_),.storeConfirmUpdateExpressmailInfo(_,_,_),.savePwd(_,_,_),.storeTongji(_,_),.getFoodByTestStoreId(_,_,_,_),.saveFood(_,_,_,_,_,_,_,_,_,_,_),.foodUpDown(_,_),.getFoodById(_),.queryIdentityByEmIdentityId(_),.idCardUploads(_,_),.testStoreUpload(_,_),.goodsUploads(_,_):
+        case .adminUserLogin(_,_),.saveGoods(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.getAllGoods(_,_,_,_),.changeGoodsCategory(_,_,_),.delGoods(_),.changeGoodsFlag(_),.changeGoodsPic(_,_),.scanCodeGetInfo(_),.scanCodeGetLogisticspack(_,_,_),.scanCodeGetStorepack(_,_,_),.scanCodeGetExpressmailstorag(_,_,_),.searchCollectHistory(_,_),.inputExpress(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.searchGiveHistory(_,_),.saveExpress(_,_,_,_,_,_,_,_,_,_,_,_,_,_),.storeTodeliver(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_),.expressmailFreight(_,_,_,_,_,_,_,_,_),.scanCodeGetExpressmailForGivestoragByDriver(_,_),.addWithdrawa(_,_,_,_,_),.updateWithdrawa(_,_,_,_,_,_),.withdrawaTure(_,_,_,_),.storeTransferToMember(_,_),.scanCodeGetExpressmailForGivestoragByHeadquarters(_,_),.storeConfirmReturngoods(_,_),.codeInfoQueryMain(_),.replaceSignForUser(_,_,_),.driverGetReturn(_,_),.headquartersGetReturn(_,_),.updateExpressmailInfoByHeadquarters(_,_,_,_,_,_,_,_,_,_,_),.storeConfirmUpdateExpressmailInfo(_,_,_),.savePwd(_,_,_),.storeTongji(_,_),.getFoodByTestStoreId(_,_,_,_),.saveFood(_,_,_,_,_,_,_,_,_,_,_),.foodUpDown(_,_),.getFoodById(_),.queryIdentityByEmIdentityId(_),.idCardUploads(_,_),.testStoreUpload(_,_),.goodsUploads(_,_):
             return .post
         case .getGoodsById(_),.queryCollectHistory(_,_,_,_),.queryGiveHistory(_,_,_,_),.queryShippinglines(),.wlQueryExpresscode(),.queryGoodsCateGoryForOne(),.queryGoodsCateGoryWhereGoodsCateGoryPId(_),.queryOrderInfoAndGoods(_,_,_,_),.queryOrderDetailsInfoAndGoods(_),.queryStoreCapitalSumMoney(_),.searchCollectHistoryForStoreBystoreUserCtime(_,_,_,_,_),.queryCollectHistoryForDriver(_,_,_,_),.queryGiveHistoryForDriver(_,_,_,_),.searchCollectHistoryForDriverByDriverUserCtime(_,_,_,_,_),.searchGiveHistoryForExpressLinkTime(_,_,_,_,_),.searchGiveHistoryForDriverUserCtime(_,_,_,_,_),.queryCxhSetInfo(),.queryWithdrawa(_),.storeQueryReturngoodsapply(_,_,_,_),.queryStorecapitalrecord(_,_,_,_),.queryWithdrawaRecord(_,_,_),.queryStorePrepaidrecord(_,_,_,_),.storeReturn(_,_,_),.queryCollectHistoryForDriverForLogisticspack(_,_,_),.queryCollectHistoryForDriverForStorepackByLogisticsPackId(_,_,_),.queryCollectHistoryForDriverForExpressmailstoragByStorePackId(_,_,_),.queryCollectHistoryForStorepackByStoreUserId(_,_,_),.queryReplaceSignForUser(_,_,_,_),.scanCodeQueryExpressmailstorag(_,_),.scanCodeGetExpressmailInfo(_,_),.storeQueryExpressmailUpdateInfo(_,_,_),.queryReturnHistory(_,_,_,_),.queryExpressmailDetail(_),.getExpressmailForGivestoragByDriver(_,_),.selectAddressInfo(_):
             return .get
@@ -430,8 +430,8 @@ extension RequestAPI:TargetType{
         switch self {
         case let .adminUserLogin(userAccount, userPossword):
             return .requestParameters(parameters: ["userAccount":userAccount,"userPossword":userPossword], encoding: URLEncoding.default)
-        case let .saveGoods(goodInfoName, goodUcode, goodUnit, goodsPrice, stock, goodLife, goodSource, goodService, goodPic, goodsDetailsPic, goodInfoCode, goodMixed, remark, fCategoryId, sCategoryId,storeId,lyPic,lyMiaoshu,producer,goodsMemberPrice,memberPriceMiniCount,goodsSaleFlag,sellerAddress,weight):
-            return .requestParameters(parameters:["goodInfoName":goodInfoName,"goodUcode":goodUcode,"goodUnit":goodUnit,"goodsPrice":goodsPrice,"stock":stock,"goodLife":goodLife,"goodSource":goodSource,"goodService":goodService,"goodPic":goodPic,"goodsDetailsPic":goodsDetailsPic,"goodInfoCode":goodInfoCode,"goodMixed":goodMixed,"remark":remark,"fCategoryId":fCategoryId,"sCategoryId":sCategoryId,"storeId":storeId,"lyPic":lyPic,"lyMiaoshu":lyMiaoshu,"producer":producer,"goodsMemberPrice":goodsMemberPrice,"memberPriceMiniCount":memberPriceMiniCount,"goodsSaleFlag":goodsSaleFlag,"sellerAddress":sellerAddress,"weight":weight], encoding: URLEncoding.default)
+        case let .saveGoods(goodInfoName, goodUcode, goodUnit, goodsPrice, stock, goodLife, goodSource, goodService, goodPic, goodsDetailsPic, goodInfoCode, goodMixed, remark, fCategoryId, sCategoryId,storeId,lyPic,lyMiaoshu,producer,goodsMemberPrice,memberPriceMiniCount,goodsSaleFlag,sellerAddress,weight,tag):
+            return .requestParameters(parameters:["goodInfoName":goodInfoName,"goodUcode":goodUcode,"goodUnit":goodUnit,"goodsPrice":goodsPrice,"stock":stock,"goodLife":goodLife,"goodSource":goodSource,"goodService":goodService,"goodPic":goodPic,"goodsDetailsPic":goodsDetailsPic,"goodInfoCode":goodInfoCode,"goodMixed":goodMixed,"remark":remark,"fCategoryId":fCategoryId,"sCategoryId":sCategoryId,"storeId":storeId,"lyPic":lyPic,"lyMiaoshu":lyMiaoshu,"producer":producer,"goodsMemberPrice":goodsMemberPrice,"memberPriceMiniCount":memberPriceMiniCount,"goodsSaleFlag":goodsSaleFlag,"sellerAddress":sellerAddress,"weight":weight,"tag":tag], encoding: URLEncoding.default)
         case let.getAllGoods(flagHidden, pageNumber, pageSize,storeId):
             return .requestParameters(parameters:["flagHidden":flagHidden,"pageNumber":pageNumber,"pageSize":pageSize,"storeId":storeId], encoding: URLEncoding.default)
         case let .getGoodsById(goodsbasicInfoId):
@@ -502,11 +502,11 @@ extension RequestAPI:TargetType{
             }else{//如果是不包邮
                 return .requestParameters(parameters:["orderInfoId":orderInfoId,"storeId":storeId,"logisticsSN":logisticsSN,"userId":userId], encoding: URLEncoding.default)
             }
-        case let .expressmailFreight(expressCode, weight,province,length,width,height,insuredMoney,city):
+        case let .expressmailFreight(expressCode, weight,province,length,width,height,insuredMoney,city,county):
             if length != nil{
-                return .requestParameters(parameters:["expressCode":expressCode,"weight":weight,"province":province,"length":length!,"width":width!,"height":height!,"insuredMoney":insuredMoney,"city":city], encoding: URLEncoding.default)
+                return .requestParameters(parameters:["expressCode":expressCode,"weight":weight,"province":province,"length":length!,"width":width!,"height":height!,"insuredMoney":insuredMoney,"city":city,"county":county], encoding: URLEncoding.default)
             }else{
-                return .requestParameters(parameters:["expressCode":expressCode,"weight":weight,"province":province,"insuredMoney":insuredMoney,"city":city], encoding: URLEncoding.default)
+                return .requestParameters(parameters:["expressCode":expressCode,"weight":weight,"province":province,"insuredMoney":insuredMoney,"city":city,"county":county], encoding: URLEncoding.default)
             }
         case let .scanCodeGetExpressmailForGivestoragByDriver(codeInfo,userId):
             return .requestParameters(parameters:["codeInfo":codeInfo,"userId":userId], encoding: URLEncoding.default)

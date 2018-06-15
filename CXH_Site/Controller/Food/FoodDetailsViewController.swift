@@ -210,7 +210,7 @@ extension FoodDetailsViewController{
     func http(){
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.getFoodById(foodId:foodId!), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
-            print(json)
+            //print(json)
             self.entity=self.jsonMappingEntity(FoodEntity(), object:json["food"].object)
             self.entity?.foodPrice=json["food"]["foodPrice"].stringValue
             for(_,value) in json["fd"]{

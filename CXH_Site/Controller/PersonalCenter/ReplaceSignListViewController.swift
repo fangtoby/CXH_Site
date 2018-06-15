@@ -102,7 +102,7 @@ extension ReplaceSignListViewController{
         var count=0
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.queryReplaceSignForUser(userId: userId, identity: identity, pageNumber: pageNumber, pageSize: pageSize), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
-            print("代签收记录:\(json)")
+            //print("代签收记录:\(json)")
             if isRefresh{
                 self.arr.removeAll()
             }

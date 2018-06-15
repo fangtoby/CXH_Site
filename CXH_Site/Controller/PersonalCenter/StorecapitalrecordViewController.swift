@@ -185,7 +185,7 @@ extension StorecapitalrecordViewController{
                 self.arr.removeAll()
             }
             let json=self.swiftJSON(result)
-            print("扣除记录\(json)")
+            //print("扣除记录\(json)")
             for(_,value) in json["list"]{
                 let entity=self.jsonMappingEntity(StorecapitalrecordEntity(), object:value.object)
                 self.arr.append(entity!)

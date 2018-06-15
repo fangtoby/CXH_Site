@@ -105,7 +105,7 @@ extension InboxListViewController{
         var count=0
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.queryCollectHistoryForDriverForExpressmailstoragByStorePackId(storePackId:storePackId!, pageNumber: pageNumber, pageSize: pageSize), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
-            print("快件包:\(json)")
+            //print("快件包:\(json)")
             if isRefresh{
                 self.arr.removeAll()
             }

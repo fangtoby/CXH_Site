@@ -142,7 +142,7 @@ extension HasInboxViewController{
         var count=0
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.queryCollectHistoryForDriver(userId:userId, pageNumber: pageNumber, pageSize: pageSize,statu:3), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
-            print("司机已收件:\(json)")
+            //print("司机已收件:\(json)")
             if isRefresh{
                 self.arr.removeAll()
             }

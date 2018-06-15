@@ -29,7 +29,7 @@ class StoreInfoViewController:BaseViewController{
     private func queryStoreInfo(){
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.queryStoreInfo(storeId:storeId), successClosure: { (any) in
             let json=self.swiftJSON(any)
-            print(json)
+            //print(json)
             self.entity=StoreEntity(JSONString:json.description)
             self.table.reloadData()
         }) { (error) in

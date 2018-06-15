@@ -14,6 +14,8 @@ class RegionEntity:Mappable{
     var regionDesc:String?
     var regionName:String?
     var pid:Int?
+    ///1选中 2未选中
+    var isSelected:Int?
     init(){}
     required init?(map: Map) {
         mapping(map: map)

@@ -43,7 +43,7 @@ class InboxDetailsViewController:BaseViewController{
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.replaceSignForUser(userId:userId, expressmailStorageId: entity!.expressmailStorageId!, identity: identity), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
             let success=json["success"].stringValue
-            print(success)
+            //print(success)
             if success == "success"{
                 self.showSVProgressHUD("代签收成功", type: HUD.success)
                 if self.identity != 1{

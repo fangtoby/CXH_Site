@@ -40,6 +40,8 @@ class GoodDetailsEntity:Mappable{
     var weight:Int?
     ///分类佣金
     var goodscategoryCommission:Double?
+    ///商品销售区域：1、仅县区内 2、市县区内 3、省内 4、全国
+    var tag:Int?
     init(){}
     required init?(map: Map) {
         mapping(map: map)
@@ -74,5 +76,6 @@ class GoodDetailsEntity:Mappable{
         goodsSaleFlag <- map["goodsSaleFlag"]
         weight <- map["weight"]
         goodscategoryCommission <- map["goodscategoryCommission"]
+        tag <- map["tag"]
     }
 }

@@ -157,7 +157,7 @@ extension TheShelvesViewController{
             if isRefresh{
                 self.goodArr.removeAll()
             }
-            print(json)
+            //print(json)
             for(_,value) in json["list"]{
                 let entity=self.jsonMappingEntity(GoodEntity(), object:value.object)
                 self.goodArr.append(entity!)

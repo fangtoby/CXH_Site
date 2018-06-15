@@ -193,7 +193,7 @@ extension StorePrepaidrecordViewController{
                 self.arr.removeAll()
             }
             let json=self.swiftJSON(result)
-            print("充值记录\(json)")
+            //print("充值记录\(json)")
             for(_,value) in json["list"]{
                 let entity=self.jsonMappingEntity(StorePrepaidrecordEntity(), object:value.object)
                 self.arr.append(entity!)

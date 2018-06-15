@@ -83,7 +83,7 @@ extension SweepCodeReceiptViewController{
     func code(_ codeStr:String){
         let userId=userDefaults.object(forKey: "userId") as! Int
         let storeId=userDefaults.object(forKey: "storeId") as? Int
-        print(codeStr)
+        //print(codeStr)
         let index=codeStr.index(codeStr.startIndex, offsetBy:2)
         codeFlag=String(codeStr[..<index])
         if codeFlag != nil{
@@ -156,7 +156,7 @@ extension SweepCodeReceiptViewController{
     
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.scanCodeGetInfo(codeInfo:code), successClosure: { (result) -> Void in
             let json=JSON(result)
-            print(json)
+            //print(json)
             let success=json["success"].stringValue
             if success == "success"{
                 let entity=Mapper<ExpressmailEntity>().map(JSONObject:json["emInfo"].object)
@@ -348,7 +348,7 @@ extension SweepCodeReceiptViewController{
     func scanCodeGetExpressmailInfo(_ userId:Int,codeInfo:String){
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.scanCodeGetExpressmailInfo(userId:userId, codeInfo: codeInfo), successClosure: { (result) -> Void in
             let json=JSON(result)
-            print(json)
+            //print(json)
             SVProgressHUD.dismiss()
             let entity=Mapper<ExpressmailEntity>().map(JSONObject:json.object)
             let vc=SweepCodeCourierDetailsViewController()

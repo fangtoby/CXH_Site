@@ -42,7 +42,10 @@ class UploadGoodViewController:BaseViewController{
     fileprivate var showSourceInfoView:UIView!
     fileprivate var textViews:UITextView!
     private var txtSellerAddress:UITextField!
+    private var lblSalesRange:UILabel!
     private var btn:UIButton!
+    ///商品销售区域：1、仅县区内 2、市县区内 3、省内 4、全国
+    private var salesRangeTag=4
     //是否同意用户协议
     fileprivate var isImg:UIButton!
     //用户协议文字按
@@ -77,7 +80,7 @@ class UploadGoodViewController:BaseViewController{
     }
     @objc func updateCategory(_ obj:Notification){
         categoryArr=obj.object as! [GoodsCategoryEntity]
-        lblCategory.text=(categoryArr[1].goodscategoryName ?? "")+"(佣金\((categoryArr[1].goodscategoryCommission ?? 0)/10)%"
+        lblCategory.text=(categoryArr[1].goodscategoryName ?? "")+"(佣金\((categoryArr[1].goodscategoryCommission ?? 0)/10)%)"
     }
     deinit{
         NotificationCenter.default.removeObserver(self)
@@ -100,7 +103,7 @@ extension UploadGoodViewController{
         segmentedControl.selectedSegmentIndex=0
         segmentedControl.addTarget(self, action: #selector(segmentedControlChanged), for: UIControlEvents.valueChanged)
         scrollView.addSubview(segmentedControl)
-        table=UITableView(frame:CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 20*50+280))
+        table=UITableView(frame:CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 21*50+280))
         table.delegate=self
         table.dataSource=self
         table.isScrollEnabled=false
@@ -153,11 +156,11 @@ extension UploadGoodViewController{
     //选择点击后的事件
     @objc func segmentedControlChanged(sender:UISegmentedControl) {
         if sender.selectedSegmentIndex == 2{
-            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 22*50+280)
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 23*50+280)
         }else if sender.selectedSegmentIndex == 1{
-            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 21*50+280)
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 22*50+280)
         }else{
-            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 20*50+280)
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 21*50+280)
         }
         userAgreementView.frame=CGRect.init(x:(boundsWidth-(25+143+115+5))/2, y:table.frame.maxY+30, width:(25+143+115+5),height:25)
         btn.frame=CGRect(x: 30,y:userAgreementView.frame.maxY+15,width: boundsWidth-60,height: 40)
@@ -301,7 +304,7 @@ extension UploadGoodViewController{
         }
         self.showSVProgressHUD("正在加载...", type: HUD.textClear)
         let storeId=userDefaults.object(forKey: "storeId") as! Int
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.saveGoods(goodInfoName: goodInfoName!, goodUcode: goodUcode!, goodUnit: goodUnit!, goodsPrice: goodsPrice ?? "", stock:Int(stock!)!, goodLife: goodLife!, goodSource: goodSource!, goodService: goodService!, goodPic:imgArr[0], goodsDetailsPic: goodsDetailsPic, goodInfoCode: goodInfoCode!, goodMixed: goodMixed!, remark: remark!, fCategoryId: fCategoryId!, sCategoryId:sCategoryId!,storeId:storeId,lyPic:lyPic,lyMiaoshu:lyMiaoshu,producer:producer!, goodsMemberPrice:goodsMemberPrice ?? "", memberPriceMiniCount:Int(memberPriceMiniCount ?? "0") ?? 0, goodsSaleFlag:segmentedControl.selectedSegmentIndex+1, sellerAddress:sellerAddress!,weight:weight!), successClosure: { (result) -> Void in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.saveGoods(goodInfoName: goodInfoName!, goodUcode: goodUcode!, goodUnit: goodUnit!, goodsPrice: goodsPrice ?? "", stock:Int(stock!)!, goodLife: goodLife!, goodSource: goodSource!, goodService: goodService!, goodPic:imgArr[0], goodsDetailsPic: goodsDetailsPic, goodInfoCode: goodInfoCode!, goodMixed: goodMixed!, remark: remark!, fCategoryId: fCategoryId!, sCategoryId:sCategoryId!,storeId:storeId,lyPic:lyPic,lyMiaoshu:lyMiaoshu,producer:producer!, goodsMemberPrice:goodsMemberPrice ?? "", memberPriceMiniCount:Int(memberPriceMiniCount ?? "0") ?? 0, goodsSaleFlag:segmentedControl.selectedSegmentIndex+1, sellerAddress:sellerAddress!,weight:weight!,tag:salesRangeTag), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
             let success=json["success"].stringValue
             if success == "success"{
@@ -338,6 +341,7 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
         if cell == nil{
             cell=UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier:"goodid")
         }
+        cell!.accessoryType = .none
         cell!.textLabel!.textColor=UIColor.black
         cell!.textLabel!.font=UIFont.systemFont(ofSize: 16)
         let name=buildLabel(UIColor.textColor(), font:15, textAlignment: NSTextAlignment.left)
@@ -353,6 +357,16 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
             cell!.textLabel!.text="商品基本信息"
             break
             case 1:
+                name.attributedText=redText("*销售范围")
+                name.frame=CGRect.init(x:15, y:0, width:75, height: 50)
+                cell!.contentView.addSubview(name)
+                lblSalesRange=buildLabel(UIColor.color999(), font:14, textAlignment: NSTextAlignment.left)
+                lblSalesRange.text="全国(默认)"
+                lblSalesRange.frame=CGRect(x:90,y: 0,width: boundsWidth-90-30,height: 50)
+                cell!.contentView.addSubview(lblSalesRange)
+                cell!.accessoryType = .disclosureIndicator
+                break
+            case 2:
                 name.attributedText=redText("*商品名")
                 cell!.contentView.addSubview(name)
                 txtGoodInfoName=buildTxt(14, placeholder:"请输入商品名称", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
@@ -360,7 +374,7 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 cell!.contentView.addSubview(txtGoodInfoName)
 
                 break
-            case 2:
+            case 3:
                 name.attributedText=redText("*分类")
                 cell!.contentView.addSubview(name)
                 lblCategory=buildLabel(UIColor.color999(), font:14, textAlignment: NSTextAlignment.left)
@@ -370,7 +384,7 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 cell!.accessoryType = .disclosureIndicator
 
                 break
-            case 3:
+            case 4:
 
                 name.attributedText=redText("*单位")
                 cell!.contentView.addSubview(name)
@@ -379,7 +393,7 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 cell!.contentView.addSubview(txtGoodUnit)
 
                 break
-            case 4:
+            case 5:
 
                 name.attributedText=redText("*规格")
                 cell!.contentView.addSubview(name)
@@ -387,14 +401,14 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 txtGoodUcode.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 cell!.contentView.addSubview(txtGoodUcode)
                 break
-            case 5:
+            case 6:
                 name.attributedText=redText("*重量")
                 cell!.contentView.addSubview(name)
                 txtWeight=buildTxt(14, placeholder:"请输入商品重量", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.numberPad)
                 txtWeight.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
                 cell!.contentView.addSubview(txtWeight)
                 break
-            case 6:
+            case 7:
                 name.text="  条码"
                 cell!.contentView.addSubview(name)
                 txtGoodInfoCode=buildTxt(14, placeholder:"请输入商品条码(可无)", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.default)
@@ -402,7 +416,7 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 cell!.contentView.addSubview(txtGoodInfoCode)
 
                 break
-            case 7:
+            case 8:
 
                 if segmentedControl.selectedSegmentIndex == 1{
                     name.attributedText=redText("*批发价")
@@ -419,7 +433,7 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 }
 
                 break
-            case 8:
+            case 9:
 
                 if segmentedControl.selectedSegmentIndex == 2{
                     name.attributedText=redText("*批发价")
@@ -436,7 +450,7 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 }
 
                 break
-            case 9:
+            case 10:
 
                 name.attributedText=redText("*起订量")
                 cell!.contentView.addSubview(name)
@@ -464,7 +478,7 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
                 break
             case 2:
 
-                name.text="保质期"
+                name.attributedText=redText("*保质期")
                 cell!.contentView.addSubview(name)
                 txtGoodLife=buildTxt(14, placeholder:"请输入商品保质期(天)", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.numberPad)
                 txtGoodLife.frame=CGRect(x: 75,y: 0,width: boundsWidth-75-30,height: 50)
@@ -602,11 +616,11 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
             return 9
         }else{
             if segmentedControl.selectedSegmentIndex == 2{
-                return 10
+                return 11
             }else if segmentedControl.selectedSegmentIndex == 1{
-                return 9
+                return 10
             }else{
-                return 8
+                return 9
             }
         }
     }
@@ -638,7 +652,9 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true);
         if indexPath.section == 0{
-            if indexPath.row == 2{
+            if indexPath.row == 1{
+                showSalesRange()
+            }else if indexPath.row == 3{
                 let vc=Level1CategoryViewController()
                 let nav=UINavigationController(rootViewController:vc)
                 self.present(nav, animated:true, completion:nil)
@@ -651,7 +667,33 @@ extension UploadGoodViewController:UITableViewDelegate,UITableViewDataSource{
             }
         }
     }
-
+    ///显示区域选择
+    private func showSalesRange(){
+        let alert=UIAlertController(title:"提示", message:"选择销售区域", preferredStyle:UIAlertControllerStyle.actionSheet)
+        let action1=UIAlertAction.init(title:"全国", style: UIAlertActionStyle.default) { (action) in
+            self.salesRangeTag=4
+            self.lblSalesRange.text=action.title
+        }
+        let action2=UIAlertAction.init(title:"省内", style: UIAlertActionStyle.default) { (action) in
+            self.salesRangeTag=3
+            self.lblSalesRange.text=action.title
+        }
+        let action3=UIAlertAction.init(title:"市县区内", style: UIAlertActionStyle.default) { (action) in
+            self.salesRangeTag=2
+            self.lblSalesRange.text=action.title
+        }
+        let action4=UIAlertAction.init(title:"仅县区内 ", style: UIAlertActionStyle.default) { (action) in
+            self.salesRangeTag=1
+            self.lblSalesRange.text=action.title
+        }
+        let cancel=UIAlertAction.init(title:"取消", style: UIAlertActionStyle.cancel, handler: nil)
+        alert.addAction(action1)
+        alert.addAction(action2)
+        alert.addAction(action3)
+        alert.addAction(action4)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 // MARK: - 实现协议
 extension UploadGoodViewController:UICollectionViewDelegate,UICollectionViewDataSource{

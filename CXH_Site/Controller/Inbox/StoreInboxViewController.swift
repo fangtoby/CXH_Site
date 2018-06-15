@@ -120,7 +120,7 @@ extension StoreInboxViewController{
         var count=0
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.queryCollectHistoryForDriverForStorepackByLogisticsPackId(logisticsPackId:logisticsPackId!,pageNumber:pageNumber,pageSize:pageSize), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
-            print("司机站点包:\(json)")
+            //print("司机站点包:\(json)")
             if isRefresh{
                 self.arr.removeAll()
             }
@@ -149,7 +149,7 @@ extension StoreInboxViewController{
         var count=0
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.queryCollectHistoryForStorepackByStoreUserId(userId:userId, pageNumber: pageNumber, pageSize: pageSize), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
-            print("站点包:\(json)")
+            //print("站点包:\(json)")
             if isRefresh{
                 self.arr.removeAll()
             }

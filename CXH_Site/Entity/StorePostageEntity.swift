@@ -18,6 +18,8 @@ class StorePostageEntity:Mappable{
     var storeId:Int?
     ///1包邮 2指定金额包邮 3不包邮
     var whetherExemptionFromPostage:Int?
+    ///那些省份不包邮
+    var specifiedProvinceExemptionFromPostage:String?
     init(){}
     required init?(map: Map) {
 
@@ -31,6 +33,7 @@ class StorePostageEntity:Mappable{
         expressCode <- map["expressCode"]
         storeId <- map["storeId"]
         whetherExemptionFromPostage <- map["whetherExemptionFromPostage"]
+        specifiedProvinceExemptionFromPostage <- map["specifiedProvinceExemptionFromPostage"]
     }
 
 

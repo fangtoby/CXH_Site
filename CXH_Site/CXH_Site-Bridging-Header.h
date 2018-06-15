@@ -24,3 +24,6 @@
 //百度移动统计
 #import "BaiduMobStat.h"
 
+/// 引入 按钮Badge效果
+#import "UIButton+Badge.h"
+

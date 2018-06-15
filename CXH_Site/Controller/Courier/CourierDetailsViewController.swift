@@ -47,7 +47,7 @@ class CourierDetailsViewController:BaseViewController{
     func queryExpressmailDetail(){
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.queryExpressmailDetail(expressmailId:expressmailId!), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
-            print("揽件详情")
+            //print("揽件详情")
             self.entity=self.jsonMappingEntity(ExpressmailEntity(), object:json.object)
             if self.entity!.packagePic != nil{
                 self.imgArr=self.entity!.packagePic!.components(separatedBy: ",")

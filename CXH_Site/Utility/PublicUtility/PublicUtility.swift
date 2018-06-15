@@ -50,9 +50,9 @@ import SDWebImage
 //app公用常量
 
 ///图片请求路径
-let URLIMG="http://192.168.1.140";
-///数据请求路径  http://192.168.199.121/
-let URL="http://192.168.1.140/";
+let URLIMG="http://www.cxh777.com";
+///数据请求路径  http://www.cxh777.com/
+let URL="http://www.cxh777.com/";
 
 let SERVERERROR="服务器异常"
 /// 屏幕宽
@@ -171,6 +171,16 @@ extension UIButton{
 // 扩展String
 
 extension String {
+    ///截取字符串 从第几位开始
+    public func substring(from index:Int) -> String {
+        if self.count > index {
+            let startIndex = self.index(self.startIndex, offsetBy: index)
+            let subString = self[startIndex..<self.endIndex]
+            return String(subString)
+        } else {
+            return self
+        }
+    }
     subscript (r: Range<Int>) -> String {
         get {
             let startIndex = self.characters.index(self.startIndex, offsetBy: r.lowerBound)

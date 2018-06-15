@@ -134,12 +134,12 @@ extension BindWxAndAliViewController{
             self.dismissHUD()
             let str=json["ali_auth_app_login"].stringValue
             AliPayManager.shared.login(self,withInfo:str, loginSuccess: { (str) in
-                print(str)
+                //print(str)
                 let resultArr=str.components(separatedBy:"&")
                 for(subResult) in resultArr{
                     if subResult.count > 10 && subResult.hasPrefix("auth_code="){
                         let auth_code=subResult[subResult.index(subResult.startIndex, offsetBy:10)...]
-                        print(auth_code)
+                        //print(auth_code)
                         self.updateStoreBindAli(auth_code:String(auth_code))
                         return
                     }
@@ -245,7 +245,7 @@ extension BindWxAndAliViewController{
         self.showSVProgressHUD("正在获取验证码...", type: HUD.textClear)
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.sendDuanxin(account:account), successClosure: { (any) in
             let json=self.swiftJSON(any)
-            print(json)
+            //print(json)
             let success=json["success"].stringValue
             if success == "success"{
                 self.dismissHUD()

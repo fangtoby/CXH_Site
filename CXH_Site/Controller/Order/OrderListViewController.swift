@@ -11,11 +11,13 @@ import UIKit
 import MJRefresh
 /// 订单
 class OrderListViewController:BaseViewController{
+    ///接收订单数量集合
+    var orderCountArr=[OrderCountEntity]()
     fileprivate var arr=[OrderEntity]()
     fileprivate var table:UITableView!
     fileprivate var menuView:UIView!
     fileprivate var pageNumber=0
-    fileprivate var orderStatu=1
+    fileprivate var orderStatu=2
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title="我的订单"
@@ -32,25 +34,36 @@ class OrderListViewController:BaseViewController{
         menuView.backgroundColor=UIColor.white
         self.view.addSubview(menuView)
         var btnX:CGFloat=0
-        for i in  0..<5{
-            let btn=UIButton(frame:CGRect(x: btnX,y: 0,width: boundsWidth/5,height: 40))
+        for i in  0..<4{
+            let btn=UIButton(frame:CGRect(x: btnX,y: 0,width: boundsWidth/4,height: 40))
             btn.tag=i
             var title=""
             switch i{
             case 0:
-                title="待付款"
+                let entity=orderCountArr.first(where: { (entity) -> Bool in
+                    return entity.orderStatu == 2
+                })
+                if entity != nil{
+                    title="待发货(\(entity!.countOrder!))"
+                }else{
+                    title="待发货"
+                }
                 btn.isSelected=true //默认选中
                 break
             case 1:
-                title="待发货"
+                let entity=orderCountArr.first(where: { (entity) -> Bool in
+                    return entity.orderStatu == 3
+                })
+                if entity != nil{
+                    title="待收货(\(entity!.countOrder!))"
+                }else{
+                    title="待收货"
+                }
                 break
             case 2:
-                title="待收货"
-                break
-            case 3:
                 title="待评价"
                 break
-            case 4:
+            case 3:
                 title="已完成"
                 break
             default:break
@@ -60,7 +73,7 @@ class OrderListViewController:BaseViewController{
             btn.setTitleColor(UIColor.applicationMainColor(), for: UIControlState.selected)
             btn.setTitleColor(UIColor.black, for: UIControlState())
             btn.addTarget(self, action:#selector(selectedBtn), for: UIControlEvents.touchUpInside)
-            btnX+=boundsWidth/5
+            btnX+=boundsWidth/4
             menuView.addSubview(btn)
             
         }
@@ -231,18 +244,15 @@ extension OrderListViewController{
         sender.isSelected=true //设置当前按钮状态为选中
         switch sender.tag{
         case 0:
-            orderStatu=1
-            break
-        case 1:
             orderStatu=2
             break
-        case 2:
+        case 1:
             orderStatu=3
             break
-        case 3:
+        case 2:
             orderStatu=4
             break
-        case 4:
+        case 3:
             orderStatu=5
             break
         default:break
@@ -272,6 +282,7 @@ extension OrderListViewController{
         vc.orderEntity=entity
         vc.province=entity.province
         vc.city=entity.city
+        vc.county=entity.county
         self.navigationController?.pushViewController(vc,animated:true)
     }
 

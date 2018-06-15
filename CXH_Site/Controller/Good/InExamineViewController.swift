@@ -108,7 +108,7 @@ extension InExamineViewController{
             if isRefresh{
                 self.arr.removeAll()
             }
-            print(json)
+            //print(json)
             for(_,value) in json["list"]{
                 let entity=self.jsonMappingEntity(GoodEntity(), object:value.object)
                 self.arr.append(entity!)

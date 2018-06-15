@@ -261,7 +261,7 @@ extension LoginViewController{
             let json=self.swiftJSON(result)
             let success=json["success"].stringValue
             if success == "success"{
-                print(json)
+                //print(json)
                 let entity=self.jsonMappingEntity(MemberEntity(), object:json["userInfo"].object)
                 userDefaults.set(entity!.storeId, forKey:"storeId")
                 userDefaults.set(entity!.userId, forKey:"userId")

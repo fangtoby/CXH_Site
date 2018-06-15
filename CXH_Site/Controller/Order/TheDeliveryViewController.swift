@@ -14,6 +14,7 @@ class TheDeliveryViewController:BaseViewController {
     var orderEntity:OrderEntity?
     var province:String?
     var city:String?
+    var county:String?
     fileprivate var table:UITableView!
     fileprivate var expressCode:String?
     fileprivate var lblExpressName:UILabel!
@@ -60,7 +61,7 @@ class TheDeliveryViewController:BaseViewController {
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.storeTodeliver(orderInfoId:orderEntity!.orderInfoId!, storeId: storeId, expressCode: expressCode!, logisticsSN:self.txtExpressNo.text!,freight:freight,storeToHeadquarters:storeToHeadquarters,expressName:self.lblExpressName.text!,userId:userId,moneyToMember:"\(self.freightEntity!.moneyToMember!)",moneyToStore:"\(self.freightEntity!.moneyToStore!)",moneyToCompany:"\(self.freightEntity!.moneyToCompany!)",length:txtLength.text,width:txtWidth.text,height:txtheight.text,expressCodeId:expressCodeId!, whetherExemptionFromPostage:orderEntity!.orderWhetherExemptionFromPostage!), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
             let success=json["success"].stringValue
-            print(success)
+            //print(success)
             if success == "success"{
                 self.showSVProgressHUD("发货成功", type: HUD.success)
                 //通知订单刷新页面
@@ -92,7 +93,7 @@ class TheDeliveryViewController:BaseViewController {
      - parameter weight:      重量kg
      */
     func expressmailFreight(_ expressCode:String,weight:Int,insuredMoney:Int){
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.expressmailFreight(expressCode: expressCode, weight: weight,province:province!,length:txtLength.text,width:txtWidth.text,height:txtheight.text,insuredMoney:insuredMoney,city:city!), successClosure: { (result) -> Void in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.expressmailFreight(expressCode: expressCode, weight: weight,province:province!,length:txtLength.text,width:txtWidth.text,height:txtheight.text,insuredMoney:insuredMoney,city:city!, county:county!), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
             let success=json["success"].stringValue
             if success == "success"{

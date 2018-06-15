@@ -307,7 +307,7 @@ extension PersonalCenterViewController{
         let storeId=userDefaults.object(forKey: "storeId") as! Int
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.queryStoreCapitalSumMoney(storeId:storeId), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
-            print(json)
+            //print(json)
             self.lblBalanceValue.text=json["success"].doubleValue.description
             }) { (errorMsg) -> Void in
                 self.showSVProgressHUD(errorMsg!, type: HUD.error)

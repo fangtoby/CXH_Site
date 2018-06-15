@@ -106,17 +106,17 @@ extension UploadFoodViewController{
             for i in 1..<imgArr.count-1{
                 goodsDetailsPic+=imgArr[i]+","
             }
-            print(goodsDetailsPic)
+            //print(goodsDetailsPic)
             let index=goodsDetailsPic.characters.index(goodsDetailsPic.endIndex, offsetBy: -1)
             goodsDetailsPic=goodsDetailsPic.substring(to: index)
-            print(goodsDetailsPic)
+            //print(goodsDetailsPic)
         }
         self.showSVProgressHUD("正在加载...", type: HUD.textClear)
         let storeId=userDefaults.object(forKey: "storeId") as! Int
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.saveFood(foodName: goodInfoName!, foodPrice:goodsPrice!, foodRemark:remark!, foodUnit:goodUnit!, foodPic:imgArr[0], testStoreId:storeId,foodUcode:goodUcode!, foodMixed:goodMixed!, foodCode:goodInfoCode!, stock:Int(stock!)!, foodDetailPic: goodsDetailsPic), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
             let success=json["success"].stringValue
-            print(success)
+            //print(success)
             if success == "success"{
                 self.showSVProgressHUD("上传成功", type: HUD.success)
                 self.navigationController?.popViewController(animated: true)
@@ -411,7 +411,7 @@ extension UploadFoodViewController:UIImagePickerControllerDelegate,UINavigationC
             if pic == "fail"{
                 self.showSVProgressHUD("上传图片失败", type: HUD.error)
             }else{
-                print(picker.view.tag)
+                //print(picker.view.tag)
                 self.imgArr.insert(pic,at:self.imgArr.count-1)
                 self.collectionView.reloadData()
                 self.showSVProgressHUD("上传图片成功", type: HUD.success)

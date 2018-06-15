@@ -102,7 +102,7 @@ extension CourierUpdateListViewController{
         var count=0
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.storeQueryExpressmailUpdateInfo(storeId: storeId, pageNumber: pageNumber, pageSize: pageSize), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
-            print(json)
+            //print(json)
             if isRefresh{
                 self.arr.removeAll()
             }

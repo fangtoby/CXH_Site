@@ -178,6 +178,8 @@ extension WithdrawaManagementViewController{
                 self.showSVProgressHUD("没有绑定微信", type: HUD.error)
             }else if success == "notBingAli"{
                 self.showSVProgressHUD("没有绑定支付宝", type: HUD.error)
+            }else if success == "weixin_bind_statu_false"{
+                self.showSVProgressHUD("暂不支持微信提现", type: HUD.error)
             }else{
                 self.showSVProgressHUD("申请提现失败", type: HUD.error)
             }
@@ -312,7 +314,7 @@ extension WithdrawaManagementViewController{
 
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.queryWithdrawa(storeId: storeId), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
-            print("json:\(json)")
+            //print("json:\(json)")
             self.arr.removeAll()
             for(_,value) in json{
                 let entity=self.jsonMappingEntity(WithdrawaEntity(), object:value.object)
@@ -346,7 +348,7 @@ extension WithdrawaManagementViewController{
     func queryCxhSetInfo(){
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.queryCxhSetInfo(), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
-            print(json)
+            //print(json)
             self.withdrawaRetainMoney=json["withdrawaRetainMoney"].doubleValue
             self.withdrawaStartMoney=json["withdrawaStartMoney"].doubleValue
             self.lblTitle.text="提现金额不能低于\(self.withdrawaStartMoney!)"

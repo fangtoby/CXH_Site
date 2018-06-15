@@ -66,7 +66,7 @@ extension StayCouierViewController{
                 self.arr.removeAll()
             }
             let json=self.swiftJSON(result)
-            print(json)
+            //print(json)
             for(_,value) in json["list"]{
                 let entity=self.jsonMappingEntity(ExpressmailEntity(), object:value.object)
                 self.arr.append(entity!)
@@ -97,7 +97,7 @@ extension StayCouierViewController{
                 self.arr.removeAll()
             }
             let json=self.swiftJSON(result)
-            print("司机待揽件\(json)")
+            //print("司机待揽件\(json)")
             for(_,value) in json["list"]{
                 let entity=self.jsonMappingEntity(ExpressmailEntity(), object:value.object)
                 self.arr.append(entity!)

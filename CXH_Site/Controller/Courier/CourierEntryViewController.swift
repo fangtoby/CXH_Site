@@ -261,7 +261,7 @@ class CourierEntryViewController:BaseViewController {
      - parameter weight:      重量kg
      */
     func expressmailFreight(_ expressCode:String,weight:Int,insuredMoney:Int){
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.expressmailFreight(expressCode: expressCode, weight: weight,province:toprovince,length:txtLength.text,width:txtWidth.text,height: txtheight.text,insuredMoney:insuredMoney,city:tocity), successClosure: { (result) -> Void in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.expressmailFreight(expressCode: expressCode, weight: weight,province:toprovince,length:txtLength.text,width:txtWidth.text,height: txtheight.text,insuredMoney:insuredMoney,city:tocity,county:tocounty), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
             let success=json["success"].stringValue
             if success == "success"{
@@ -301,7 +301,7 @@ class CourierEntryViewController:BaseViewController {
         self.showSVProgressHUD("系统正在查询...", type: HUD.textClear)
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.queryIdentityByEmIdentityId(idCard:idCard!), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
-            print(json)
+            //print(json)
             if json.count > 0{
                 for(_,value) in json{
                     self.emId=value["emIdentityId"].int

@@ -11,7 +11,6 @@ import UIKit
 
 /// 我的信息
 class IndexViewController:BaseViewController{
-    
     /// 信息view
     fileprivate var informationView:UIImageView!
     ///
@@ -19,8 +18,13 @@ class IndexViewController:BaseViewController{
     fileprivate let identity=userDefaults.object(forKey: "identity") as! Int
     fileprivate var imgArr=["classify_1","sdsj","classify_3","classify_5","classify_6","classify_7","classify_8","classify_9","classify_10"]
     fileprivate var nameArr=["扫码收件","手动收件","手动揽件","收件历史","揽件清单","我的信息","商品管理","我的订单","批发授权"]
+    ///订单总数
+    private var orderCount:Int=0
+    ///保存订单集合
+    private var orderCountArr=[OrderCountEntity]()
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        queryCountOrderGroupByOrderStatuByStoreId()
         self.navigationController?.navigationBar.isTranslucent=false
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -45,6 +49,7 @@ class IndexViewController:BaseViewController{
             nameArr=["菜品管理","切换账号"]
         }
         buildView()
+
     }
 }
 
@@ -102,7 +107,7 @@ extension IndexViewController:UICollectionViewDelegate,UICollectionViewDataSourc
         default:
             {}()
         }
-        cell.updateCell(imgStr, str:str)
+        cell.updateCell(imgStr,str:str,orderCount:orderCount)
         return cell
     }
     
@@ -154,6 +159,7 @@ extension IndexViewController:UICollectionViewDelegate,UICollectionViewDataSourc
                 break
             case 7:
                 let vc=OrderListViewController()
+                vc.orderCountArr=self.orderCountArr
                 self.navigationController?.pushViewController(vc, animated:true)
                 break
             case 8:
@@ -226,6 +232,31 @@ extension IndexViewController:UICollectionViewDelegate,UICollectionViewDataSourc
             let app=UIApplication.shared.delegate as! AppDelegate
             let vc=LoginViewController()
             app.window?.rootViewController=UINavigationController(rootViewController:vc);
+        }
+    }
+    ///查询订单数量
+    private func queryCountOrderGroupByOrderStatuByStoreId(){
+        self.orderCount=0
+        let storeId=userDefaults.object(forKey: "storeId") as! Int
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.queryCountOrderGroupByOrderStatuByStoreId(storeId:storeId), successClosure: { (any) in
+            
+            let json=self.swiftJSON(any)
+            self.orderCountArr=self.jsonMappingArrEntity(OrderCountEntity(), object:json.object) ?? [OrderCountEntity]()
+            if self.orderCountArr.count > 0{
+                for i in 0..<self.orderCountArr.filter({ (entity) -> Bool in
+                    if entity.orderStatu == 2 || entity.orderStatu == 3{
+                       return true
+                    }else{
+                        return false
+                    }
+
+                }).count{
+                    self.orderCount+=self.orderCountArr[i].countOrder ?? 0
+                }
+                self.collectionView.reloadItems(at: [IndexPath.init(row:7, section:0)])
+            }
+        }) { (error) in
+            self.showSVProgressHUD("查询订单数量失败", type: HUD.error)
         }
     }
 }

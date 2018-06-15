@@ -132,7 +132,7 @@ extension ShelvesViewController{
         var count=0
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.getAllGoods(flagHidden: 1, pageNumber: pageNumber, pageSize: pageSize,storeId:testStoreId), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
-            print(json)
+            //print(json)
             if isRefresh{
                 self.goodArr.removeAll()
             }

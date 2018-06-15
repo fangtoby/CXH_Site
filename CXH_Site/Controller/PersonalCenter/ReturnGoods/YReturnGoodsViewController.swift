@@ -103,7 +103,7 @@ extension YReturnGoodsViewController{
                 self.arr.removeAll()
             }
             let json=self.swiftJSON(result)
-            print(json)
+            //print(json)
             for(_,value) in json["list"]{
                 let entity=self.jsonMappingEntity(ReturnGoodsEntity(), object:value.object)
                 self.arr.append(entity!)

@@ -43,7 +43,7 @@ extension OrderDetailsViewController{
         self.showSVProgressHUD("正在加载...", type: HUD.text)
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.queryOrderDetailsInfoAndGoods(orderInfoId:orderInfoId!), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
-            print(json)
+            //print(json)
             self.orderDetailsEntity=self.jsonMappingEntity(OrderDetailsEntity(), object:json.object)
             var goodArr=[GoodEntity]()
             for(_,value) in json["orderAndGoods"]{

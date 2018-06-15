@@ -30,6 +30,9 @@ class GoodDetailsViewController:BaseViewController{
     fileprivate var txtStock:UITextField!
     fileprivate var txtGoodLife:UITextField!
     private var txtWeight:UITextField!
+    private var lblSalesRange:UILabel!
+    ///商品销售区域：1、仅县区内 2、市县区内 3、省内 4、全国
+    private var salesRangeTag=4
     //是否同意用户协议
     fileprivate var isImg:UIButton!
     //用户协议文字按
@@ -131,11 +134,11 @@ extension GoodDetailsViewController{
     ///更新table高度
     private func updateTableHeight(){
         if segmentedControl.selectedSegmentIndex == 2{
-            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 22*50+210)
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 23*50+210)
         }else if segmentedControl.selectedSegmentIndex == 1{
-            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 21*50+210)
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 22*50+210)
         }else{
-            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 20*50+210)
+            self.table.frame=CGRect(x: 0,y: segmentedControl.frame.maxY+5,width: boundsWidth,height: 21*50+210)
         }
     }
 }
@@ -164,19 +167,45 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
                 cell!.textLabel!.text="商品基本信息"
                 break
             case 1:
+                name.text="销售范围"
+                name.frame=CGRect.init(x:15, y:0, width:75, height: 50)
+                cell!.contentView.addSubview(name)
+                lblSalesRange=buildLabel(UIColor.color999(), font:14, textAlignment: NSTextAlignment.left)
+                var text="全国"
+                switch entity!.tag ?? 4{
+                case 1:
+                    text="仅县区内"
+                    break
+                case 2:
+                    text="市县区内"
+                    break
+                case 3:
+                    text="省内"
+                    break
+                default:
+                    text="全国"
+                    break
+
+                }
+                lblSalesRange.text=text
+                lblSalesRange.frame=CGRect(x: 90,y: 0,width: boundsWidth-90-30,height: 50)
+                cell!.contentView.addSubview(lblSalesRange)
+                cell!.accessoryType = .disclosureIndicator
+                break
+            case 2:
                 name.text="商品名"
                 nameValue.text=entity!.goodInfoName
                 cell!.contentView.addSubview(name)
                 cell!.contentView.addSubview(nameValue)
                 break
-            case 2:
+            case 3:
                 name.text="  分类"
                 nameValue.text=entity!.sCategoryName
                 cell!.detailTextLabel?.text="佣金\((entity!.goodscategoryCommission ?? 0)/10)%"
                 cell!.contentView.addSubview(name)
                 cell!.contentView.addSubview(nameValue)
                 break
-            case 3:
+            case 4:
 
                 name.attributedText=redText(" 单位")
                 cell!.contentView.addSubview(name)
@@ -189,7 +218,7 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
                 }
 
                 break
-            case 4:
+            case 5:
 
                 name.attributedText=redText(" 规格")
                 cell!.contentView.addSubview(name)
@@ -201,7 +230,7 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
                     txtGoodUcode.isEnabled=false
                 }
                 break
-            case 5:
+            case 6:
                 name.attributedText=redText(" 重量")
                 cell!.contentView.addSubview(name)
                 txtWeight=buildTxt(14, placeholder:"请输入商品重量", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.numberPad)
@@ -212,7 +241,7 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
                     txtWeight.isEnabled=false
                 }
                 break
-            case 6:
+            case 7:
                 name.text="保质期"
                 cell!.contentView.addSubview(name)
                 txtGoodLife=buildTxt(14, placeholder:"请输入保质期(天)", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.numberPad)
@@ -224,7 +253,7 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
                 }
 
                 break
-            case 7:
+            case 8:
 
                 if segmentedControl.selectedSegmentIndex == 1{
                     name.text="批发价"
@@ -250,7 +279,7 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
                 }
 
                 break
-            case 8:
+            case 9:
 
                 if segmentedControl.selectedSegmentIndex == 2{
                     name.text="批发价"
@@ -275,7 +304,7 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
                 }
 
                 break
-            case 9:
+            case 10:
                 name.text="起订量"
                 cell!.contentView.addSubview(name)
                 txtMemberPriceMiniCount=buildTxt(14, placeholder:"请输入起订量", tintColor:UIColor.color999(),keyboardType: UIKeyboardType.numberPad)
@@ -415,11 +444,11 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
             return 9
         }else{
             if segmentedControl.selectedSegmentIndex == 2{
-                return 10
+                return 11
             }else if segmentedControl.selectedSegmentIndex == 1{
-                return 9
+                return 10
             }else{
-                return 8
+                return 9
             }
         }
     }
@@ -450,8 +479,41 @@ extension GoodDetailsViewController:UITableViewDelegate,UITableViewDataSource{
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        if indexPath.section == 0{
+            if indexPath.row == 1{
+                if flag == 1{
+                    showSalesRange()
+                }
+            }
+        }
     }
-
+    ///显示区域选择
+    private func showSalesRange(){
+        let alert=UIAlertController(title:"提示", message:"选择销售区域", preferredStyle:UIAlertControllerStyle.actionSheet)
+        let action1=UIAlertAction.init(title:"全国", style: UIAlertActionStyle.default) { (action) in
+            self.salesRangeTag=4
+            self.lblSalesRange.text=action.title
+        }
+        let action2=UIAlertAction.init(title:"省内", style: UIAlertActionStyle.default) { (action) in
+            self.salesRangeTag=3
+            self.lblSalesRange.text=action.title
+        }
+        let action3=UIAlertAction.init(title:"市县区内", style: UIAlertActionStyle.default) { (action) in
+            self.salesRangeTag=2
+            self.lblSalesRange.text=action.title
+        }
+        let action4=UIAlertAction.init(title:"仅县区内 ", style: UIAlertActionStyle.default) { (action) in
+            self.salesRangeTag=1
+            self.lblSalesRange.text=action.title
+        }
+        let cancel=UIAlertAction.init(title:"取消", style: UIAlertActionStyle.cancel, handler: nil)
+        alert.addAction(action1)
+        alert.addAction(action2)
+        alert.addAction(action3)
+        alert.addAction(action4)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 // MARK: - 实现协议
 extension GoodDetailsViewController:UICollectionViewDelegate,UICollectionViewDataSource{
@@ -580,7 +642,7 @@ extension GoodDetailsViewController{
         self.showSVProgressHUD("正在加载...", type: HUD.textClear)
 
 
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.updateGoods(goodsbasicInfoId:goodsbasicInfoId!, goodUnit: goodUnit!, goodUcode: goodUcode!, goodsPrice: goodsPrice, goodLife: goodLife!, stock:Int(stock!)!, storeId:entity!.storeId!, goodsSaleFlag: segmentedControl.selectedSegmentIndex+1, goodsMemberPrice:goodsMemberPrice, memberPriceMiniCount: memberPriceMiniCount==nil ? nil : Int(memberPriceMiniCount!),weight: weight!), successClosure: { (any) in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.updateGoods(goodsbasicInfoId:goodsbasicInfoId!, goodUnit: goodUnit!, goodUcode: goodUcode!, goodsPrice: goodsPrice, goodLife: goodLife!, stock:Int(stock!)!, storeId:entity!.storeId!, goodsSaleFlag: segmentedControl.selectedSegmentIndex+1, goodsMemberPrice:goodsMemberPrice, memberPriceMiniCount: memberPriceMiniCount==nil ? nil : Int(memberPriceMiniCount!),weight: weight!, tag:salesRangeTag), successClosure: { (any) in
             let success=self.swiftJSON(any)["success"].stringValue
             if success == "success"{
                 self.showSVProgressHUD("修改成功", type: HUD.success)
@@ -596,7 +658,7 @@ extension GoodDetailsViewController{
         self.showSVProgressHUD("正在加载...", type: HUD.text)
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.getGoodsById(goodsbasicInfoId: goodsbasicInfoId!), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
-            print(json)
+            //print(json)
             self.entity=self.jsonMappingEntity(GoodDetailsEntity(), object:json["ga"].object)
             self.entity!.sCategoryName=json["sCategoryName"].string
             self.entity!.goodscategoryCommission=json["goodscategoryCommission"].double
