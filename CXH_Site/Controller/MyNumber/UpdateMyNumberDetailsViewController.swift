@@ -173,7 +173,8 @@ class UpdateMyNumberDetailsViewController:BaseViewController{
      - parameter weight:      重量kg
      */
     func expressmailFreight(_ expressCode:String,weight:Int,insuredMoney:Int){
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.expressmailFreight(expressCode: expressCode, weight: weight,province:entity!.toprovince!,length: txtLength.text,width: txtWidth.text,height: txtheight.text,insuredMoney:insuredMoney,city:entity!.tocity!, county:entity!.tocounty!), successClosure: { (result) -> Void in
+        
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.expressmailFreight(expressCode: expressCode, weight: weight,province:entity!.toprovince!,length: txtLength.text,width: txtWidth.text,height: txtheight.text,insuredMoney:insuredMoney,city:entity!.tocity!, county:entity!.tocounty!,storeId:entity!.toStoreId), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
             let success=json["success"].stringValue
             //print(json)

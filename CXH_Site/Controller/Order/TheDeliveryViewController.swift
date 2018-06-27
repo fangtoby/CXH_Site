@@ -93,7 +93,7 @@ class TheDeliveryViewController:BaseViewController {
      - parameter weight:      重量kg
      */
     func expressmailFreight(_ expressCode:String,weight:Int,insuredMoney:Int){
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.expressmailFreight(expressCode: expressCode, weight: weight,province:province!,length:txtLength.text,width:txtWidth.text,height:txtheight.text,insuredMoney:insuredMoney,city:city!, county:county!), successClosure: { (result) -> Void in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.expressmailFreight(expressCode: expressCode, weight: weight,province:province!,length:txtLength.text,width:txtWidth.text,height:txtheight.text,insuredMoney:insuredMoney,city:city!, county:county!,storeId:orderEntity!.storeId), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
             let success=json["success"].stringValue
             if success == "success"{

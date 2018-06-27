@@ -39,6 +39,8 @@ class CourierEntryViewController:BaseViewController {
     fileprivate var toprovince=""
     fileprivate var tocity=""
     fileprivate var tocounty=""
+    ///选择邮寄地址的站点id
+    private var storeId:Int?
     fileprivate var lblStoreToHeadquarters:UILabel!
     fileprivate var freight=""
     fileprivate var storeToHeadquarters=""
@@ -103,8 +105,8 @@ class CourierEntryViewController:BaseViewController {
     }
     /**
      实现地区选择协议
-     
-     - parameter str: 选中的省市区
+
+     - parameter str: 收件人 选中的省市区
      */
     @objc func updateAddress1(_ obj:Notification) {
         let myAddress=obj.object as? String
@@ -112,7 +114,23 @@ class CourierEntryViewController:BaseViewController {
         toprovince=addressArr[0]
         tocity=addressArr[1]
         tocounty=addressArr[2]
-        lblToAddress!.text=toprovince+tocity+tocounty
+        if addressArr.count == 4{
+            let town=addressArr[3]
+            txtTodetailAddress.text=town
+        }else if addressArr.count == 5{
+            let town=addressArr[3]
+            let villages=addressArr[4]
+            let userInfo=obj.userInfo as? [String:Any]
+            let storeNo=userInfo!["storeNo"] as! String
+            storeId=userInfo!["storeId"] as? Int
+            if storeNo.count > 0{
+                txtTodetailAddress.text=storeNo
+            }else{
+                txtTodetailAddress.text=town+villages
+            }
+
+        }
+        lblToAddress.text=toprovince+tocity+tocounty
     }
     @objc func submit(){
         let fromName=txtFromName.text
@@ -217,7 +235,7 @@ class CourierEntryViewController:BaseViewController {
         self.facePic=self.facePic ?? ""
         self.conPic=self.conPic ?? ""
         self.showSVProgressHUD("正在加载...", type: HUD.textClear)
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.saveExpress(fromName: fromName!.check(), fromprovince:fromprovince, fromcity: fromcity, fromcounty: fromcounty, fromphoneNumber: fromphoneNumber!, fromRemarks: fromRemarks!.check(), toName: toName!.check(), toprovince: toprovince, tocity: tocity, tocounty: tocounty, todetailAddress: todetailAddress!.check(), tophoneNumber: tophoneNumber!, toRemarks: toRemarks!.check(), savaType:2), successClosure: { (result) -> Void in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.saveExpress(fromName: fromName!.check(), fromprovince:fromprovince, fromcity: fromcity, fromcounty: fromcounty, fromphoneNumber: fromphoneNumber!, fromRemarks: fromRemarks!.check(), toName: toName!.check(), toprovince: toprovince, tocity: tocity, tocounty: tocounty, todetailAddress: todetailAddress!.check(), tophoneNumber: tophoneNumber!, toRemarks: toRemarks!.check(), savaType:2,toStoreId:storeId), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
             let success=json["success"].stringValue
             if success == "success"{
@@ -261,7 +279,8 @@ class CourierEntryViewController:BaseViewController {
      - parameter weight:      重量kg
      */
     func expressmailFreight(_ expressCode:String,weight:Int,insuredMoney:Int){
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.expressmailFreight(expressCode: expressCode, weight: weight,province:toprovince,length:txtLength.text,width:txtWidth.text,height: txtheight.text,insuredMoney:insuredMoney,city:tocity,county:tocounty), successClosure: { (result) -> Void in
+        
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.expressmailFreight(expressCode: expressCode, weight: weight,province:toprovince,length:txtLength.text,width:txtWidth.text,height: txtheight.text,insuredMoney:insuredMoney,city:tocity,county:tocounty,storeId:storeId), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
             let success=json["success"].stringValue
             if success == "success"{

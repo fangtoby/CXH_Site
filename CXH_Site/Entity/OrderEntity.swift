@@ -18,6 +18,9 @@ class OrderEntity:Mappable{
     var province:String?
     var city:String?
     var county:String?
+    var town:String?
+    ///站点id
+    var storeId:Int?
     ///运费
     var orderSumFreight:Double?
     ///此笔订单是否已经为用户包邮； 1 包邮； 2 不包邮
@@ -48,5 +51,7 @@ class OrderEntity:Mappable{
         receiptTime <- map["receiptTime"]
         orderSumGoodsWeight <- map["orderSumGoodsWeight"]
         county <- map["county"]
+        town <- map["town"]
+        storeId <- map["storeId"]
     }
 }

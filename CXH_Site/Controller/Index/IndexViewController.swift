@@ -11,6 +11,8 @@ import UIKit
 
 /// 我的信息
 class IndexViewController:BaseViewController{
+    let storeId=userDefaults.object(forKey: "storeId") as! Int
+
     /// 信息view
     fileprivate var informationView:UIImageView!
     ///
@@ -20,11 +22,16 @@ class IndexViewController:BaseViewController{
     fileprivate var nameArr=["扫码收件","手动收件","手动揽件","收件历史","揽件清单","我的信息","商品管理","我的订单","批发授权"]
     ///订单总数
     private var orderCount:Int=0
+    ///站点需要确认的退款售后订单数量
+    private var returnGoodsCount:Int=0
+    ///个人中心的数量
+    private var userInfoCount=0
     ///保存订单集合
     private var orderCountArr=[OrderCountEntity]()
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         queryCountOrderGroupByOrderStatuByStoreId()
+        queryStoreStatisticsByVariousStatesCount()
         self.navigationController?.navigationBar.isTranslucent=false
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -107,7 +114,18 @@ extension IndexViewController:UICollectionViewDelegate,UICollectionViewDataSourc
         default:
             {}()
         }
-        cell.updateCell(imgStr,str:str,orderCount:orderCount)
+        if identity == 2{
+            if indexPath.item == 7{
+                cell.btnBadge.badgeValue=orderCount==0 ? "":orderCount.description
+            }else{
+                if indexPath.item == 5{
+                    cell.btnBadge.badgeValue=userInfoCount==0 ? "":userInfoCount.description
+                }else{
+                    cell.btnBadge.badgeValue=""
+                }
+            }
+        }
+        cell.updateCell(imgStr,str:str)
         return cell
     }
     
@@ -237,7 +255,7 @@ extension IndexViewController:UICollectionViewDelegate,UICollectionViewDataSourc
     ///查询订单数量
     private func queryCountOrderGroupByOrderStatuByStoreId(){
         self.orderCount=0
-        let storeId=userDefaults.object(forKey: "storeId") as! Int
+
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.queryCountOrderGroupByOrderStatuByStoreId(storeId:storeId), successClosure: { (any) in
             
             let json=self.swiftJSON(any)
@@ -257,6 +275,16 @@ extension IndexViewController:UICollectionViewDelegate,UICollectionViewDataSourc
             }
         }) { (error) in
             self.showSVProgressHUD("查询订单数量失败", type: HUD.error)
+        }
+    }
+    ///查询各种订单数量
+    private func queryStoreStatisticsByVariousStatesCount(){
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.queryStoreStatisticsByVariousStatesCount(storeId:storeId), successClosure: { (any) in
+            let json=self.swiftJSON(any)
+            self.userInfoCount=json["returnGoodsCount"].intValue+json["expressmailUpdateCount"].intValue
+            self.collectionView.reloadItems(at: [IndexPath.init(row:5, section:0)])
+        }) { (error) in
+            self.showSVProgressHUD(error!, type: HUD.error)
         }
     }
 }

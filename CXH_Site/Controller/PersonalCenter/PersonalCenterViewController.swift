@@ -11,6 +11,7 @@ import UIKit
 
 /// 个人中心
 class PersonalCenterViewController:BaseViewController{
+    let storeId=userDefaults.object(forKey: "storeId") as! Int
     /// 图片
     fileprivate var img:UIImageView!
     
@@ -46,6 +47,10 @@ class PersonalCenterViewController:BaseViewController{
     /// 数据源
     fileprivate var nameArr=[String]()
     fileprivate var imgArr=[String]()
+    ///站点需要确认的退款售后订单数量
+    private var returnGoodsCount=0
+    ///站点邮寄信息待确认修改的数量
+    private var expressmailUpdateCount=0
     let identity=userDefaults.object(forKey: "identity") as! Int
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -55,6 +60,7 @@ class PersonalCenterViewController:BaseViewController{
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isTranslucent=false
         if identity == 2{//如果是站点查询余额
+            queryStoreStatisticsByVariousStatesCount()
             queryStoreCapitalSumMoney()
         }
         
@@ -304,13 +310,26 @@ extension PersonalCenterViewController{
         }
     }
     func queryStoreCapitalSumMoney(){
-        let storeId=userDefaults.object(forKey: "storeId") as! Int
+
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.queryStoreCapitalSumMoney(storeId:storeId), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
             //print(json)
             self.lblBalanceValue.text=json["success"].doubleValue.description
             }) { (errorMsg) -> Void in
                 self.showSVProgressHUD(errorMsg!, type: HUD.error)
+        }
+    }
+    ///查询各种订单数量
+    private func queryStoreStatisticsByVariousStatesCount(){
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.queryStoreStatisticsByVariousStatesCount(storeId:storeId), successClosure: { (any) in
+
+            let json=self.swiftJSON(any)
+            print(json)
+            self.returnGoodsCount=json["returnGoodsCount"].intValue
+            self.expressmailUpdateCount=json["expressmailUpdateCount"].intValue
+            self.table.reloadData()
+        }) { (error) in
+            self.showSVProgressHUD(error!, type: HUD.error)
         }
     }
 }
@@ -321,6 +340,9 @@ extension PersonalCenterViewController:UITableViewDataSource,UITableViewDelegate
         var cell=tableView.dequeueReusableCell(withIdentifier: "cellid")
         if cell == nil{
             cell=UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier:"cellid")
+        }
+        for(view) in cell!.contentView.subviews{
+            view.removeFromSuperview()
         }
         if nameArr.count > 0{
             //图片
@@ -333,6 +355,20 @@ extension PersonalCenterViewController:UITableViewDataSource,UITableViewDelegate
             name.text=nameArr[indexPath.row]
             cell!.contentView.addSubview(name)
             cell?.accessoryType = .disclosureIndicator
+            if identity == 2{
+                let btnBadge=UIButton(frame:CGRect(x:boundsWidth-40,y:18,width:1, height:1))
+                cell!.contentView.addSubview(btnBadge)
+                if indexPath.row == 4{
+                     btnBadge.badgeValue=self.expressmailUpdateCount==0 ? "":self.expressmailUpdateCount.description
+                }else{
+                    if indexPath.row == 5{
+                        btnBadge.badgeValue=self.returnGoodsCount==0 ? "":self.returnGoodsCount.description
+                    }else{
+                        btnBadge.badgeValue=""
+                    }
+                }
+
+            }
         }
         return cell!
     }

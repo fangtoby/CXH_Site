@@ -13,7 +13,7 @@ class IndexCollectionViewCell:LWLineSeparatorCollectionViewCell{
     fileprivate var img:UIImageView!
     fileprivate var lblName:UILabel!
     fileprivate var view:UIView!
-    private var btnBadge:UIButton!
+    var btnBadge:UIButton!
     override init(frame: CGRect) {
         super.init(frame:frame)
         let width=boundsWidth/3
@@ -34,14 +34,10 @@ class IndexCollectionViewCell:LWLineSeparatorCollectionViewCell{
     /// - Parameters:
     ///   - imgStr: 图片
     ///   - str: 名称
-    func updateCell(_ imgStr:String,str:String,orderCount:Int){
+    func updateCell(_ imgStr:String,str:String){
         img.image=UIImage(named:imgStr)
         lblName.text=str
-        if orderCount == 0{
-            btnBadge.badgeValue=""
-        }else{
-            btnBadge.badgeValue=orderCount.description
-        }
+        
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

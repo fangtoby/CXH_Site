@@ -14,6 +14,8 @@ class ExpressmailEntity:Mappable{
     var fromcity:String?
     var fromprovince:String?
     var tocity:String?
+    var totown:String?
+    var toStoreId:Int?
     var toName:String?
     var memberId:Int?
     var toRemarks:String?
@@ -90,6 +92,8 @@ class ExpressmailEntity:Mappable{
         packagePic <- map["packagePic"]
         storeName <- map["storeName"]
         storeNo <- map["storeNo"]
+        totown <- map["totown"]
+        toStoreId <- map["toStoreId"]
     }
 
 }

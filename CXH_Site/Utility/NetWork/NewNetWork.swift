@@ -41,6 +41,10 @@ public enum NewRequestAPI{
     case queryStoreOrderPrepaidrecordDetailByPrepaidrecordId(prepaidrecordId:Int)
     ///店铺查询某种订单的数量
     case queryCountOrderGroupByOrderStatuByStoreId(storeId:Int)
+    ///根据村查询站点
+    case queryStoreandvillage(villageRegionId:Int)
+    ///统计各种数量
+    case queryStoreStatisticsByVariousStatesCount(storeId:Int)
 }
 extension NewRequestAPI:TargetType{
     public var path: String {
@@ -77,6 +81,10 @@ extension NewRequestAPI:TargetType{
             return "adminSpc/queryStoreOrderPrepaidrecordDetailByPrepaidrecordId"
         case .queryCountOrderGroupByOrderStatuByStoreId(_):
             return "adminOrder/queryCountOrderGroupByOrderStatuByStoreId"
+        case .queryStoreandvillage(_):
+            return "addressU/queryStoreandvillage"
+        case .queryStoreStatisticsByVariousStatesCount(_):
+            return "statisticsAdminFront/queryStoreStatisticsByVariousStatesCount"
         
 
         }
@@ -86,7 +94,7 @@ extension NewRequestAPI:TargetType{
         switch self {
         case .updateGoods(_,_,_,_,_,_,_,_,_,_,_,_),.updateBindWholesale(_,_,_),.bindWholesale(_,_),.updateStoreBindAli(_,_),.updateStoreBindWx(_,_),.sendDuanxin(_),.updateStorePostage(_,_,_,_,_,_),.updateStoreInfo(_,_):
             return .post
-        case .queryBindWholesale(_,_,_),.queryStoreBindWxOrAliStatu(_),.query_store_ali_AuthParams(_),.queryStorePostage(_),.queryOrderFreightByOrderId(_),.queryStoreInfo(_),.queryStoreOrderPrepaidrecordDetailByPrepaidrecordId(_),.queryCountOrderGroupByOrderStatuByStoreId(_):
+        case .queryBindWholesale(_,_,_),.queryStoreBindWxOrAliStatu(_),.query_store_ali_AuthParams(_),.queryStorePostage(_),.queryOrderFreightByOrderId(_),.queryStoreInfo(_),.queryStoreOrderPrepaidrecordDetailByPrepaidrecordId(_),.queryCountOrderGroupByOrderStatuByStoreId(_),.queryStoreandvillage(_),.queryStoreStatisticsByVariousStatesCount(_):
             return .get
         }
     }
@@ -130,6 +138,10 @@ extension NewRequestAPI:TargetType{
         case let .queryStoreOrderPrepaidrecordDetailByPrepaidrecordId(prepaidrecordId):
             return .requestParameters(parameters:["prepaidrecordId":prepaidrecordId], encoding: URLEncoding.default)
         case let .queryCountOrderGroupByOrderStatuByStoreId(storeId):
+            return .requestParameters(parameters:["storeId":storeId], encoding: URLEncoding.default)
+        case let .queryStoreandvillage(villageRegionId):
+            return .requestParameters(parameters:["villageRegionId":villageRegionId], encoding: URLEncoding.default)
+        case let .queryStoreStatisticsByVariousStatesCount(storeId):
             return .requestParameters(parameters:["storeId":storeId], encoding: URLEncoding.default)
 
         }
