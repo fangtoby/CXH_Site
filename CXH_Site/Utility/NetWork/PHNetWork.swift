@@ -67,13 +67,17 @@ open class PHMoyaHttp {
     }
     //设置请求超时时间
     private func requestTimeoutClosure<T:TargetType>(target:T) -> MoyaProvider<T>.RequestClosure{
-        let requestTimeoutClosure = { (endpoint:Endpoint<T>, done: @escaping MoyaProvider<T>.RequestResultClosure) in
-            do{
-                var request = try endpoint.urlRequest()
-                request.timeoutInterval = 20 //设置请求超时时间
-                done(.success(request))
-            }catch{
-                return
+        let requestTimeoutClosure = { (endpoint:Endpoint, closure: @escaping MoyaProvider<T>.RequestResultClosure) in
+            do {
+                var urlRequest = try endpoint.urlRequest()
+                urlRequest.timeoutInterval = 20 //设置请求超时时间
+                closure(.success(urlRequest))
+            } catch MoyaError.requestMapping(let url) {
+                closure(.failure(MoyaError.requestMapping(url)))
+            } catch MoyaError.parameterEncoding(let error) {
+                closure(.failure(MoyaError.parameterEncoding(error)))
+            } catch {
+                closure(.failure(MoyaError.underlying(error, nil)))
             }
         }
         return requestTimeoutClosure

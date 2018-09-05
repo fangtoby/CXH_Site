@@ -10,7 +10,6 @@ import UIKit
 import IQKeyboardManagerSwift
 import SVProgressHUD
 import Siren
-import XCGLogger
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -167,7 +166,7 @@ extension AppDelegate{
     func setApp(){
         WXApi.registerApp("wx661bad8146962af5")
         //开启键盘框架
-        IQKeyboardManager.sharedManager().enable = true
+        IQKeyboardManager.shared.enable = true
         //设置菊花图默认前景色和背景色
         SVProgressHUD.setForegroundColor(UIColor(white: 1, alpha: 1))
         SVProgressHUD.setBackgroundColor(UIColor(white: 0.15, alpha: 0.85))

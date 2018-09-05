@@ -1,47 +1,47 @@
 PODS:
-  - Alamofire (4.6.0)
-  - BaiduMobStat (4.6.5)
-  - IQKeyboardManagerSwift (5.0.7)
-  - JCore (1.1.7)
-  - JPush (3.0.8):
-    - JCore (~> 1.1.7)
+  - Alamofire (4.7.3)
+  - BaiduMobStat (4.8.3)
+  - Bugly (2.5.0)
+  - FBRetainCycleDetector (0.1.4)
+  - IQKeyboardManagerSwift (6.1.1)
+  - JCore (1.2.2)
+  - JPush (3.1.0):
+    - JCore (~> 1.2.0)
   - KMNavigationBarTransition (1.1.5)
-  - MJRefresh (3.1.15.3)
-  - Moya (10.0.1):
-    - Moya/Core (= 10.0.1)
-  - Moya/Core (10.0.1):
+  - MJRefresh (3.1.15.6)
+  - MLeaksFinder (1.0.0):
+    - FBRetainCycleDetector
+  - Moya (11.0.2):
+    - Moya/Core (= 11.0.2)
+  - Moya/Core (11.0.2):
     - Alamofire (~> 4.1)
     - Result (~> 3.0)
-  - ObjcExceptionBridging (1.0.1):
-    - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
-  - ObjcExceptionBridging/ObjcExceptionBridging (1.0.1)
-  - ObjectMapper (3.1.0)
+  - ObjectMapper (3.3.0)
   - Result (3.2.4)
   - SDCycleScrollView (1.75):
     - SDWebImage (>= 4.0.0)
-  - SDWebImage (4.2.3):
-    - SDWebImage/Core (= 4.2.3)
-  - SDWebImage/Core (4.2.3)
-  - Siren (3.2.0)
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
+  - Siren (3.4.3)
   - SnapKit (4.0.0)
-  - SQLite.swift (0.11.4):
-    - SQLite.swift/standard (= 0.11.4)
-  - SQLite.swift/standard (0.11.4)
-  - SVProgressHUD (2.2.2)
-  - SwiftyJSON (4.0.0)
-  - WechatOpenSDK (1.8.1)
-  - XCGLogger (6.0.2):
-    - XCGLogger/Core (= 6.0.2)
-  - XCGLogger/Core (6.0.2):
-    - ObjcExceptionBridging
+  - SQLite.swift (0.11.5):
+    - SQLite.swift/standard (= 0.11.5)
+  - SQLite.swift/standard (0.11.5)
+  - SVProgressHUD (2.2.5)
+  - SwiftyJSON (4.1.0)
+  - WechatOpenSDK (1.8.2)
+  - WMPageController (2.5.2)
 
 DEPENDENCIES:
   - Alamofire
   - BaiduMobStat
+  - Bugly
   - IQKeyboardManagerSwift
   - JPush
   - KMNavigationBarTransition
   - MJRefresh
+  - MLeaksFinder
   - Moya
   - ObjectMapper
   - Result
@@ -53,19 +53,21 @@ DEPENDENCIES:
   - SVProgressHUD
   - SwiftyJSON
   - WechatOpenSDK
-  - XCGLogger
+  - WMPageController
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - BaiduMobStat
+    - Bugly
+    - FBRetainCycleDetector
     - IQKeyboardManagerSwift
     - JCore
     - JPush
     - KMNavigationBarTransition
     - MJRefresh
+    - MLeaksFinder
     - Moya
-    - ObjcExceptionBridging
     - ObjectMapper
     - Result
     - SDCycleScrollView
@@ -76,30 +78,32 @@ SPEC REPOS:
     - SVProgressHUD
     - SwiftyJSON
     - WechatOpenSDK
-    - XCGLogger
+    - WMPageController
 
 SPEC CHECKSUMS:
-  Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
-  BaiduMobStat: 41c1a17c89397d80e96eff37da5dab9e600fc7a2
-  IQKeyboardManagerSwift: 30fb3a61de1af53a95e02b80fb54ed0a19d5ede5
-  JCore: f7459c81c135281a874a6beafdd321666adcc834
-  JPush: 9574d072cc37e93fa293ba69b43ce763c440943a
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  BaiduMobStat: 486c50871312241be6e1179e365d4a26eb751302
+  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
+  FBRetainCycleDetector: 46f8179bbb1c587deee3ea838a1a3ee02acf5015
+  IQKeyboardManagerSwift: 977affaeb4d6e971975c7790a6850f31d38f1207
+  JCore: f14c0549968a63c22e246a4875aa9d428446f373
+  JPush: 5921e25ad13e0386351079217b009f2039084eac
   KMNavigationBarTransition: 7a52c9bc25b39b6e3343e980b453facee1591b82
-  MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
-  Moya: 9e621707ff754eeb51ff3ec51a3d54e517c0733a
-  ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
-  ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
+  MJRefresh: 0efa19656679d70a0f47cbe76e56c2271fe53a97
+  MLeaksFinder: 8c435bd2f6d070af18cff082b503b21adc130fc0
+  Moya: a725035953bc1c0eb1be505ab903984501d82440
+  ObjectMapper: b612bf8c8e99c4dc0bb6013a51f7c27966ed5da9
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   SDCycleScrollView: 884b88f0266dd4708a0e1934975c69cb971707b1
-  SDWebImage: 791bb72962b3492327ddcac4b1880bd1b5458431
-  Siren: 964f57553cf6a39d1bada4e403557523a213b397
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+  Siren: e3cf1a93fa0fa73c03452107e95e5c10768d1d08
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
-  SQLite.swift: 3e3bee21da701b5b9f87c4a672cb54f233505692
-  SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
-  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
-  WechatOpenSDK: 491d965d79335070328571d3e79f714549e79a5e
-  XCGLogger: c9601cae9a8912de34a58666ba931ed3d624dd31
+  SQLite.swift: 6e5356850bb1791459f8c16d6ee9195b28714a2e
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
+  WechatOpenSDK: 676feec516a11173eafd1fe64b10d27babf28701
+  WMPageController: 0c7624d2b48e4f1ab92371688cf6744ed701575d
 
-PODFILE CHECKSUM: 1b6781da447919e6d4722b9815c1adcc53e4d5ad
+PODFILE CHECKSUM: 79823e10517bcf76feca2e39c1f0357f422f19b3
 
 COCOAPODS: 1.5.0

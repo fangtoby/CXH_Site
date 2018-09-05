@@ -14,7 +14,7 @@ class ManualReceiptViewController:BaseViewController {
     var flag:Int?
     fileprivate var txtName:UITextField!
     fileprivate var userId=userDefaults.object(forKey: "userId") as! Int
-    fileprivate var storeId=userDefaults.object(forKey: "storeId") as! Int
+    fileprivate var storeId=userDefaults.object(forKey: "storeId") as? Int
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor=UIColor.viewBackgroundColor()
@@ -71,9 +71,9 @@ class ManualReceiptViewController:BaseViewController {
                 let index = txtName.text!.index(txtName.text!.startIndex, offsetBy:2)
                 let code=txtName.text![..<index]
                 if code == "sp"{
-                    scanCodeGetStorepack(txtName.text!, userId:userId, storeId: storeId)
+                    scanCodeGetStorepack(txtName.text!, userId:userId, storeId: storeId ?? -1)
                 }else if code == "ms"{
-                    scanCodeGetExpressmailstorag(txtName.text!,userId:userId,storeId: storeId)
+                    scanCodeGetExpressmailstorag(txtName.text!,userId:userId,storeId: storeId ?? -1)
                 }else if code == "em"{
                     self.showSVProgressHUD("亲,这是邮寄快递", type: HUD.info)
                 }else if code == "lp"{
@@ -100,9 +100,9 @@ class ManualReceiptViewController:BaseViewController {
             let index = qrcode.index(qrcode.startIndex,offsetBy:2)
             let code=qrcode[..<index]
             if code == "sp"{
-                self.scanCodeGetStorepack(qrcode, userId:self.userId, storeId: self.storeId)
+                self.scanCodeGetStorepack(qrcode, userId:self.userId, storeId: self.storeId ?? -1)
             }else if code == "ms"{
-                self.scanCodeGetExpressmailstorag(qrcode,userId:self.userId,storeId: self.storeId)
+                self.scanCodeGetExpressmailstorag(qrcode,userId:self.userId,storeId: self.storeId ?? -1)
             }else if code == "em"{
                 self.showSVProgressHUD("亲,这是邮寄快递", type: HUD.info)
             }else if code == "lp"{

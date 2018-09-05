@@ -16,19 +16,33 @@
  */
 typedef enum _BaiduMobStatLogStrategy {
     BaiduMobStatLogStrategyAppLaunch = 0,   //每次程序启动时发送（默认策略，推荐使用!）
-    BaiduMobStatLogStrategyDay = 1,         //每天的程序第一次进入启动
-    BaiduMobStatLogStrategyCustom = 2,      //根据设定的时间间隔发送
 } BaiduMobStatLogStrategy;
 
+/**
+ 推送平台定义
+ */
+typedef enum _BaiduMobStatPushPlatform{
+    BaiduMobStatPushPlatformBaiduCloud = 0, //百度云推送平台
+    BaiduMobStatPushPlatformJiGuang = 1,    //极光推送平台
+    BaiduMobStatPushPlatformGeTui = 2,      //个推推送平台
+} BaiduMobStatPushPlatform;
 
 /**
  百度移动应用统计接口
- 当前版本 4.6.5
+ 当前版本 4.8.3_0
  */
 @interface BaiduMobStat : NSObject
 /**
  以下property属性，均为可选设置
  */
+
+/**
+ 设置用户自定义的用户识别id，在startWithAppId之前调用
+ 设置一次UserId后，用户被永久标记。传入新的userId将替换老的userId。
+ 传入nil或空字符串@""，可清空标记。
+ 自定义规则的用户识别id（可以使登录用户账号、手机号等），长度限制256字节
+ */
+@property (nonatomic, copy) NSString *userId;
 
 /**
  设置app的版本号
@@ -69,14 +83,6 @@ typedef enum _BaiduMobStatLogStrategy {
 @property (nonatomic) BaiduMobStatLogStrategy logStrategy;
 
 /**
- 设置日志发送时间间隔
- 当logStrategy设置为BaiduMobStatLogStrategyCustom时生效
- 单位为小时，有效值为1~24
- 默认值为 1
- */
-@property (nonatomic) int logSendInterval;
-
-/**
  设置是否打印SDK中的日志，用于调试
  默认值 NO
  */
@@ -109,7 +115,6 @@ typedef enum _BaiduMobStatLogStrategy {
  @param appKey 用户在mtj网站上创建应用，获取对应的appKey
  */
 - (void)startWithAppId:(NSString *)appKey;
-
 
 /**
  记录一次事件的点击，eventId请在网站上创建。未创建的evenId记录将无效。
@@ -212,6 +217,21 @@ typedef enum _BaiduMobStatLogStrategy {
  @param body WKScriptMessage的body 只接受NSDictionary类型
  */
 - (void)didReceiveScriptMessage:(NSString*)name body:(NSDictionary *)body;
+
+/**
+ * 主动上传的Exception信息记录
+ *
+ * @param exception 自己捕获的，需要上传的exception
+ */
+- (void)recordException:(NSException *)exception;
+
+/**
+ * 主动上传的NSError信息记录
+ *
+ * @param error 自己捕获的，需要上传的error
+ */
+- (void)recordError:(NSError *)error;
+
 /**
  获取cuid的值
  返回SDK生成的cuid
@@ -229,6 +249,13 @@ typedef enum _BaiduMobStatLogStrategy {
  */
 - (NSString *)getTestDeviceId;
 
+/**
+ *  上传第三方Push平台的Id，pushId长度限制1024字节。设置为nil或者空字符串，则清空对应平台的pushId
+ *
+ *  @prama pushId 从第三方Push SDK接口中获取的pushId
+ *  @prama platform 指定Push平台类型，详见枚举声明
+ */
+- (void)setPushId:(NSString *)pushId platform:(BaiduMobStatPushPlatform)platform;
 @end
 
 

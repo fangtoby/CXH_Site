@@ -253,6 +253,7 @@ extension SweepCodeReceiptViewController{
     func scanCodeGetExpressmailForGivestoragByDriver(_ code:String,userId:Int){
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.scanCodeGetExpressmailForGivestoragByDriver(codeInfo:code, userId:userId), successClosure: { (result) -> Void in
             let json=JSON(result)
+            print(json)
             let success=json["success"].stringValue
             if success == "success"{
                 SVProgressHUD.showSuccess(withStatus:"接收快件成功")
@@ -267,6 +268,8 @@ extension SweepCodeReceiptViewController{
                 self.showInfo("快件不存在")
             }else if success == "luruNotExist"{
                 self.showInfo("录入信息不存在")
+            }else if success == "haveNoMoney"{
+                self.showInfo("站点余额不足")
             }else{
                 self.showInfo("扫码失败")
             }

@@ -12,7 +12,6 @@ target ‘CXH_Site’ do
     pod 'Siren'#版本更新
     pod 'SDCycleScrollView' #轮播图
     pod 'SVProgressHUD'  #菊花动画
-    pod 'XCGLogger' #日志管理类库
     pod 'Result'
     pod 'SwiftyJSON'
     pod 'JPush'
@@ -21,5 +20,8 @@ target ‘CXH_Site’ do
     pod 'BaiduMobStat' #百度统计。
     pod 'SQLite.swift'
     pod 'WechatOpenSDK' #微信支付
+    pod 'Bugly' #错误统计
+    pod 'MLeaksFinder' #内存检测
+    pod 'WMPageController' #分页效果
 end
 

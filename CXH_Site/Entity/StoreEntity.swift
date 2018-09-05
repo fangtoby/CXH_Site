@@ -26,6 +26,7 @@ class StoreEntity:Mappable{
     var countyText:String?
     var cityText:String?
     var storeId:Int?
+    init(){}
     required init?(map: Map) {
 
     }

@@ -11,7 +11,7 @@ import UIKit
 
 /// 我的信息
 class IndexViewController:BaseViewController{
-    let storeId=userDefaults.object(forKey: "storeId") as! Int
+    var storeId=userDefaults.object(forKey: "storeId") as? Int
 
     /// 信息view
     fileprivate var informationView:UIImageView!
@@ -256,7 +256,7 @@ extension IndexViewController:UICollectionViewDelegate,UICollectionViewDataSourc
     private func queryCountOrderGroupByOrderStatuByStoreId(){
         self.orderCount=0
 
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.queryCountOrderGroupByOrderStatuByStoreId(storeId:storeId), successClosure: { (any) in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.queryCountOrderGroupByOrderStatuByStoreId(storeId:storeId ?? -1), successClosure: { (any) in
             
             let json=self.swiftJSON(any)
             self.orderCountArr=self.jsonMappingArrEntity(OrderCountEntity(), object:json.object) ?? [OrderCountEntity]()
@@ -271,20 +271,24 @@ extension IndexViewController:UICollectionViewDelegate,UICollectionViewDataSourc
                 }).count{
                     self.orderCount+=self.orderCountArr[i].countOrder ?? 0
                 }
-                self.collectionView.reloadItems(at: [IndexPath.init(row:7, section:0)])
+                if self.identity == 2{
+                    self.collectionView.reloadItems(at: [IndexPath.init(row:7, section:0)])
+                }
             }
         }) { (error) in
-            self.showSVProgressHUD("查询订单数量失败", type: HUD.error)
+
         }
     }
     ///查询各种订单数量
     private func queryStoreStatisticsByVariousStatesCount(){
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.queryStoreStatisticsByVariousStatesCount(storeId:storeId), successClosure: { (any) in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.queryStoreStatisticsByVariousStatesCount(storeId:storeId ?? -1), successClosure: { (any) in
             let json=self.swiftJSON(any)
             self.userInfoCount=json["returnGoodsCount"].intValue+json["expressmailUpdateCount"].intValue
-            self.collectionView.reloadItems(at: [IndexPath.init(row:5, section:0)])
+            if self.identity == 2{
+                self.collectionView.reloadItems(at: [IndexPath.init(row:5, section:0)])
+            }
         }) { (error) in
-            self.showSVProgressHUD(error!, type: HUD.error)
+
         }
     }
 }

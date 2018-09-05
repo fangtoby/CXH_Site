@@ -15,7 +15,7 @@ class ShelvesViewController:BaseViewController{
     var flag:Int?
     fileprivate var goodArr=[GoodEntity]()
     fileprivate var foodArr=[FoodEntity]()
-    fileprivate var testStoreId=userDefaults.object(forKey: "storeId") as! Int
+    fileprivate var testStoreId=userDefaults.object(forKey: "storeId") as? Int ?? 0
     fileprivate var table:UITableView!
     fileprivate var pageNumber=0
     override func viewWillAppear(_ animated: Bool) {

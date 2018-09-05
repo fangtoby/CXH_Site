@@ -101,7 +101,7 @@ extension OrderDetailsViewController{
         ///减佣金
         str=PriceComputationsUtil.decimalNumberWithString(multiplierValue:self.orderDetailsEntity!.orderPrice!.description, multiplicandValue:(self.orderDetailsEntity!.orderComment ?? 0).description, type: ComputationsType.subtraction, position: 2)
         ///减分享费用
-        str=PriceComputationsUtil.decimalNumberWithString(multiplierValue:str, multiplicandValue:(self.orderDetailsEntity!.orderShareSumPrice! ?? 0).description, type: ComputationsType.subtraction, position: 2)
+        str=PriceComputationsUtil.decimalNumberWithString(multiplierValue:str, multiplicandValue:(self.orderDetailsEntity!.orderShareSumPrice ?? 0).description, type: ComputationsType.subtraction, position: 2)
 
         return str
     }

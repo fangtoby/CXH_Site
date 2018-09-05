@@ -62,6 +62,9 @@
 		6343CC7720B8F3D700EBB0D6 /* SettingShareProportionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6343CC7620B8F3D700EBB0D6 /* SettingShareProportionViewController.swift */; };
 		6343CC7920B904C100EBB0D6 /* StoreInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6343CC7820B904C100EBB0D6 /* StoreInfoViewController.swift */; };
 		6343CC7B20B905FB00EBB0D6 /* StoreEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6343CC7A20B905FB00EBB0D6 /* StoreEntity.swift */; };
+		6345129E213F7B05009C4326 /* CourierEntryHistoryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6345129D213F7B05009C4326 /* CourierEntryHistoryListViewController.swift */; };
+		634512A1213F7F8E009C4326 /* CourierEntryHistoryListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6345129F213F7F8E009C4326 /* CourierEntryHistoryListTableViewCell.swift */; };
+		634512A2213F7F8E009C4326 /* CourierEntryHistoryListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 634512A0213F7F8E009C4326 /* CourierEntryHistoryListTableViewCell.xib */; };
 		6346607920AD2A4300B803C4 /* WithdrawalSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6346607820AD2A4300B803C4 /* WithdrawalSuccessViewController.swift */; };
 		6346607B20AD35FC00B803C4 /* PriceComputationsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6346607A20AD35FC00B803C4 /* PriceComputationsUtil.swift */; };
 		6353DF1B20A19ABA00A09A13 /* GoodTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6353DF1920A19ABA00A09A13 /* GoodTableViewCell.swift */; };
@@ -273,6 +276,9 @@
 		6343CC7620B8F3D700EBB0D6 /* SettingShareProportionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingShareProportionViewController.swift; sourceTree = "<group>"; };
 		6343CC7820B904C100EBB0D6 /* StoreInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreInfoViewController.swift; sourceTree = "<group>"; };
 		6343CC7A20B905FB00EBB0D6 /* StoreEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreEntity.swift; sourceTree = "<group>"; };
+		6345129D213F7B05009C4326 /* CourierEntryHistoryListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourierEntryHistoryListViewController.swift; sourceTree = "<group>"; };
+		6345129F213F7F8E009C4326 /* CourierEntryHistoryListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourierEntryHistoryListTableViewCell.swift; sourceTree = "<group>"; };
+		634512A0213F7F8E009C4326 /* CourierEntryHistoryListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CourierEntryHistoryListTableViewCell.xib; sourceTree = "<group>"; };
 		6346607820AD2A4300B803C4 /* WithdrawalSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalSuccessViewController.swift; sourceTree = "<group>"; };
 		6346607A20AD35FC00B803C4 /* PriceComputationsUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PriceComputationsUtil.swift; sourceTree = "<group>"; };
 		6353DF1920A19ABA00A09A13 /* GoodTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodTableViewCell.swift; sourceTree = "<group>"; };
@@ -565,6 +571,14 @@
 				6334FFE11EF1251C00920073 /* YReturnGoodsViewController.swift */,
 			);
 			path = ReturnGoods;
+			sourceTree = "<group>";
+		};
+		6345129C213F7946009C4326 /* CourierEntryHistory */ = {
+			isa = PBXGroup;
+			children = (
+				6345129D213F7B05009C4326 /* CourierEntryHistoryListViewController.swift */,
+			);
+			path = CourierEntryHistory;
 			sourceTree = "<group>";
 		};
 		635CCC711EDEB2BF00448378 /* SweepCodeReceipt */ = {
@@ -964,6 +978,8 @@
 				63FCB7941EFF9CE900573E71 /* ReplaceSignListTableViewCell.swift */,
 				6353DF1920A19ABA00A09A13 /* GoodTableViewCell.swift */,
 				6353DF1A20A19ABA00A09A13 /* GoodTableViewCell.xib */,
+				6345129F213F7F8E009C4326 /* CourierEntryHistoryListTableViewCell.swift */,
+				634512A0213F7F8E009C4326 /* CourierEntryHistoryListTableViewCell.xib */,
 			);
 			path = TableViewCell;
 			sourceTree = "<group>";
@@ -1062,6 +1078,7 @@
 		63F2B4F11EE4EB8F00984988 /* Courier */ = {
 			isa = PBXGroup;
 			children = (
+				6345129C213F7946009C4326 /* CourierEntryHistory */,
 				63F2B4F21EE4EBAE00984988 /* CourierEntryViewController.swift */,
 				63F2B4F41EE4FCBB00984988 /* CourierListViewController.swift */,
 				63F2B4F61EE4FDE000984988 /* StayCouierViewController.swift */,
@@ -1238,6 +1255,7 @@
 				6353DF1C20A19ABA00A09A13 /* GoodTableViewCell.xib in Resources */,
 				639487DB1E9E0D6800C19907 /* unchecked@2x.png in Resources */,
 				63F2B4FB1EE4FE5100984988 /* CouierTableViewCell.xib in Resources */,
+				634512A2213F7F8E009C4326 /* CourierEntryHistoryListTableViewCell.xib in Resources */,
 				639487D71E9E0D6800C19907 /* checked@2x.png in Resources */,
 				630BAC2420ABD052001ACA7A /* AlipaySDK.bundle in Resources */,
 				639487D61E9E0D6800C19907 /* checked.png in Resources */,
@@ -1278,11 +1296,12 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-CXH_Site/Pods-CXH_Site-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/FBRetainCycleDetector/FBRetainCycleDetector.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/KMNavigationBarTransition/KMNavigationBarTransition.framework",
 				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
+				"${BUILT_PRODUCTS_DIR}/MLeaksFinder/MLeaksFinder.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
-				"${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SDCycleScrollView/SDCycleScrollView.framework",
@@ -1292,16 +1311,17 @@
 				"${BUILT_PRODUCTS_DIR}/Siren/Siren.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/XCGLogger/XCGLogger.framework",
+				"${BUILT_PRODUCTS_DIR}/WMPageController/WMPageController.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBRetainCycleDetector.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KMNavigationBarTransition.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MLeaksFinder.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjcExceptionBridging.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDCycleScrollView.framework",
@@ -1311,7 +1331,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Siren.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XCGLogger.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WMPageController.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1371,6 +1391,7 @@
 				63F2B5011EE50EAD00984988 /* QrcodeViewController.swift in Sources */,
 				63F2B51C1EE5815800984988 /* AcceptTableViewCell.swift in Sources */,
 				633BA22D1F2195D900C9BA04 /* ManualReceiptViewController.swift in Sources */,
+				6345129E213F7B05009C4326 /* CourierEntryHistoryListViewController.swift in Sources */,
 				63FCB7911EFF92AB00573E71 /* ReturnHistoryTableViewCell.swift in Sources */,
 				6334FFE71EF1373D00920073 /* WithdrawaRecordTableViewCell.swift in Sources */,
 				63FF0D901EFEA28100688D96 /* CourierUpdateListTableViewCell.swift in Sources */,
@@ -1452,6 +1473,7 @@
 				639487F61E9E1AB500C19907 /* BaseCollectionViewCell.swift in Sources */,
 				632E33F820A29D5F004DA6B7 /* WholesaleAuthViewController.swift in Sources */,
 				63F358C81EEF6A120024DDDB /* UpdateWithdrawaViewController.swift in Sources */,
+				634512A1213F7F8E009C4326 /* CourierEntryHistoryListTableViewCell.swift in Sources */,
 				6337505B1EFBA8B4009A0FF2 /* SweepCodeInboxDetailsViewController.swift in Sources */,
 				637051DD1EEA84C800BE840A /* UIWebView+UIImage.m in Sources */,
 				639487F21E9E19FA00C19907 /* BaseControl.swift in Sources */,

@@ -61,6 +61,7 @@ extension WholesaleAuthViewController{
     }
     private func queryBindWholesale(pageNumber:Int,pageSize:Int,isRefresh:Bool){
         PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.queryBindWholesale(storeId:storeId, pageNumber: pageNumber, pageSize: pageSize), successClosure: { (any) in
+            
             if isRefresh{
                 self.arr.removeAll()
             }

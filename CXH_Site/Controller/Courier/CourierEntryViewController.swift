@@ -117,7 +117,7 @@ class CourierEntryViewController:BaseViewController {
         if addressArr.count == 4{
             let town=addressArr[3]
             txtTodetailAddress.text=town
-        }else if addressArr.count == 5{
+        }else if addressArr.count >= 5{
             let town=addressArr[3]
             let villages=addressArr[4]
             let userInfo=obj.userInfo as? [String:Any]
@@ -360,6 +360,59 @@ class CourierEntryViewController:BaseViewController {
     @objc func conPicImgUpload(){
         choosePicture(2)
     }
+
+    ///创建粘贴按钮
+    private func setPasteBtn(tag:Int) -> UIButton{
+        let btnToPaste=UIButton(frame:CGRect(x:boundsWidth-150,y:5,width:40, height:40))
+        btnToPaste.setTitle("粘贴", for: UIControlState.normal)
+        btnToPaste.setTitleColor(UIColor.applicationMainColor(), for: UIControlState.normal)
+        btnToPaste.titleLabel!.font=UIFont.systemFont(ofSize:13)
+        btnToPaste.tag=tag
+        btnToPaste.addTarget(self, action:#selector(pasteInfo), for: UIControlEvents.touchUpInside)
+        return btnToPaste
+    }
+    ///粘贴信息
+    @objc private func pasteInfo(sender:UIButton){
+        let paste=UIPasteboard.general
+        let pasteString=paste.string
+        if pasteString == nil || pasteString!.count == 0 {
+            self.showSVProgressHUD("没有获取到粘贴信息", type: HUD.error)
+        }else{
+            self.showSVProgressHUD("正在解析信息...", type: HUD.text)
+            PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.shaixuanAddress(info:pasteString!),successClosure: { (any) in
+                let json=self.swiftJSON(any)
+                self.dismissHUD()
+//                print(json)
+                let province=json["addressJson"][0]["province"].string
+                let city=json["addressJson"][0]["city"].string
+                let county=json["addressJson"][0]["county"].string
+                let village=json["addressJson"][0]["village"].string
+                let callPhone=json["callPhone"].string
+                let name=json["name"].string
+                if sender.tag == 888{///寄件人信息
+                    self.fromprovince=province ?? self.fromprovince
+                    self.fromcity=city ?? self.fromcity
+                    self.fromcounty=county ?? self.fromcounty
+                    self.lblAddress.text=self.fromprovince+self.fromcity+self.fromcounty
+                    self.txtFromName.text=name
+                    self.txtFromphoneNumber.text=callPhone
+                }else{
+                    if province != nil && city != nil && county != nil{
+                        self.toprovince=province ?? ""
+                        self.tocity=city ?? ""
+                        self.tocounty=county ?? ""
+                        self.lblToAddress.text=self.toprovince+self.tocity+self.tocounty
+                    }
+                    self.txtToName.text=name
+                    self.txtTophoneNumber.text=callPhone
+                    self.txtTodetailAddress.text=village
+                }
+
+            }) { (error) in
+                self.showSVProgressHUD(error ?? "", type: HUD.error)
+            }
+        }
+    }
 }
 // MARK: - table 协议
 extension CourierEntryViewController:UITableViewDataSource,UITableViewDelegate{
@@ -370,15 +423,19 @@ extension CourierEntryViewController:UITableViewDataSource,UITableViewDelegate{
         }
         cell!.textLabel!.font=UIFont.systemFont(ofSize: 14)
         cell!.textLabel!.textColor=UIColor.textColor()
+        cell!.detailTextLabel!.font=UIFont.systemFont(ofSize:13)
         let name=buildLabel(UIColor.color999(), font:14, textAlignment: NSTextAlignment.left)
         cell!.selectionStyle = .none
         switch indexPath.section{
         case 0:
             switch indexPath.row{
             case 0:
-                cell!.textLabel!.text="寄件人信息录入 Shipper information"
-                cell!.textLabel!.font=UIFont.systemFont(ofSize: 16)
+                cell!.textLabel!.text="寄件人信息录入"
+                cell!.textLabel!.font=UIFont.systemFont(ofSize: 15)
                 cell!.textLabel!.textColor=UIColor.black
+                cell!.detailTextLabel!.text="选择寄件人信息"
+                let btn=setPasteBtn(tag:888)
+                cell!.contentView.addSubview(btn)
                 break
             case 1:
                 name.attributedText=redText("*姓名:")
@@ -463,9 +520,12 @@ extension CourierEntryViewController:UITableViewDataSource,UITableViewDelegate{
         case 1:
             switch indexPath.row{
             case 0:
-                cell!.textLabel!.text="收件人信息录入 Consignee informationn"
-                cell!.textLabel!.font=UIFont.systemFont(ofSize: 16)
+                cell!.textLabel!.text="收件人信息录入"
+                cell!.textLabel!.font=UIFont.systemFont(ofSize: 15)
                 cell!.textLabel!.textColor=UIColor.black
+                cell!.detailTextLabel!.text="选择收件人信息"
+                let btn=setPasteBtn(tag:999)
+                cell!.contentView.addSubview(btn)
                 break
             case 1:
                 name.attributedText=redText("*姓名:")
@@ -714,7 +774,24 @@ extension CourierEntryViewController:UITableViewDataSource,UITableViewDelegate{
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0{
-            if indexPath.row == 2{
+            if indexPath.row == 0{///跳转到寄件人管理
+                let vc=CourierEntryHistoryListViewController()
+                vc.flag=1
+                vc.selectedInfoClosure={ [weak self] (entity) in
+                    weak var weakSelf=self
+                    if weakSelf != nil{
+                        weakSelf!.txtFromName.text=entity.fromName
+                        weakSelf!.txtFromphoneNumber.text=entity.fromphoneNumber
+                        weakSelf!.txtFromRemarks.text=entity.fromRemarks
+                        weakSelf!.fromprovince=entity.fromprovince ?? ""
+                        weakSelf!.fromcity=entity.fromcity ?? ""
+                        weakSelf!.fromcounty=entity.fromcounty ?? ""
+                        weakSelf!.lblAddress.text=weakSelf!.fromprovince+weakSelf!.fromcity+weakSelf!.fromcounty
+                        weakSelf!.txtSFZ.text=entity.idCard
+                    }
+                }
+                self.navigationController?.pushViewController(vc, animated: true)
+            }else if indexPath.row == 2{
                 if addresEnabled{
                     let vc=ShowAddressViewController()
                     let nav=UINavigationController(rootViewController:vc)
@@ -724,7 +801,26 @@ extension CourierEntryViewController:UITableViewDataSource,UITableViewDelegate{
                 }
             }
         }else if indexPath.section == 1{
-            if indexPath.row == 2{
+            if indexPath.row == 0{///跳转到收件人管理
+                let vc=CourierEntryHistoryListViewController()
+                vc.flag=2
+                vc.selectedInfoClosure={ [weak self] (entity) in ///接收选中的收件人信息
+                    weak var weakSelf=self
+
+                    if weakSelf != nil{
+                        weakSelf!.txtToName.text=entity.toName
+                        weakSelf!.txtTophoneNumber.text=entity.tophoneNumber
+                        weakSelf!.txtTodetailAddress.text=entity.todetailAddress
+                        weakSelf!.txtToRemarks.text=entity.toRemarks
+                        weakSelf!.toprovince=entity.toprovince ?? ""
+                        weakSelf!.tocity=entity.tocity ?? ""
+                        weakSelf!.tocounty=entity.tocounty ?? ""
+                        weakSelf!.storeId=entity.toStoreId
+                        weakSelf!.lblToAddress.text=weakSelf!.toprovince+weakSelf!.tocity+weakSelf!.tocounty
+                    }
+                }
+                self.navigationController?.pushViewController(vc, animated: true)
+            }else if indexPath.row == 2{
                 if addresEnabled{
                     let vc=ShowAddressViewController()
                     userDefaults.set(1, forKey:"flag")

@@ -50,9 +50,9 @@ import SDWebImage
 //app公用常量
 
 ///图片请求路径
-let URLIMG="http://192.168.199.215";
+let URLIMG="http://10.1.1.215:8080";
 ///数据请求路径  http://www.cxh777.com/
-let URL="http://192.168.199.215/";
+let URL="http://10.1.1.215:8080";
 
 let SERVERERROR="服务器异常"
 /// 屏幕宽
@@ -235,6 +235,24 @@ extension String{
         
         return result as String
         
+    }
+    ///验证是否有表情符号
+    var containsEmoji: Bool {
+        for scalar in unicodeScalars {
+            switch scalar.value {
+            case
+            0x00A0...0x00AF,
+            0x2030...0x204F,
+            0x2120...0x213F,
+            0x2190...0x21AF,
+            0x2310...0x329F,
+            0x1F000...0x1F9CF:
+                return true
+            default:
+                continue
+            }
+        }
+        return false
     }
 }
 

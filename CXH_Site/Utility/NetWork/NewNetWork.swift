@@ -45,6 +45,10 @@ public enum NewRequestAPI{
     case queryStoreandvillage(villageRegionId:Int)
     ///统计各种数量
     case queryStoreStatisticsByVariousStatesCount(storeId:Int)
+    ///揽件历史（站点）供快速选择寄件/收件人
+    case queryGiveHistoryForFastMail(pageNumber:Int,pageSize:Int,userId:Int,searchInfo:String?)
+    ///根据地址自动识别
+    case shaixuanAddress(info:String)
 }
 extension NewRequestAPI:TargetType{
     public var path: String {
@@ -85,6 +89,10 @@ extension NewRequestAPI:TargetType{
             return "addressU/queryStoreandvillage"
         case .queryStoreStatisticsByVariousStatesCount(_):
             return "statisticsAdminFront/queryStoreStatisticsByVariousStatesCount"
+        case .queryGiveHistoryForFastMail:
+            return "adminGive/queryGiveHistoryForFastMail"
+        case .shaixuanAddress:
+            return "adminGive/shaixuanAddress"
         
 
         }
@@ -94,7 +102,7 @@ extension NewRequestAPI:TargetType{
         switch self {
         case .updateGoods(_,_,_,_,_,_,_,_,_,_,_,_),.updateBindWholesale(_,_,_),.bindWholesale(_,_),.updateStoreBindAli(_,_),.updateStoreBindWx(_,_),.sendDuanxin(_),.updateStorePostage(_,_,_,_,_,_),.updateStoreInfo(_,_):
             return .post
-        case .queryBindWholesale(_,_,_),.queryStoreBindWxOrAliStatu(_),.query_store_ali_AuthParams(_),.queryStorePostage(_),.queryOrderFreightByOrderId(_),.queryStoreInfo(_),.queryStoreOrderPrepaidrecordDetailByPrepaidrecordId(_),.queryCountOrderGroupByOrderStatuByStoreId(_),.queryStoreandvillage(_),.queryStoreStatisticsByVariousStatesCount(_):
+        case .queryBindWholesale(_,_,_),.queryStoreBindWxOrAliStatu(_),.query_store_ali_AuthParams(_),.queryStorePostage(_),.queryOrderFreightByOrderId(_),.queryStoreInfo(_),.queryStoreOrderPrepaidrecordDetailByPrepaidrecordId(_),.queryCountOrderGroupByOrderStatuByStoreId(_),.queryStoreandvillage(_),.queryStoreStatisticsByVariousStatesCount(_),.queryGiveHistoryForFastMail,.shaixuanAddress:
             return .get
         }
     }
@@ -143,6 +151,10 @@ extension NewRequestAPI:TargetType{
             return .requestParameters(parameters:["villageRegionId":villageRegionId], encoding: URLEncoding.default)
         case let .queryStoreStatisticsByVariousStatesCount(storeId):
             return .requestParameters(parameters:["storeId":storeId], encoding: URLEncoding.default)
+        case let .queryGiveHistoryForFastMail(pageNumber, pageSize, userId, searchInfo):
+            return .requestParameters(parameters:["pageNumber":pageNumber,"pageSize":pageSize,"userId":userId,"searchInfo":searchInfo ?? ""], encoding: URLEncoding.default)
+        case let .shaixuanAddress(info):
+            return .requestParameters(parameters:["info":info], encoding: URLEncoding.default)
 
         }
     }

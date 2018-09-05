@@ -11,7 +11,7 @@ import UIKit
 
 /// 个人中心
 class PersonalCenterViewController:BaseViewController{
-    let storeId=userDefaults.object(forKey: "storeId") as! Int
+    let storeId=userDefaults.object(forKey: "storeId") as? Int
     /// 图片
     fileprivate var img:UIImageView!
     
@@ -69,17 +69,18 @@ class PersonalCenterViewController:BaseViewController{
         super.viewDidLoad()
         self.title="我的信息"
         self.view.backgroundColor=UIColor.viewBackgroundColor()
+
         let imgView=UIImageView(frame:CGRect(x: 0,y: 0,width: 30,height: 30))
         imgView.image=UIImage(named:"settings")?.reSizeImage(reSize:CGSize(width:30, height:30))
         imgView.isUserInteractionEnabled=true
         imgView.addGestureRecognizer(UITapGestureRecognizer(target:self, action:#selector(pushSettings)))
         let item=UIBarButtonItem(customView:imgView)
         self.automaticallyAdjustsScrollViewInsets = false
-        self.navigationItem.rightBarButtonItem=item
         if identity == 2{
             nameArr=["揽件清单","收件历史","代签收记录","返件记录","揽件修改历史","退款/售后","充值明细","扣费明细","我要提现"]
             imgArr=["classify_5","classify_6","dqs","fj","ljxg","tk","cz","classify_kfmx","tx1"]
             queryStoreCapitalSumMoney()
+            self.navigationItem.rightBarButtonItem=item
         }else if identity == 3{
             nameArr=["揽件清单","收件历史","代签收记录","返件记录"]
             imgArr=["classify_5","classify_6","dqs","fj"]
@@ -93,7 +94,7 @@ class PersonalCenterViewController:BaseViewController{
      跳转到设置页面
      */
     @objc func pushSettings(){
-       let vc=SettingsViewController()
+        let vc=SettingsViewController()
         self.navigationController?.pushViewController(vc, animated:true)
     }
 }
@@ -290,9 +291,11 @@ extension PersonalCenterViewController{
      跳转到余额明细
      */
     @objc func pushTouchBalance(){
-        let  vc=TouchBalanceViewController()
-        vc.balance=lblBalanceValue.text
-        self.navigationController?.pushViewController(vc, animated:true)
+        if identity == 2{
+            let  vc=TouchBalanceViewController()
+            vc.balance=lblBalanceValue.text
+            self.navigationController?.pushViewController(vc, animated:true)
+        }
     }
     /**
      退出登录
@@ -311,25 +314,24 @@ extension PersonalCenterViewController{
     }
     func queryStoreCapitalSumMoney(){
 
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.queryStoreCapitalSumMoney(storeId:storeId), successClosure: { (result) -> Void in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(RequestAPI.queryStoreCapitalSumMoney(storeId:storeId ?? -1), successClosure: { (result) -> Void in
             let json=self.swiftJSON(result)
             //print(json)
             self.lblBalanceValue.text=json["success"].doubleValue.description
             }) { (errorMsg) -> Void in
-                self.showSVProgressHUD(errorMsg!, type: HUD.error)
+                
         }
     }
     ///查询各种订单数量
     private func queryStoreStatisticsByVariousStatesCount(){
-        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.queryStoreStatisticsByVariousStatesCount(storeId:storeId), successClosure: { (any) in
+        PHMoyaHttp.sharedInstance.requestDataWithTargetJSON(NewRequestAPI.queryStoreStatisticsByVariousStatesCount(storeId:storeId ?? -1 ), successClosure: { (any) in
 
             let json=self.swiftJSON(any)
-            print(json)
             self.returnGoodsCount=json["returnGoodsCount"].intValue
             self.expressmailUpdateCount=json["expressmailUpdateCount"].intValue
             self.table.reloadData()
         }) { (error) in
-            self.showSVProgressHUD(error!, type: HUD.error)
+
         }
     }
 }
